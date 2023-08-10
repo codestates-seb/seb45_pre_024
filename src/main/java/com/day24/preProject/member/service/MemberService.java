@@ -20,11 +20,9 @@ public class MemberService {
         this.repository = repository;
     }
 
-    public Member createMember(Member member) {
-        verifyExistsEmail(member.getEmail());
-        verifyExistsUsername(member.getUsername());
-
-        return repository.save(member);
+    public void createMember(Member member) {
+        verifyMember(member);
+        repository.save(member);
     }
 
     @Transactional(readOnly = true)
@@ -43,15 +41,14 @@ public class MemberService {
         member.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
         repository.save(member);
     }
-
-    private void verifyExistsEmail(String email) {
-        Optional<Member> member = repository.findByEmail(email);
-        if (member.isPresent())
+    private void verifyMember(Member member){
+        Optional<Member> optionalMember = repository.findByEmail(member.getEmail());
+        if (optionalMember.isPresent() && optionalMember.get().getMemberStatus() != Member.MemberStatus.MEMBER_ANAUTHORIZED) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
-    }
-    private void verifyExistsUsername(String username) {
-        Optional<Member> member = repository.findByUsername(username);
-        if (member.isPresent())
+        }
+        optionalMember = repository.findByUsername(member.getUsername());
+        if (optionalMember.isPresent() && optionalMember.get().getMemberStatus() != Member.MemberStatus.MEMBER_ANAUTHORIZED) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+        }
     }
 }
