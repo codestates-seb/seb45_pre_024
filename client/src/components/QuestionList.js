@@ -10,7 +10,6 @@ const QuestionList = () => {
     axios
       .get(`http://localhost:3001/Question${filter}`)
       .then((res) => {
-        console.log(res.data);
         setQuestions(res.data.data);
       })
       .catch(console.log('err'));
@@ -21,11 +20,12 @@ const QuestionList = () => {
   return (
     <section className="mainContiner">
       <div className="buttonContiner">
+        <div className="QuestionLength">{questions.length}개의 질문</div>
         <Link to="/create_Question">
           <button className="ask_Question_Button">Ask Question</button>
         </Link>
       </div>
-      <div className="buttonContiner">
+      <div className="filterButtonContiner">
         <button className="filterBtn" onClick={filterHandle}>
           Week
         </button>

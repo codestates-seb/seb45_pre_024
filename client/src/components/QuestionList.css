@@ -3,7 +3,7 @@
 }
 .buttonContiner{
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
 }
 .ask_Question_Button{
     background-color: rgb(3, 132, 252);
@@ -15,4 +15,12 @@
 .filterBtn{
     width: 100px;
     margin-top: 10px;
+}
+.filterButtonContiner{
+    display: flex;
+    justify-content: end;
+}
+.QuestionLength{
+    margin-top: 10px;
+    margin-left: 10px;
 }
