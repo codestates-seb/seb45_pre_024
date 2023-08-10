@@ -1,0 +1,18 @@
+.mainContiner{
+    
+}
+.buttonContiner{
+    display: flex;
+    justify-content: end;
+}
+.ask_Question_Button{
+    background-color: rgb(3, 132, 252);
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    border: solid 1px black;
+}
+.filterBtn{
+    width: 100px;
+    margin-top: 10px;
+}
