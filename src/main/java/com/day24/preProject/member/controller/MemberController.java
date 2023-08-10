@@ -15,23 +15,23 @@ import javax.validation.constraints.Positive;
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-    private final MemberService service;
-    private final MemberMapper mapper;
+    private final MemberService memberService;
+    private final MemberMapper memberMapper;
 
-    public MemberController(MemberService service, MemberMapper mapper) {
-        this.service = service;
-        this.mapper = mapper;
+    public MemberController(MemberService memberService, MemberMapper memberMapper) {
+        this.memberService = memberService;
+        this.memberMapper = memberMapper;
     }
     @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberPostDto requestBody){
-        Member member = mapper.memberPostToMember(requestBody);
-        service.createMember(member);
+        Member member = memberMapper.memberPostToMember(requestBody);
+        memberService.createMember(member);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId){
-        service.deleteMember(memberId);
+        memberService.deleteMember(memberId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
