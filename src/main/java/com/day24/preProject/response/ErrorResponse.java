@@ -3,12 +3,6 @@ package com.day24.preProject.response;
 import com.day24.preProject.exception.ExceptionCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-
-import javax.validation.ConstraintViolation;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 public class ErrorResponse {
