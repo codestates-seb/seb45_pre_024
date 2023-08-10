@@ -1,0 +1,53 @@
+{   "Question":
+    {
+        "data":[{
+            "id": 1,
+            "username": "김코딩",
+            "title": "첫번째 질문",
+            "created_at": "2023-05-27 12:34:56",
+            "view_count": 3,
+            "accepted": false
+            },
+            {
+            "id": 2,
+            "username": "박코딩",
+            "title": "두번째 질문",
+            "created_at": "2023-05-28 13:50:39",
+            "view_count": 7,
+            "accepted": true
+            },
+            {
+            "id": 3,
+            "username": "나강림",
+            "title": "세번째 강림",
+            "created_at": "2023-05-31 21:16:27",
+            "view_count": 13,
+            "accepted": true
+            },
+            {
+            "id": 4,
+            "username": "강전설",
+            "title": "네번째 제목",
+            "created_at": "2023-06-01 08:36:13",
+            "view_count": 1,
+            "accepted": false
+            },
+            {
+            "id": 5,
+            "username": "만두국밥",
+            "title": "다섯번째 점심",
+            "created_at": "2023-06-08 13:00:18",
+            "view_count": 0,
+            "accepted": false
+            }
+            ],
+            "page_info": {
+                "page": 1,
+                "size": 5,
+                "total_page": 1,
+                "total_size": 5
+                }
+       }
+
+    
+    }
