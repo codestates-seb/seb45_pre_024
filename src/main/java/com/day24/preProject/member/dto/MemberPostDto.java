@@ -14,6 +14,7 @@ public class MemberPostDto {
     @Email
     private String email;
     @NotBlank
+    @Size(min = 64, max = 64)
     private String password;
     @NotBlank
     @Size(min = 5, max = 20)
