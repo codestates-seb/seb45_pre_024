@@ -2,18 +2,29 @@ import './App.css';
 import QuestionList from './components/QuestionList';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SignIn from './components/SignIn';
-import { useState } from 'react';
-import Wepediter from './components/Wepediter';
+import { useEffect, useState } from 'react';
+import CreateQuestion from './components/CreateQuestion';
 import Footer from './components/footer';
 function App() {
   const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
+  useEffect(() => {
+    const sessionUser = sessionStorage.getItem('user');
+    if (sessionUser) {
+      setUser(JSON.parse(sessionUser));
+    }
+  }, []);
   const userHandle = (e) => {
     setUser(e);
   };
-  const loginHandle = () => {
+  const loginHandle = (e) => {
     setIsLogin(true);
+    userHandle(e);
   };
+  // const logoutHandle = () => {
+  //   setIsLogin(false);
+  //   sessionStorage.removeItem('user');
+  // };
   return (
     <div>
       {isLogin ? <div>로그인 완료</div> : null}
@@ -31,7 +42,10 @@ function App() {
               />
             }
           />
-          <Route path="/test" element={<Wepediter />} />
+          <Route
+            path="/create_Question"
+            element={<CreateQuestion user={user} />}
+          />
         </Routes>
       </BrowserRouter>
       <Footer />
