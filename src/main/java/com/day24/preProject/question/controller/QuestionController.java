@@ -57,9 +57,7 @@ public class QuestionController {
     @GetMapping
     public ResponseEntity getQuestions(@RequestParam int page, @RequestParam int size) {
         Page<Question> pageQuestions = questionService.findAllQuestion(false, page-1, size);
-        System.out.println("page");
         List<Question> questions = pageQuestions.getContent();
-        System.out.println("list");
 
         return new ResponseEntity<>(
                 new MultiResponseDto<>(
