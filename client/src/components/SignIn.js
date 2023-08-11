@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import './SignIn.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { SHA256 } from 'crypto-js';
+const envURL = process.env.PUBLIC_URL;
 const SignIn = ({ user, userHandle, loginHandle }) => {
   const salt = 'salt';
   const [userData, setUserData] = useState(null);
@@ -64,42 +66,59 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
           if (res.data[id].password === pw) {
             const bash = SHA256(pw + salt).toString();
             console.log(bash);
-            loginHandle();
-            userHandle(res.data[id]);
+            loginHandle(res.data[id]);
+            sessionStorage.setItem('user', JSON.stringify(res.data[id]));
             navi('/');
           }
         })
-        .catch(console.log('err'));
+        .catch(console.error('err'));
     }
   };
   return (
     <div>
-      <div>
-        아이디
-        <input
-          type="text"
-          value={id}
-          onChange={(e) => {
-            idHandle(e);
-          }}
-        />
-        비밀번호
-        <input
-          type="password"
-          value={pw}
-          onChange={(e) => {
-            pwHandle(e);
-          }}
-        />
-      </div>
-      <button onClick={handleGoogleSignIn}>Google 로그인</button>
-      <button onClick={signInHandle}>로그인</button>
-      {user && (
-        <div>
-          <h2>User Data</h2>
-          <p>Email: {userData.email}</p>
+      <div className="mainContainer">
+        <div className="content">
+          <div className="loginBox">
+            <div className="logoContainer">
+              <img className="logo" src={envURL + '/logo.png'} alt="logo"></img>
+            </div>
+            <div className="buttonContainer">
+              <button className="google" onClick={handleGoogleSignIn}>
+                Log in with Google
+              </button>
+              <button className="git">Log in with Github</button>
+              <button className="facebook">Log in with facebook</button>
+            </div>
+            {user && (
+              <div>
+                <h2>User Data</h2>
+                <p>Email: {userData.email}</p>
+              </div>
+            )}
+
+            <div className="inputContainer">
+              아이디
+              <input
+                type="text"
+                value={id}
+                onChange={(e) => {
+                  idHandle(e);
+                }}
+              />
+              비밀번호
+              <input
+                type="password"
+                value={pw}
+                onChange={(e) => {
+                  pwHandle(e);
+                }}
+              />
+              <button onClick={signInHandle}>로그인</button>
+              <div className="text"></div>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
