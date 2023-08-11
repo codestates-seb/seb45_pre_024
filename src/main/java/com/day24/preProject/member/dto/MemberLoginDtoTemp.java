@@ -13,6 +13,6 @@ public class MemberLoginDtoTemp {
     @Size(min = 5, max = 20)
     private String username;
     @NotBlank
-    @Size(min = 64, max = 64)
+    @Size(max = 64)
     private String password;
 }
