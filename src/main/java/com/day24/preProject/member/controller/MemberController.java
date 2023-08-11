@@ -7,6 +7,7 @@ import com.day24.preProject.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Positive;
 
 @Controller
 @RequestMapping("/member")
+@Validated
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper memberMapper;
