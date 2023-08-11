@@ -1,12 +1,12 @@
 import './footer.css';
-import logo from './logo.png';
 function Footer() {
+  const envURL = process.env.PUBLIC_URL;
   return (
     <div>
       <div className="footer_container">
         <nav className="footer_nav">
           <div className="logo_container">
-            <img className="logo" src={logo} alt="logo"></img>
+            <img className="logo" src={envURL + '/logo.png'} alt="logo"></img>
           </div>
           <div className="stack_overflow">
             <h5>STACK OVERFLOW</h5>
