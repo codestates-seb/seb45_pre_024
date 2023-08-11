@@ -2,6 +2,7 @@ package com.day24.preProject.advice;
 
 import com.day24.preProject.exception.BusinessLogicException;
 import com.day24.preProject.response.ErrorResponse;
+import com.day24.preProject.response.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,13 @@ import javax.validation.ConstraintViolationException;
 public class GlobalExceptionAdvice {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse argNotValidException(MethodArgumentNotValidException e){
-        return ErrorResponse.of(e.getBindingResult());
+    public ValidationErrorResponse argNotValidException(MethodArgumentNotValidException e){
+        return ValidationErrorResponse.of(e.getBindingResult());
     }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse constraintViolationException(ConstraintViolationException e) {
-        return ErrorResponse.of(e.getConstraintViolations());
+    public ValidationErrorResponse constraintViolationException(ConstraintViolationException e) {
+        return ValidationErrorResponse.of(e.getConstraintViolations());
     }
 
     @ExceptionHandler

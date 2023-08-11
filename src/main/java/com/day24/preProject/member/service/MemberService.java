@@ -1,5 +1,6 @@
 package com.day24.preProject.member.service;
 
+import com.day24.preProject.auth.utils.AuthorityUtils;
 import com.day24.preProject.exception.BusinessLogicException;
 import com.day24.preProject.exception.ExceptionCode;
 import com.day24.preProject.member.entity.Member;
@@ -9,27 +10,37 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
 @Service
 public class MemberService {
-    private final MemberRepository repository;
+    private final MemberRepository memberRepositoryrepository;
+    private final AuthorityUtils authorityUtils;
 
-    public MemberService(MemberRepository repository) {
-        this.repository = repository;
+    public MemberService(MemberRepository memberRepositoryrepository, AuthorityUtils authorityUtils) {
+        this.memberRepositoryrepository = memberRepositoryrepository;
+        this.authorityUtils = authorityUtils;
     }
 
-    public Member createMember(Member member) {
-        verifyExistsEmail(member.getEmail());
-        verifyExistsUsername(member.getUsername());
-
-        return repository.save(member);
+    public void createMember(Member member) {
+        verifyMember(member);
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+        memberRepositoryrepository.save(member);
     }
-
+    @Transactional
+    public Long findMember(Member member){
+        Optional<Member> optionalMember = memberRepositoryrepository.findByUsername(member.getUsername());
+        Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        if (!findMember.getMemberStatus().equals(Member.MemberStatus.MEMBER_ACTIVE)) throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_STATUS);
+        if (!findMember.getPassword().equals(member.getPassword())) throw new BusinessLogicException(ExceptionCode.MEMBER_WRONG_PASSWORD);
+        return findMember.getMemberId();
+    }
     @Transactional(readOnly = true)
     public Member findMember(long memberId){
-        Optional<Member> optionalMember = repository.findById(memberId);
+        Optional<Member> optionalMember = memberRepositoryrepository.findById(memberId);
         return optionalMember.orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
@@ -41,17 +52,16 @@ public class MemberService {
     public void deleteMember(long memberId){
         Member member = findMember(memberId);
         member.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
-        repository.save(member);
+        memberRepositoryrepository.save(member);
     }
-
-    private void verifyExistsEmail(String email) {
-        Optional<Member> member = repository.findByEmail(email);
-        if (member.isPresent())
+    private void verifyMember(Member member){
+        Optional<Member> optionalMember = memberRepositoryrepository.findByEmail(member.getEmail());
+        if (optionalMember.isPresent() && optionalMember.get().getMemberStatus() != Member.MemberStatus.MEMBER_ANAUTHORIZED) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
-    }
-    private void verifyExistsUsername(String username) {
-        Optional<Member> member = repository.findByUsername(username);
-        if (member.isPresent())
+        }
+        optionalMember = memberRepositoryrepository.findByUsername(member.getUsername());
+        if (optionalMember.isPresent() && optionalMember.get().getMemberStatus() != Member.MemberStatus.MEMBER_ANAUTHORIZED) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+        }
     }
 }
