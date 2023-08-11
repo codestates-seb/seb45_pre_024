@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SignIn from './components/SignIn';
 import { useState } from 'react';
 import Wepediter from './components/Wepediter';
+import Footer from './components/footer';
 function App() {
   const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
@@ -33,6 +34,7 @@ function App() {
           <Route path="/test" element={<Wepediter />} />
         </Routes>
       </BrowserRouter>
+      <Footer />
     </div>
   );
 }
