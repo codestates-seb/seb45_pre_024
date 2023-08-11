@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@toast-ui/react-editor": "^3.2.3",
     "axios": "^1.4.0",
     "crypto-js": "^4.1.1",
     "json-server": "^0.17.3",
