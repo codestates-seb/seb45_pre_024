@@ -5,6 +5,7 @@ import SignIn from './components/SignIn';
 import { useEffect, useState } from 'react';
 import CreateQuestion from './components/CreateQuestion';
 import Footer from './components/footer';
+import Header from './components/Header';
 function App() {
   const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
@@ -30,6 +31,9 @@ function App() {
       {isLogin ? <div>로그인 완료</div> : null}
       {user ? <div>{user.email}님 안녕하세요</div> : null}
       <BrowserRouter>
+        <div>
+          <Header />
+        </div>
         <Routes>
           <Route path="/" element={<QuestionList />} />
           <Route
