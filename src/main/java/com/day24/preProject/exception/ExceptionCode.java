@@ -6,6 +6,7 @@ public enum ExceptionCode {
     MEMBER_NOT_FOUND(404, "Member not found"),
     MEMBER_EXISTS(409, "Member exists"),
     INVALID_MEMBER_STATUS(400, "Invalid member status"),
+    MEMBER_WRONG_PASSWORD(400, "Wrong password"),
     INVALID_BODY_VALUE(400, "Invalid body value"),
     INVALID_REQUEST_PARAMETER(400, "Invalid request parpameter"),
 
