@@ -64,12 +64,12 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
           if (res.data[id].password === pw) {
             const bash = SHA256(pw + salt).toString();
             console.log(bash);
-            loginHandle();
-            userHandle(res.data[id]);
+            loginHandle(res.data[id]);
+            sessionStorage.setItem('user', JSON.stringify(res.data[id]));
             navi('/');
           }
         })
-        .catch(console.log('err'));
+        .catch(console.error('err'));
     }
   };
   return (
