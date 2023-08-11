@@ -1,7 +1,8 @@
 import './App.css';
+import StackFooter from './component/footer';
 
 function App() {
-  return <div className="App">기본내용</div>;
+  return <StackFooter />;
 }
 
 export default App;
