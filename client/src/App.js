@@ -3,6 +3,8 @@ import QuestionList from './components/QuestionList';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SignIn from './components/SignIn';
 import { useState } from 'react';
+import Header from './components/Header';
+
 function App() {
   const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
@@ -17,6 +19,9 @@ function App() {
       {isLogin ? <div>로그인 완료</div> : null}
       {user ? <div>{user.email}님 안녕하세요</div> : null}
       <BrowserRouter>
+        <div>
+          <Header />
+        </div>
         <Routes>
           <Route path="/" element={<QuestionList />} />
           <Route
@@ -28,7 +33,7 @@ function App() {
                 loginHandle={loginHandle}
               />
             }
-          />
+          />{' '}
         </Routes>
       </BrowserRouter>
     </div>
