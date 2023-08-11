@@ -1,6 +1,6 @@
 import './footer.css';
 import logo from './logo.png';
-function StackFooter() {
+function Footer() {
   return (
     <div>
       <div className="footer_container">
@@ -101,4 +101,4 @@ function StackFooter() {
     </div>
   );
 }
-export default StackFooter;
+export default Footer;
