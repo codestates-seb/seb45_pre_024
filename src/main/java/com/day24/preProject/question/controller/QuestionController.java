@@ -48,6 +48,8 @@ public class QuestionController {
     @GetMapping("/{id}")
     public ResponseEntity getQuestion(@PathVariable("id") int question_id) {
         Question question = questionService.findQuestion(question_id);
+        question.setView_count(question.getView_count()+1);
+        questionService.countView_count(question);
         QuestionResponseDto questionResponseDto = questionMapper.questionToQuestionResponseDto(question);
         return new ResponseEntity<>(questionResponseDto, HttpStatus.OK);
     }

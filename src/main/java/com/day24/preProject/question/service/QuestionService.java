@@ -2,6 +2,7 @@ package com.day24.preProject.question.service;
 
 import com.day24.preProject.exception.BusinessLogicException;
 import com.day24.preProject.exception.ExceptionCode;
+import com.day24.preProject.member.entity.Member;
 import com.day24.preProject.question.entity.Question;
 import com.day24.preProject.question.repository.QuestionRepository;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,10 @@ public class QuestionService {
     public Question createQuestion(Question question) {
 
         return questionRepository.save(question);
+    }
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public void countView_count(Question question) {
+        questionRepository.save(question);
     }
 
     @Transactional(readOnly = true)
