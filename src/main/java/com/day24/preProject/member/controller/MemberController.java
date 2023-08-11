@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/member")
@@ -27,8 +29,10 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberPostDto requestBody){
         Member member = memberMapper.memberPostToMember(requestBody);
-        memberService.createMember(member);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Member createdMember = memberService.createMember(member);
+        Map<String, Long> temp = new HashMap<>();
+        temp.put("id", createdMember.getMemberId());
+        return new ResponseEntity<>(temp, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{member-id}")
