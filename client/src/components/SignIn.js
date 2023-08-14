@@ -59,20 +59,19 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
     setPw(e.target.value);
   };
   const signInHandle = () => {
-    if (id !== null) {
-      axios
-        .get(`http://localhost:3001/user`)
-        .then((res) => {
-          if (res.data[id].password === pw) {
-            const bash = SHA256(pw + salt).toString();
-            console.log(bash);
-            loginHandle(res.data[id]);
-            sessionStorage.setItem('user', JSON.stringify(res.data[id]));
-            navi('/');
-          }
-        })
-        .catch(console.error('err'));
-    }
+    const data = {
+      username: id,
+      password: SHA256(pw + salt).toString(),
+    };
+    axios
+      .post('/member/signin', data)
+      .then((res) => {
+        console.log(res.data);
+        loginHandle(res.data);
+        sessionStorage.setItem('user', JSON.stringify(res.data));
+        navi('/');
+      })
+      .catch(console.error('err'));
   };
   return (
     <div>
@@ -97,7 +96,7 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
                   src={envURL + '/github.png'}
                   alt="github_logo"
                 ></img>
-                <span>Log in with Github</span>
+                <span>Log in with Github</span>{' '}
               </button>
               <button className="facebook">Log in with Facebook</button>
             </div>
