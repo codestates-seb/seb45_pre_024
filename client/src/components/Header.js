@@ -16,7 +16,7 @@ const Header = () => {
     e.preventDefault;
   };
   return (
-    <nav>
+    <nav className="nav">
       <div className="navbar">
         <Link to="/" className="nav-item nav-logo">
           <img src={logo} alt="logo" width="200px" />
@@ -33,16 +33,33 @@ const Header = () => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="       Search..."
             value={text}
             onChange={(e) => setText(e.target.value)}
+            className="search-input"
           />
           <img src={search} alt="search" width="18" className="search-icon" />
         </form>
         {user === null ? (
-          <Link to="/signin" className="nav-item nav-links">
-            Log in
-          </Link>
+          <>
+            <Avatar
+              backgroundColor="transparent"
+              px="10px"
+              py="10px"
+              borderRadius="50%"
+              color="white"
+            >
+              <Link
+                to="/User"
+                style={{ color: 'white', textDecoration: 'none' }}
+              >
+                Y
+              </Link>
+            </Avatar>
+            <Link to="/signin" className="login">
+              <button className="login">Log in</button>
+            </Link>
+          </>
         ) : (
           <>
             <Avatar
