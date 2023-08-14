@@ -1,7 +1,12 @@
 package com.day24.preProject.question.controller;
 
 
+import com.day24.preProject.answer.dto.AnswerResponseDto;
+import com.day24.preProject.answer.entity.Answer;
+import com.day24.preProject.answer.mapper.AnswerMapper;
+import com.day24.preProject.answer.service.AnswerService;
 import com.day24.preProject.dto.MultiResponseDto;
+import com.day24.preProject.question.dto.QuestionDetailResponseDto;
 import com.day24.preProject.question.dto.QuestionPatchDto;
 import com.day24.preProject.question.dto.QuestionPostDto;
 import com.day24.preProject.question.dto.QuestionResponseDto;
@@ -31,11 +36,17 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
+    private final AnswerService answerService;
+
     private final QuestionMapper questionMapper;
 
-    public QuestionController(QuestionService questionService, QuestionMapper questionMapper) {
+    private final AnswerMapper answerMapper;
+
+    public QuestionController(QuestionService questionService, AnswerService answerService, QuestionMapper questionMapper, AnswerMapper answerMapper) {
         this.questionService = questionService;
+        this.answerService = answerService;
         this.questionMapper = questionMapper;
+        this.answerMapper = answerMapper;
     }
 
     @PostMapping
@@ -46,20 +57,21 @@ public class QuestionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getQuestion(@PathVariable("id") int question_id) {
-        Question question = questionService.findQuestion(question_id);
+    public ResponseEntity getQuestion(@PathVariable("id") long question_id, boolean deleted) {
+        Question question = questionService.findQuestionByDeleted(question_id, deleted);
         question.setView_count(question.getView_count()+1);
         questionService.countView_count(question);
-        QuestionResponseDto questionResponseDto = questionMapper.questionToQuestionResponseDto(question);
-        return new ResponseEntity<>(questionResponseDto, HttpStatus.OK);
+
+        QuestionDetailResponseDto questionDetailResponseDto =
+                questionMapper.questionToQuestionDetailResponseDto(question);
+
+        return new ResponseEntity<>(questionDetailResponseDto, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity getQuestions(@RequestParam int page, @RequestParam int size) {
         Page<Question> pageQuestions = questionService.findAllQuestion(false, page-1, size);
-        System.out.println("page");
         List<Question> questions = pageQuestions.getContent();
-        System.out.println("list");
 
         return new ResponseEntity<>(
                 new MultiResponseDto<>(
@@ -75,8 +87,7 @@ public class QuestionController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteQuestion(@PathVariable("id") int question_id) {
-        Question question = questionService.findQuestion(question_id);
-        question.setDeleted(true);
+        questionService.deleteQuestion(question_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

@@ -1,15 +1,16 @@
 package com.day24.preProject.question.dto;
 
+import com.day24.preProject.answer.dto.AnswerResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import java.time.LocalDateTime;
 
+import java.time.LocalDateTime;
+import java.util.List;
+@AllArgsConstructor
 @Getter
 @Builder
-@AllArgsConstructor
-public class QuestionResponseDto {
-
+public class QuestionDetailResponseDto {
     private long question_id;
 
     private long member_id;
@@ -26,5 +27,5 @@ public class QuestionResponseDto {
 
     private LocalDateTime modified_at;
 
-
+    private List<AnswerResponseDto> answers;
 }

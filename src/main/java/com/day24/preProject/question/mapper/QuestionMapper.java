@@ -1,6 +1,8 @@
 package com.day24.preProject.question.mapper;
 
+import com.day24.preProject.answer.dto.AnswerResponseDto;
 import com.day24.preProject.member.entity.Member;
+import com.day24.preProject.question.dto.QuestionDetailResponseDto;
 import com.day24.preProject.question.dto.QuestionPatchDto;
 import com.day24.preProject.question.dto.QuestionPostDto;
 import com.day24.preProject.question.dto.QuestionResponseDto;
@@ -39,5 +41,32 @@ public interface QuestionMapper {
                 .collect(Collectors.toList());
 
     }
+
+    default QuestionDetailResponseDto questionToQuestionDetailResponseDto(Question question) {
+        QuestionDetailResponseDto questionDetailResponseDto =
+                QuestionDetailResponseDto.builder()
+                        .question_id(question.getQuestion_id())
+                        .member_id(question.getMember_id())
+                        .title(question.getTitle())
+                        .body(question.getBody())
+                        .view_count(question.getView_count())
+                        .accepted(question.isAccepted())
+
+                        .answers(question.getAnswers()
+                            .stream()
+                            .map(answer -> AnswerResponseDto
+                                .builder()
+                                .answer_id(answer.getAnswer_id())
+                                .member_id(answer.getMember_id())
+                                .question_id(answer.getQuestion_id())
+                                .body(answer.getBody())
+                                .accepted(answer.isAccepted())
+                                .build())
+                        .collect(Collectors.toList()))
+                        .build();
+        return questionDetailResponseDto;
+    }
+
+
 
 }
