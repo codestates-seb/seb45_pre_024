@@ -7,4 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class AnswerPatchDto {
     private String body;
+
+    private boolean accepted;
+
 }

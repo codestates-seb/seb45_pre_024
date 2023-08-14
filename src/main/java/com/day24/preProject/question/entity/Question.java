@@ -1,11 +1,15 @@
 package com.day24.preProject.question.entity;
 
+import com.day24.preProject.answer.entity.Answer;
 import com.day24.preProject.audit.Auditable;
+import com.day24.preProject.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -34,5 +38,21 @@ public class Question extends Auditable {
 
         @Column
         private boolean deleted = false;
+
+        @ManyToOne
+        @JoinColumn(name = "MEMBER_ID")
+        private Member member;
+
+        @OneToMany(mappedBy = "question")
+        private List<Answer> answers = new ArrayList<>();
+
+        public void setMember(Member member) {this.member = member;}
+
+        public void  addAnswer(Answer answer) {
+                answers.add(answer);
+                if (answer.getQuestion() != this) {
+                        answer.setQuestion(this);
+                }
+        }
 
 }
