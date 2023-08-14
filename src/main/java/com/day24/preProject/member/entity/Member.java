@@ -1,6 +1,8 @@
 package com.day24.preProject.member.entity;
 
+import com.day24.preProject.answer.entity.Answer;
 import com.day24.preProject.audit.Auditable;
+import com.day24.preProject.question.entity.Question;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +35,26 @@ public class Member extends Auditable {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Question> questions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Answer> answers = new ArrayList<>();
+
+    public void setQuestion(Question question) {
+        questions.add(question);
+        if (question.getMember() != this) {
+            question.setMember(this);
+        }
+    }
+
+    public void setAnswer(Answer answer) {
+        answers.add(answer);
+        if (answer.getMember() != this) {
+            answer.setMember(this);
+        }
+    }
 
     public enum MemberStatus{
         MEMBER_ACTIVE("활동중"),
