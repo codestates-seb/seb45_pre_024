@@ -16,7 +16,7 @@ const Header = () => {
     e.preventDefault;
   };
   return (
-    <nav>
+    <nav className="nav">
       <div className="navbar">
         <Link to="/" className="nav-item nav-logo">
           <img src={logo} alt="logo" width="200px" />

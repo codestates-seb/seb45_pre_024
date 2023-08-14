@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import CreateQuestion from './components/CreateQuestion';
 import Footer from './components/footer';
 import Header from './components/Header';
+import SignOn from './components/SignOn';
 function App() {
   const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
@@ -13,6 +14,7 @@ function App() {
     const sessionUser = sessionStorage.getItem('user');
     if (sessionUser) {
       setUser(JSON.parse(sessionUser));
+      setIsLogin(true);
     }
   }, []);
   const userHandle = (e) => {
@@ -31,11 +33,9 @@ function App() {
       {isLogin ? <div>로그인 완료</div> : null}
       {user ? <div>{user.email}님 안녕하세요</div> : null}
       <BrowserRouter>
-        <div>
-          <Header />
-        </div>
+        <Header />
         <Routes>
-          <Route path="/" element={<QuestionList />} />
+          <Route path="/" element={<QuestionList isLogin={isLogin} />} />
           <Route
             path="/signin"
             element={
@@ -47,12 +47,13 @@ function App() {
             }
           />
           <Route
-            path="/create_Question"
+            path="/create_question"
             element={<CreateQuestion user={user} />}
           />
+          <Route path="/signon" element={<SignOn />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
-      <Footer />
     </div>
   );
 }
