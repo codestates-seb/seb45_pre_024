@@ -7,6 +7,7 @@ import CreateQuestion from './components/CreateQuestion';
 import Footer from './components/footer';
 import Header from './components/Header';
 import SignOn from './components/SignOn';
+import LeftSidebar from './components/LeftSideBar';
 function App() {
   const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
@@ -34,6 +35,7 @@ function App() {
       {user ? <div>{user.email}님 안녕하세요</div> : null}
       <BrowserRouter>
         <Header />
+        <LeftSidebar />
         <Routes>
           <Route path="/" element={<QuestionList isLogin={isLogin} />} />
           <Route
