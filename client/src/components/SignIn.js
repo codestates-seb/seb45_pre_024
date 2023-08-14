@@ -83,10 +83,22 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
             </div>
             <div className="buttonContainer">
               <button className="google" onClick={handleGoogleSignIn}>
-                Log in with Google
+                <img
+                  className="googleImg"
+                  src={envURL + '/google.png'}
+                  alt="google_logo"
+                ></img>
+                <span>Log in with Google</span>
               </button>
-              <button className="git">Log in with Github</button>
-              <button className="facebook">Log in with facebook</button>
+              <button className="git">
+                <img
+                  className="githubImg"
+                  src={envURL + '/github.png'}
+                  alt="github_logo"
+                ></img>
+                <span>Log in with Github</span>{' '}
+              </button>
+              <button className="facebook">Log in with Facebook</button>
             </div>
             {user && (
               <div>
@@ -94,26 +106,39 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
                 <p>Email: {userData.email}</p>
               </div>
             )}
-
             <div className="inputContainer">
-              아이디
-              <input
-                type="text"
-                value={id}
-                onChange={(e) => {
-                  idHandle(e);
-                }}
-              />
-              비밀번호
-              <input
-                type="password"
-                value={pw}
-                onChange={(e) => {
-                  pwHandle(e);
-                }}
-              />
-              <button onClick={signInHandle}>로그인</button>
-              <div className="text"></div>
+              <div className="input">
+                <div className="id">
+                  <b>ID</b>
+                  <input
+                    type="text"
+                    value={id}
+                    onChange={(e) => {
+                      idHandle(e);
+                    }}
+                  />
+                </div>
+                <div className="pwd">
+                  <b>Password</b>
+                  <input
+                    type="password"
+                    value={pw}
+                    onChange={(e) => {
+                      pwHandle(e);
+                    }}
+                  />
+                </div>
+
+                <button className="loginBtn" onClick={signInHandle}>
+                  Log in
+                </button>
+              </div>
+              <div className="text">
+                <p>Don’t have an account? Sign up</p>
+                <div className="text2">
+                  <p>Are you an employer? Sign up on Talent </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
