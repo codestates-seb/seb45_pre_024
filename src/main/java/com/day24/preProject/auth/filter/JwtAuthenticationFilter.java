@@ -24,7 +24,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("username!! :"+request.getParameter("username"));
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getParameter("username"), request.getParameter("password"))
         );
