@@ -20,6 +20,7 @@ public interface AnswerMapper {
 //    @Mapping(source = "id", target = "member")
     Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto);
     Answer answerPatchDtoToAnswer(AnswerPatchDto answerPatchDto);
+    @Mapping(source = "createdAt", target = "created_at")
     AnswerResponseDto answerToAnswerResponseDto(Answer answer);
 
     default Member mapToMember(long id) {
@@ -44,7 +45,7 @@ public interface AnswerMapper {
                         .question_id(answer.getQuestion().getQuestion_id())
                         .body(answer.getBody())
                         .accepted(answer.isAccepted())
-                        .createdAt(answer.getCreatedAt())
+                        .created_at(answer.getCreatedAt())
                         .modified_at(answer.getModified_at())
                         .build())
                 .collect(Collectors.toList());

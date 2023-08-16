@@ -22,9 +22,9 @@ public interface AnswerCommentMapper {
                         .answer_id(answer.getAnswer_id())
                         .body(answer.getBody())
                         .member_id(answer.getMember_id())
-                        .answer_reply_id(answer.getAnswerReply_id())
+                        .answer_comment_id(answer.getAnswer_comment_id())
                         .modified_at(answer.getModified_at())
-                        .createdAt(answer.getCreatedAt())
+                        .created_at(answer.getCreatedAt())
                         .build())
                 .collect(Collectors.toList());
     }
