@@ -1,9 +1,9 @@
-package com.day24.preProject.QustionComment.service;
+package com.day24.preProject.questionComment.service;
 
 import com.codestates.QustionComment.repository.QustionCommentRepository;
 import com.codestates.exception.BusinessLogicException;
 import com.codestates.exception.ExceptionCode;
-import com.day24.preProject.QustionComment.repository.QustionCommentRepository;
+import com.day24.preProject.questionComment.repository.QustionCommentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 public class QustionCommentService {
-    private final com.day24.preProject.QustionComment.repository.QustionCommentRepository QustionCommentRepository;
+    private final com.day24.preProject.questionComment.repository.QustionCommentRepository QustionCommentRepository;
 
     public QustionCommentService(QustionCommentRepository QustionCommentRepository) {
         this.QustionCommentRepository = QustionCommentRepository;

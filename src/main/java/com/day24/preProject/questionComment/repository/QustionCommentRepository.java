@@ -1,4 +1,4 @@
-package com.day24.preProject.QustionComment.repository;
+package com.day24.preProject.questionComment.repository;
 
 import com.codestates.QustionComment.entity.QustionComment;
 import org.springframework.data.jpa.repository.JpaRepository;

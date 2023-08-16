@@ -1,9 +1,9 @@
-package com.day24.preProject.QustionComment.controller;
+package com.day24.preProject.questionComment.controller;
 
-import com.day24.preProject.QustionComment.dto.QustionCommentPostDto;
-import com.day24.preProject.QustionComment.entity.QustionComment;
-import com.day24.preProject.QustionComment.mapper.QustionCommentMapper;
-import com.day24.preProject.QustionComment.service.QustionCommentService;
+import com.day24.preProject.questionComment.dto.QustionCommentPostDto;
+import com.day24.preProject.questionComment.entity.QustionComment;
+import com.day24.preProject.questionComment.mapper.QustionCommentMapper;
+import com.day24.preProject.questionComment.service.QustionCommentService;
 import com.day24.preProject.dto.MultiResponseDto;
 import com.day24.preProject.dto.SingleResponseDto;
 import com.day24.preProject.utils.UriCreator;
