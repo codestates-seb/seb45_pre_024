@@ -1,6 +1,5 @@
-package com.day24.preProject.answerReply.entity;
+package com.day24.preProject.answerComment.entity;
 
-import com.day24.preProject.answer.entity.Answer;
 import com.day24.preProject.audit.Auditable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AnswerReply extends Auditable {
+public class AnswerComment extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
