@@ -21,8 +21,6 @@ public class Question extends Auditable {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private long question_id;
 
-        @Column(nullable = false, updatable = false)
-        private long member_id;
 
         @Column(nullable = false, length = 100)
         private String title;
@@ -40,7 +38,7 @@ public class Question extends Auditable {
         private boolean deleted = false;
 
         @ManyToOne
-        @JoinColumn(name = "MEMBER_ID")
+        @JoinColumn(name = "MEMBER_ID", updatable = false)
         private Member member;
 
         @OneToMany(mappedBy = "question")

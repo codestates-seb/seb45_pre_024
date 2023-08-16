@@ -1,12 +1,14 @@
 package com.day24.preProject.answer.service;
 
 
+import com.day24.preProject.answer.mapper.AnswerMapper;
 import com.day24.preProject.exception.BusinessLogicException;
 import com.day24.preProject.exception.ExceptionCode;
 import com.day24.preProject.answer.entity.Answer;
 import com.day24.preProject.answer.repository.AnswerRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import com.day24.preProject.member.entity.Member;
+import com.day24.preProject.question.entity.Question;
+import com.day24.preProject.question.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,19 +19,30 @@ import java.util.Optional;
 
 @Service
 public class AnswerService {
-
+    private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
-    public AnswerService(AnswerRepository answerRepository) { this.answerRepository = answerRepository;}
 
-    public Answer createAnswer(Answer answer) {
+    private final AnswerMapper answerMapper;
+    public AnswerService(QuestionRepository questionRepository, AnswerRepository answerRepository, AnswerMapper answerMapper) {
+        this.questionRepository = questionRepository;
+        this.answerRepository = answerRepository;
+        this.answerMapper = answerMapper;
+    }
+
+
+
+    public Answer createAnswer(long question_id, long memberId, Answer answer) {
+        Member member = answerMapper.mapToMember(memberId);
+        Question question = answerMapper.mapToQuestion(question_id);
+        answer.setQuestion(question);
+        answer.setMember(member);
 
         return answerRepository.save(answer);
     }
 
-
     @Transactional(readOnly = true)
     public Answer findAnswer(long answer_id){
-        Optional<Answer> optionalAnswer = answerRepository.findByAnswer_id(answer_id);
+        Optional<Answer> optionalAnswer = answerRepository.findById(answer_id);
         return optionalAnswer.orElseThrow(()-> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
     }
     @Transactional(readOnly = true)
