@@ -25,12 +25,9 @@ public class QuestionService {
 
     private final QuestionMapper questionMapper;
 
-    private final MemberRepository memberRepository;
-
-    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper, MemberRepository memberRepository) {
+    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper) {
         this.questionRepository = questionRepository;
         this.questionMapper = questionMapper;
-        this.memberRepository = memberRepository;
     }
 
     public Question createQuestion(Question question, long id) {
@@ -76,8 +73,9 @@ public class QuestionService {
 
     
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public Question updateQuestion(Question question){
+    public Question updateQuestion(Question question, long member_id){
         Question modifiedQuestion = findQuestion(question.getQuestion_id());
+        if (modifiedQuestion.getMember().getMember_id() != member_id) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
 
         Optional.ofNullable(question.getTitle())
                 .ifPresent(title -> modifiedQuestion.setTitle(title));
@@ -89,8 +87,9 @@ public class QuestionService {
         return questionRepository.save(modifiedQuestion);
     }
 
-    public void deleteQuestion(long questionId){
+    public void deleteQuestion(long questionId, long member_id){
         Question question = findQuestion(questionId);
+        if (question.getMember().getMember_id() != member_id) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
         question.setDeleted(true);
         questionRepository.save(question);
 

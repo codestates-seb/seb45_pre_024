@@ -2,6 +2,8 @@ package com.day24.preProject.config;
 
 import com.day24.preProject.auth.filter.JwtAuthenticationFilter;
 import com.day24.preProject.auth.filter.JwtVerificationFilter;
+import com.day24.preProject.auth.handler.MemberAccessDeniedHandler;
+import com.day24.preProject.auth.handler.MemberAuthenticationEntryPoint;
 import com.day24.preProject.auth.handler.MemberAuthenticationFailureHandler;
 import com.day24.preProject.auth.jwt.JwtTokenizer;
 import com.day24.preProject.auth.utils.AuthorityUtils;
@@ -43,6 +45,10 @@ public class SecurityConfiguration {
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+                .accessDeniedHandler(new MemberAccessDeniedHandler())
+                .and()
                 .apply(new CustomFilterConfigurer())
                 .and()
 //                .authorizeRequests()

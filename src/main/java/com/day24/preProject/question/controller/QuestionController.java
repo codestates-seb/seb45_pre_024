@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,24 +36,18 @@ import java.util.Optional;
 public class QuestionController {
 
     private final QuestionService questionService;
-
-    private final AnswerService answerService;
-
     private final QuestionMapper questionMapper;
 
-    private final AnswerMapper answerMapper;
 
-    public QuestionController(QuestionService questionService, AnswerService answerService, QuestionMapper questionMapper, AnswerMapper answerMapper) {
+    public QuestionController(QuestionService questionService, QuestionMapper questionMapper) {
         this.questionService = questionService;
-        this.answerService = answerService;
         this.questionMapper = questionMapper;
-        this.answerMapper = answerMapper;
     }
 
     @PostMapping
-    public ResponseEntity postQuestion(@RequestBody QuestionPostDto requstBody) {
+    public ResponseEntity postQuestion(@RequestBody QuestionPostDto requstBody, @AuthenticationPrincipal long member_id) {
         Question question = questionMapper.questionPostDtoToQuestion(requstBody);
-        questionService.createQuestion(question, requstBody.getId());
+        questionService.createQuestion(question, member_id);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -79,15 +74,16 @@ public class QuestionController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity patchQuestion(@PathVariable("id") int id, @RequestBody QuestionPatchDto requestBody){
+    public ResponseEntity patchQuestion(@PathVariable("id") int id, @RequestBody QuestionPatchDto requestBody, @AuthenticationPrincipal long member_id){
         Question question = questionMapper.questionPatchDtoToQuestion(requestBody);
-        questionService.updateQuestion(question);
+        question.setQuestion_id(id);
+        questionService.updateQuestion(question, member_id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteQuestion(@PathVariable("id") int question_id) {
-        questionService.deleteQuestion(question_id);
+    public ResponseEntity deleteQuestion(@PathVariable("id") int question_id, @AuthenticationPrincipal long member_id) {
+        questionService.deleteQuestion(question_id, member_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

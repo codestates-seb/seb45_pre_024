@@ -9,6 +9,7 @@ public enum ExceptionCode {
     MEMBER_WRONG_PASSWORD(400, "Wrong password"),
     INVALID_BODY_VALUE(400, "Invalid body value"),
     INVALID_REQUEST_PARAMETER(400, "Invalid request parpameter"),
+    FORBIDDEN_REQUEST(403, "Forbidden request"),
 
     QUESTION_NOT_FOUND(404, "Question not found"),
     ANSWER_NOT_FOUND(404, "Answer not found"),
