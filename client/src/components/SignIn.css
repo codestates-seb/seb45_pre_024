@@ -1,0 +1,163 @@
+.mainContainer {
+  background-color: #F1F2F3;
+  max-width: 100%;
+}
+
+.logoContainer {
+  margin-bottom: 10px;
+}
+.content {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding: 24px;
+}
+
+.buttonContainer {
+  display: flex;
+  height: 137px;
+  flex-direction: column;
+  margin-bottom: 15px;
+  justify-content: space-around;
+}
+.googleImg{
+  width: 18px;
+  margin-right: 5px;
+}
+.google {
+  display: flex;
+  justify-content: center;
+  padding: 9px;
+  border: 1px solid #D6D9DC; 
+  outline: 0;
+  background-color: #ffffff;
+  color: #3b4045;
+  border-radius: 6px 6px 6px 6px;
+}
+
+.google:hover {
+  background-color: #f8f9f9;
+}
+
+.google:active {
+  background-color: #f1f2f3;
+}
+
+.githubImg {
+  width: 16px;
+  margin-right: 5px;
+}
+
+.git {
+  display: flex;
+  justify-content: center;
+  padding: 9px;
+  border: 0;
+  outline: 0;
+  background-color: #2F3337;
+  color:  #ffffff;
+  border-radius: 6px 6px 6px 6px;
+}
+
+.git:hover {
+  background-color:#232629;
+}
+
+.git:active {
+  background-color: #0c0d0e;
+}
+
+.facebookImg {
+  width: 16px;
+  margin-right: 5px;
+}
+
+.facebook {
+  display: flex;
+  justify-content: center;
+  padding: 9px;
+  border: 0;
+  outline: 0;
+  background-color: #385499;
+  color:  #ffffff;
+  border-radius: 6px 6px 6px 6px;
+}
+
+.facebook:hover {
+  background-color: #314a86;
+}
+
+.facebook:active {
+  background-color: #2a4074;
+}
+
+.idInput, .pwdInput{
+  padding: 7.8px 9.1px;
+  border: 0;
+  outline: 1.2px solid #BABFC4;
+  border-radius: 5px 5px 5px 5px;
+}
+.input {
+  background-color: #ffffff;
+  margin-bottom: 24px;
+  text-align: left;
+  height: 234px;
+  padding: 23px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* align-items: center; */
+  border-radius: 7px 7px 7px 7px;
+  box-shadow: 0 10px 24px hsla(0,0%,0%,0.05), 0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
+}
+
+.loginBtn {
+  background-color: #0a95ff;
+  color : #ffffff;
+  border: 0;
+  outline: 0;
+  padding: 11px;
+  border-radius: 6px 6px 6px 6px;
+}
+
+.loginBtn:hover {
+  background-color: #0074cc;
+}
+
+.loginBtn:active {
+  background-color: #0063bf;
+}
+.id {
+  display: flex;
+  flex-direction: column;
+}
+
+.pwd {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginBox {
+  width: 288px;
+  height: 570px;
+}
+
+.text {
+  padding: 16px;
+  font-size: 13px;
+}
+
+.text2 {
+  margin-top: 12px;
+}
+
+.signUp, .employer {
+  color: #0074cc;
+  text-decoration:none;
+}
+
+.signUp:hover, .employer:hover {
+  color: #0a95ff;
+}
+
