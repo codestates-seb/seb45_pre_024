@@ -65,7 +65,6 @@ public class QuestionController {
         QuestionDetailResponseDto questionDetailResponseDto =
                 questionMapper.questionToQuestionDetailResponseDto(question);
 
-
         return new ResponseEntity<>(questionDetailResponseDto, HttpStatus.OK);
     }
 
