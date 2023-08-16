@@ -1,9 +1,15 @@
 package com.day24.preProject.config;
 
+import com.day24.preProject.auth.filter.JwtAuthenticationFilter;
+import com.day24.preProject.auth.jwt.JwtTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -13,16 +19,27 @@ import java.util.Arrays;
 
 @Configuration
 public class SecurityConfiguration {
+    private final JwtTokenizer jwtTokenizer;
+
+    public SecurityConfiguration(JwtTokenizer jwtTokenizer) {
+        this.jwtTokenizer = jwtTokenizer;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .headers()
+                .headers().frameOptions().disable()
                 .and()
                 .csrf().disable()
                 .cors(Customizer.withDefaults())
                 .formLogin().disable()
                 .httpBasic().disable()
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+                .apply(new CustomFilterConfigurer())
+                .and()
+                .authorizeRequests()
+                .antMatchers("/h2/**").permitAll();
+//                .and()
+//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         return http.build();
     }
     @Bean
@@ -34,5 +51,20 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+    public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
+        @Override
+        public void configure(HttpSecurity builder) throws Exception {
+            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
+
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
+            jwtAuthenticationFilter.setFilterProcessesUrl("/member/login");
+
+            builder.addFilter(jwtAuthenticationFilter);
+        }
     }
 }
