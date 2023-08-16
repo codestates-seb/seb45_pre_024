@@ -1,10 +1,73 @@
-.mainContainer{
-    margin-top: 150px;
+.suMainContainer{
+    background-color: #F1F2F3;
+    max-width: 100%;
+    padding-left: 85px;
+    padding-right: 85px;
+}
+
+.suContent {
+    display: flex;
+    padding: 24px;
+    justify-content: center;
+}
+
+.suCenter {
+    width: 785px;
+    height: 965px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.suButtonContainer {
+    display: flex;
+    flex-direction: column;
+    height: 137px;
+    margin-bottom: 15px;
+    justify-content: space-around;
+}
+
+.join {
+    font-size: 27px;
+}
+
+.suText {
+    text-align: left;
+}
+
+.suTextSmall {
+    font-size: 15px;
+}
+
+.suTextDt {
+    font-size: 13px;
+}
+
+.suBox {
+    height: 965px;
+    width: 316px;
+}
+
+.suInput {
+    background-color: #ffffff;
+    margin-bottom: 24px;
+    text-align: left;
+    height: 234px;
+    
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  /* align-items: center; */
+    border-radius: 7px 7px 7px 7px;
+    box-shadow: 0 10px 24px hsla(0,0%,0%,0.05), 0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
 }
 
 .errText{
     color: red;
     font-size: 0.8em;
+    justify-content: center;
 }
 
 .succecsText{
