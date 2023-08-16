@@ -84,7 +84,9 @@ const SignIn = ({ loginHandle }) => {
         <div className="content">
           <div className="loginBox">
             <div className="logoContainer">
-              <img className="logo" src={envURL + '/logo.png'} alt="logo"></img>
+              <a href="http://localhost:3000">
+                <img className="logo" src={envURL + '/logo.png'} alt="logo" />
+              </a>
             </div>
             <div className="buttonContainer">
               <button className="google" onClick={handleGoogleSignIn}>
@@ -103,13 +105,21 @@ const SignIn = ({ loginHandle }) => {
                 ></img>
                 <span>Log in with Github</span>{' '}
               </button>
-              <button className="facebook">Log in with Facebook</button>
+              <button className="facebook">
+                <img
+                  className="facebookImg"
+                  src={envURL + '/facebook.png'}
+                  alt="facebook_logo"
+                ></img>
+                <span>Log in with Facebook</span>
+              </button>
             </div>
             <div className="inputContainer">
               <div className="input">
                 <div className="id">
                   <b>ID</b>
                   <input
+                    className="idInput"
                     type="text"
                     value={id}
                     onChange={(e) => {
@@ -120,6 +130,7 @@ const SignIn = ({ loginHandle }) => {
                 <div className="pwd">
                   <b>Password</b>
                   <input
+                    className="pwdInput"
                     type="password"
                     value={pw}
                     onChange={(e) => {
@@ -133,9 +144,29 @@ const SignIn = ({ loginHandle }) => {
                 </button>
               </div>
               <div className="text">
-                <p>Don’t have an account? Sign up</p>
+                <p>
+                  Don’t have an account?{' '}
+                  <a
+                    className="signUp"
+                    href="http://localhost:3000/signon"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Sign up
+                  </a>
+                </p>
                 <div className="text2">
-                  <p>Are you an employer? Sign up on Talent </p>
+                  <p>
+                    Are you an employer?{' '}
+                    <a
+                      className="employer"
+                      href="https://talent.stackoverflow.com/users/login"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Sign up on Talent{' '}
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>
