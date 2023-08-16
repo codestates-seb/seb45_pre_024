@@ -23,12 +23,13 @@
 }
 .googleImg{
   width: 18px;
+  margin-right: 5px;
 }
 .google {
   display: flex;
   justify-content: center;
   padding: 9px;
-  border: 0;
+  border: 1px solid #D6D9DC; 
   outline: 0;
   background-color: #ffffff;
   color: #3b4045;
@@ -44,7 +45,8 @@
 }
 
 .githubImg {
-  width: 18px;
+  width: 16px;
+  margin-right: 5px;
 }
 
 .git {
@@ -66,8 +68,15 @@
   background-color: #0c0d0e;
 }
 
+.facebookImg {
+  width: 16px;
+  margin-right: 5px;
+}
+
 .facebook {
-  padding: 11px;
+  display: flex;
+  justify-content: center;
+  padding: 9px;
   border: 0;
   outline: 0;
   background-color: #385499;
@@ -82,7 +91,8 @@
 .facebook:active {
   background-color: #2a4074;
 }
-input {
+
+.idInput, .pwdInput{
   padding: 7.8px 9.1px;
   border: 0;
   outline: 1.2px solid #BABFC4;
@@ -98,7 +108,8 @@ input {
   flex-direction: column;
   justify-content: space-between;
   /* align-items: center; */
-  border-radius: 5px 5px 5px 5px;
+  border-radius: 7px 7px 7px 7px;
+  box-shadow: 0 10px 24px hsla(0,0%,0%,0.05), 0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
 }
 
 .loginBtn {
@@ -134,8 +145,19 @@ input {
 
 .text {
   padding: 16px;
+  font-size: 13px;
 }
 
 .text2 {
   margin-top: 12px;
 }
+
+.signUp, .employer {
+  color: #0074cc;
+  text-decoration:none;
+}
+
+.signUp:hover, .employer:hover {
+  color: #0a95ff;
+}
+
