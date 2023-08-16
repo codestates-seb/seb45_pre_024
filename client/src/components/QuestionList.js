@@ -25,16 +25,11 @@ const QuestionList = ({ isLogin }) => {
   const renderNextPage = useCallback(() => {
     if (page <= maxPage) {
       setIsLoading(true);
-      setTimeout(() => {
-        axios
-          .get(`/question?page=${page}&size=10`)
-          .then((res) => {
-            setQuestions(questions.concat(res.data.data));
-            setPage(page + 1);
-            setIsLoading(false);
-          })
-          .catch(console.log('err'));
-      }, 1000);
+      axios.get(`/question?page=${page}&size=10`).then((res) => {
+        setQuestions(questions.concat(res.data.data));
+        setPage(page + 1);
+        setIsLoading(false);
+      });
     }
   }, [page, questions]);
 

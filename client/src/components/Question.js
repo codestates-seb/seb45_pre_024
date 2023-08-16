@@ -7,7 +7,7 @@ const Question = ({ info }) => {
       <section className="container">
         <div>
           <div className="title">
-            <Link to="/">
+            <Link to={`/questions/${info.question_id}`}>
               <span>{info.title}</span>
             </Link>
           </div>
