@@ -1,6 +1,6 @@
 // import React from 'react';
 import { Link } from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 import logo from '../assets/logo.png';
 import search from '../assets/magnify.svg';
 // import Button from './Button';
@@ -8,9 +8,7 @@ import Avatar from './Avatar';
 import './Header.css';
 import { useState } from 'react';
 
-const Header = () => {
-  let user = null;
-
+const Header = ({ isLogin, logout }) => {
   const [text, setText] = useState('');
   const handleSubmit = (e) => {
     e.preventDefault;
@@ -40,7 +38,7 @@ const Header = () => {
           />
           <img src={search} alt="search" width="18" className="search-icon" />
         </form>
-        {user === null ? (
+        {!isLogin ? (
           <>
             <Avatar
               backgroundColor="transparent"
@@ -76,7 +74,9 @@ const Header = () => {
                 Y
               </Link>
             </Avatar>
-            <button className="nav-item nav-links">Log out</button>
+            <button className="nav-item nav-links" onClick={logout}>
+              Log out
+            </button>
           </>
         )}
       </div>
@@ -84,4 +84,8 @@ const Header = () => {
   );
 };
 
+Header.propTypes = {
+  isLogin: PropTypes.bool,
+  logout: PropTypes.func,
+};
 export default Header;
