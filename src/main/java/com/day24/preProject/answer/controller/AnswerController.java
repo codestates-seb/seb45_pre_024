@@ -11,6 +11,7 @@ import com.day24.preProject.question.entity.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,22 +31,23 @@ public class AnswerController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity postAnswer(@PathVariable("id") long question_id, @RequestBody AnswerPostDto requestBody) {
+    public ResponseEntity postAnswer(@PathVariable("id") long question_id, @RequestBody AnswerPostDto requestBody, @AuthenticationPrincipal long member_id) {
         Answer answer = answerMapper.answerPostDtoToAnswer(requestBody);
-        answerService.createAnswer(question_id, requestBody.getId(), answer);
+        answerService.createAnswer(question_id, member_id, answer);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity patchAnswer(@PathVariable("id") int id, @RequestBody AnswerPatchDto requestBody){
+    public ResponseEntity patchAnswer(@PathVariable("id") int id, @RequestBody AnswerPatchDto requestBody, @AuthenticationPrincipal long member_id){
         Answer answer = answerMapper.answerPatchDtoToAnswer(requestBody);
-        answerService.updateAnswer(answer);
+        answer.setAnswer_id(id);
+        answerService.updateAnswer(answer, member_id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteAnswer(@PathVariable("id") int answer_id) {
-        answerService.deleteAnswer(answer_id);
+    public ResponseEntity deleteAnswer(@PathVariable("id") int answer_id, @AuthenticationPrincipal long member_id) {
+        answerService.deleteAnswer(answer_id, member_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
