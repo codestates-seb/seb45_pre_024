@@ -24,6 +24,7 @@ public class JwtTokenizer {
     public String generateAccessToken(Member member){
         Map<String, Object> claims = new HashMap<>();
         claims.put("member_id", member.getMemberId());
+        claims.put("username", member.getUsername());
         claims.put("roles", member.getRoles());
         return Jwts.builder()
                 .setClaims(claims)
