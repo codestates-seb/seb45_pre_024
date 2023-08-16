@@ -7,6 +7,7 @@ import com.day24.preProject.answer.dto.AnswerResponseDto;
 import com.day24.preProject.answer.entity.Answer;
 import com.day24.preProject.answer.mapper.AnswerMapper;
 import com.day24.preProject.answer.service.AnswerService;
+import com.day24.preProject.question.entity.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +30,9 @@ public class AnswerController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity postAnswer(@PathVariable("id") long id, @RequestBody AnswerPostDto requestBody) {
+    public ResponseEntity postAnswer(@PathVariable("id") long question_id, @RequestBody AnswerPostDto requestBody) {
         Answer answer = answerMapper.answerPostDtoToAnswer(requestBody);
-        answer.setQuestion_id(id);
-        answerService.createAnswer(answer);
+        answerService.createAnswer(question_id, requestBody.getId(), answer);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

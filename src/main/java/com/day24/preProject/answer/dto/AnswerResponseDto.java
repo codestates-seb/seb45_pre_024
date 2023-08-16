@@ -16,9 +16,11 @@ public class AnswerResponseDto {
 
     private long answer_id;
 
+    private long question_id;
+
     private long member_id;
 
-    private long question_id;
+    private String username;
 
     private String body;
 

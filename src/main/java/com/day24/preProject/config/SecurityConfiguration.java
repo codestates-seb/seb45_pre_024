@@ -16,13 +16,18 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .headers()
+                .headers().frameOptions().disable()
                 .and()
                 .csrf().disable()
                 .cors(Customizer.withDefaults())
                 .formLogin().disable()
                 .httpBasic().disable()
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+//                .apply(new CustomFilterConfigurer())
+//                .and()
+                .authorizeRequests()
+                .antMatchers("/h2/**").permitAll();
+//                .and()
+//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         return http.build();
     }
     @Bean

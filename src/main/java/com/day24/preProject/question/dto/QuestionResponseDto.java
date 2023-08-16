@@ -14,6 +14,8 @@ public class QuestionResponseDto {
 
     private long member_id;
 
+    private String username;
+
     private String title;
 
     private String body;

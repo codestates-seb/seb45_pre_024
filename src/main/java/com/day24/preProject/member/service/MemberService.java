@@ -36,7 +36,7 @@ public class MemberService {
         Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         if (!findMember.getMemberStatus().equals(Member.MemberStatus.MEMBER_ACTIVE)) throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_STATUS);
         if (!findMember.getPassword().equals(member.getPassword())) throw new BusinessLogicException(ExceptionCode.MEMBER_WRONG_PASSWORD);
-        return findMember.getMemberId();
+        return findMember.getMember_id();
     }
     @Transactional(readOnly = true)
     public Member findMember(long memberId){
