@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -14,7 +15,9 @@ public class MemberPostDto {
     @Email
     private String email;
     @NotBlank
-    @Size(max = 64)
+    @Size(min = 7, max = 20)
+    @Pattern(regexp = "/^(?=.*[A-Za-z])(?=.*[@$!%*?&])(?=.*\\d)[A-Za-z@$!%*?&\\d]{7,20}$/i;",
+            message = "비밀번호는 7글자 이상 20글자 이하이고, 하나 이상의 영어 문자, 숫자, 특수문자가 들어가야 합니다.")
     private String password;
     @NotBlank
     @Size(min = 5, max = 20)
