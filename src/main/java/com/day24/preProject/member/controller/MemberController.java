@@ -1,6 +1,5 @@
 package com.day24.preProject.member.controller;
 
-import com.day24.preProject.member.dto.MemberLoginDtoTemp;
 import com.day24.preProject.member.dto.MemberPostDto;
 import com.day24.preProject.member.entity.Member;
 import com.day24.preProject.member.mapper.MemberMapper;
@@ -32,14 +31,6 @@ public class MemberController {
         Member member = memberMapper.memberPostToMember(requestBody);
         memberService.createMember(member);
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-    @PostMapping("/signin")
-    public ResponseEntity signIn(@Valid @RequestBody MemberLoginDtoTemp requestBody){
-        Member member = memberMapper.memberLoginToMember(requestBody);
-        Long memberId = memberService.findMember(member);
-        Map<String, Long> temp = new HashMap<>();
-        temp.put("id", memberId);
-        return new ResponseEntity<>(temp, HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
