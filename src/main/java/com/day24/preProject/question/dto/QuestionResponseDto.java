@@ -24,7 +24,7 @@ public class QuestionResponseDto {
 
     private boolean accepted;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     private LocalDateTime modified_at;
 

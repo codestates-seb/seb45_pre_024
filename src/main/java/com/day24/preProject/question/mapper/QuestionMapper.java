@@ -8,6 +8,7 @@ import com.day24.preProject.question.dto.QuestionPostDto;
 import com.day24.preProject.question.dto.QuestionResponseDto;
 import com.day24.preProject.question.entity.Question;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
     Question questionPatchDtoToQuestion(QuestionPatchDto questionPatchDto);
+    @Mapping(source = "createdAt", target = "created_at")
     QuestionResponseDto questionToQuestionResponseDto(Question question);
     Question questionPostDtoToQuestion(QuestionPostDto questionPostDto);
     default Member mapToMember(long id) {
@@ -38,7 +40,7 @@ public interface QuestionMapper {
                         .body(question.getBody())
                         .view_count(question.getView_count())
                         .accepted(question.isAccepted())
-                        .createdAt(question.getCreatedAt())
+                        .created_at(question.getCreatedAt())
                         .modified_at(question.getModified_at())
                         .build())
                 .collect(Collectors.toList());
@@ -68,7 +70,7 @@ public interface QuestionMapper {
                                 .question_id(answer.getQuestion().getQuestion_id())
                                 .body(answer.getBody())
                                 .accepted(answer.isAccepted())
-                                .createdAt(answer.getCreatedAt())
+                                .created_at(answer.getCreatedAt())
                                 .modified_at(answer.getModified_at())
                                 .build())
                         .collect(Collectors.toList()))

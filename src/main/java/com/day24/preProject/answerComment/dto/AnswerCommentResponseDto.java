@@ -16,11 +16,11 @@ public class AnswerCommentResponseDto {
 
     private long member_id;
 
-    private long answer_reply_id;
+    private long answer_comment_id;
 
     private String body;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     private LocalDateTime modified_at;
 }
