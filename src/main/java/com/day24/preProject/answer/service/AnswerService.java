@@ -9,6 +9,7 @@ import com.day24.preProject.answer.repository.AnswerRepository;
 import com.day24.preProject.member.entity.Member;
 import com.day24.preProject.question.entity.Question;
 import com.day24.preProject.question.repository.QuestionRepository;
+import com.day24.preProject.question.service.QuestionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,20 +20,20 @@ import java.util.Optional;
 
 @Service
 public class AnswerService {
-    private final QuestionRepository questionRepository;
+    private final QuestionService questionService;
     private final AnswerRepository answerRepository;
 
     private final AnswerMapper answerMapper;
-    public AnswerService(QuestionRepository questionRepository, AnswerRepository answerRepository, AnswerMapper answerMapper) {
-        this.questionRepository = questionRepository;
+
+    public AnswerService(QuestionService questionService, AnswerRepository answerRepository, AnswerMapper answerMapper) {
+        this.questionService = questionService;
         this.answerRepository = answerRepository;
         this.answerMapper = answerMapper;
     }
 
-
-
     public Answer createAnswer(long question_id, long memberId, Answer answer) {
         Member member = answerMapper.mapToMember(memberId);
+        if (questionService.findQuestion(question_id).getMember().getMember_id() == memberId) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
         Question question = answerMapper.mapToQuestion(question_id);
         answer.setQuestion(question);
         answer.setMember(member);
@@ -71,9 +72,9 @@ public class AnswerService {
 
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public Answer updateAnswer(Answer answer){
+    public Answer updateAnswer(Answer answer, long member_id){
         Answer findAnswer = findAnswerBydeleted(answer.getAnswer_id(), answer.isDeleted());
-
+        if(findAnswer.getMember().getMember_id() != member_id) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
         Optional.ofNullable(answer.getBody())
                 .ifPresent(body -> findAnswer.setBody(body));
         Optional.ofNullable(answer.isAccepted())
@@ -82,8 +83,9 @@ public class AnswerService {
         return answerRepository.save(findAnswer);
     }
 
-    public void deleteAnswer(long answer_id){
+    public void deleteAnswer(long answer_id, long member_id){
         Answer answer = findAnswer(answer_id);
+        if(answer.getMember().getMember_id() != member_id) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
         answer.setDeleted(true);
         answerRepository.save(answer);
 
