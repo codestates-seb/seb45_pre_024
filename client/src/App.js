@@ -7,7 +7,7 @@ import CreateQuestion from './components/CreateQuestion';
 import Footer from './components/footer';
 import Header from './components/Header';
 import SignOn from './components/SignOn';
-import LeftSidebar from './components/LeftSideBar';
+// import LeftSidebar from './components/LeftSideBar';
 function App() {
   const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
@@ -25,17 +25,18 @@ function App() {
     setIsLogin(true);
     userHandle(e);
   };
-  // const logoutHandle = () => {
-  //   setIsLogin(false);
-  //   sessionStorage.removeItem('user');
-  // };
+  const logoutHandle = () => {
+    setUser(null);
+    setIsLogin(false);
+    sessionStorage.removeItem('user');
+  };
   return (
     <div>
-      {isLogin ? <div>로그인 완료</div> : null}
-      {user ? <div>{user.email}님 안녕하세요</div> : null}
       <BrowserRouter>
-        <Header />
-        <LeftSidebar />
+        <Header isLogin={isLogin} logout={logoutHandle} />
+        {/* <span className="leftside">
+          <LeftSidebar />
+        </span> */}
         <Routes>
           <Route path="/" element={<QuestionList isLogin={isLogin} />} />
           <Route

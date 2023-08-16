@@ -13,10 +13,15 @@ const Wepediter = ({ title, user, type, errhandle }) => {
     setContent(editorRef.current.getInstance().getHTML());
   };
   const axiosData = () => {
-    console.log(content);
     if (title.length === 0 || title.length > 100) {
       errhandle('제목은 공란이거나 100글자 이상일 수 없습니다.');
-    } else if (content === '' || content === '내용을 입력해주세요') {
+    } else if (
+      content === '' ||
+      content === ' ' ||
+      content === '<p><br></p>' ||
+      content === '<p> </p>' ||
+      content === '<p></p>'
+    ) {
       errhandle('내용이 포함되어야 합니다.');
     } else if (type === 'Question') {
       const Data = {

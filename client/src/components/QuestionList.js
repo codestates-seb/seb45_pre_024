@@ -13,16 +13,13 @@ const QuestionList = ({ isLogin }) => {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const bottom = useRef(null);
   useEffect(() => {
-    axios
-      .get('/question?page=1&size=10')
-      .then((res) => {
-        setQuestions(res.data.data);
-        setPage(page + 1);
-        setIsLoading(false);
-        setMaxPage(res.data.pageInfo.totalPages);
-        setTotalQuestions(res.data.pageInfo.totalElements);
-      })
-      .catch(console.log('err'));
+    axios.get('/question?page=1&size=10').then((res) => {
+      setQuestions(res.data.data);
+      setPage(page + 1);
+      setIsLoading(false);
+      setMaxPage(res.data.pageInfo.totalPages);
+      setTotalQuestions(res.data.pageInfo.totalElements);
+    });
   }, []);
 
   const renderNextPage = useCallback(() => {

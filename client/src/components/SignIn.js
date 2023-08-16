@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { SHA256 } from 'crypto-js';
 const envURL = process.env.PUBLIC_URL;
-const SignIn = ({ user, userHandle, loginHandle }) => {
+const SignIn = ({ loginHandle }) => {
   const salt = 'salt';
-  const [userData, setUserData] = useState(null);
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  const GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
   const navi = useNavigate();
-  // Google 로그인 버튼을 클릭할 때 실행되는 함수
+
   const handleGoogleSignIn = () => {
     const redirectUri = 'http://localhost:3000/signin'; // 승인된 리디렉션 URI
 
@@ -22,12 +22,17 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
     // Google 로그인 페이지로 리디렉션
     window.location.assign(authUrl);
   };
+  const GithubLoginRequestHandler = () => {
+    return window.location.assign(
+      `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`,
+    );
+  };
 
   // 엑세스 토큰을 사용하여 사용자 데이터를 가져오는 함수
   const fetchUserData = async (accessToken) => {
     try {
       // Google API 엔드포인트에 엑세스 토큰을 포함하여 요청을 보냄
-      const response = await axios.get(
+      const res = await axios.get(
         'https://www.googleapis.com/oauth2/v2/userinfo',
         {
           headers: {
@@ -35,8 +40,8 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
           },
         },
       );
-      setUserData(response.data); // 가져온 사용자 데이터를 상태에 저장
-      userHandle(userData);
+      sessionStorage.setItem('user', JSON.stringify(res.data));
+      loginHandle(res.data);
       navi('/');
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -79,7 +84,9 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
         <div className="content">
           <div className="loginBox">
             <div className="logoContainer">
-              <img className="logo" src={envURL + '/logo.png'} alt="logo"></img>
+              <a href="http://localhost:3000">
+                <img className="logo" src={envURL + '/logo.png'} alt="logo" />
+              </a>
             </div>
             <div className="buttonContainer">
               <button className="google" onClick={handleGoogleSignIn}>
@@ -90,7 +97,7 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
                 ></img>
                 <span>Log in with Google</span>
               </button>
-              <button className="git">
+              <button className="git" onClick={GithubLoginRequestHandler}>
                 <img
                   className="githubImg"
                   src={envURL + '/github.png'}
@@ -98,19 +105,21 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
                 ></img>
                 <span>Log in with Github</span>{' '}
               </button>
-              <button className="facebook">Log in with Facebook</button>
+              <button className="facebook">
+                <img
+                  className="facebookImg"
+                  src={envURL + '/facebook.png'}
+                  alt="facebook_logo"
+                ></img>
+                <span>Log in with Facebook</span>
+              </button>
             </div>
-            {user && (
-              <div>
-                <h2>User Data</h2>
-                <p>Email: {userData.email}</p>
-              </div>
-            )}
             <div className="inputContainer">
               <div className="input">
                 <div className="id">
                   <b>ID</b>
                   <input
+                    className="idInput"
                     type="text"
                     value={id}
                     onChange={(e) => {
@@ -121,6 +130,7 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
                 <div className="pwd">
                   <b>Password</b>
                   <input
+                    className="pwdInput"
                     type="password"
                     value={pw}
                     onChange={(e) => {
@@ -134,9 +144,29 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
                 </button>
               </div>
               <div className="text">
-                <p>Don’t have an account? Sign up</p>
+                <p>
+                  Don’t have an account?{' '}
+                  <a
+                    className="signUp"
+                    href="http://localhost:3000/signon"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Sign up
+                  </a>
+                </p>
                 <div className="text2">
-                  <p>Are you an employer? Sign up on Talent </p>
+                  <p>
+                    Are you an employer?{' '}
+                    <a
+                      className="employer"
+                      href="https://talent.stackoverflow.com/users/login"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Sign up on Talent{' '}
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>
