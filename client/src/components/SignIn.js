@@ -1,8 +1,8 @@
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './SignIn.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
 import { SHA256 } from 'crypto-js';
 const envURL = process.env.PUBLIC_URL;
 const SignIn = ({ loginHandle }) => {
@@ -84,9 +84,9 @@ const SignIn = ({ loginHandle }) => {
         <div className="content">
           <div className="loginBox">
             <div className="logoContainer">
-              <a href="http://localhost:3000">
+              <Link to="http://localhost:3000">
                 <img className="logo" src={envURL + '/logo.png'} alt="logo" />
-              </a>
+              </Link>
             </div>
             <div className="buttonContainer">
               <button className="google" onClick={handleGoogleSignIn}>
@@ -146,26 +146,19 @@ const SignIn = ({ loginHandle }) => {
               <div className="text">
                 <p>
                   Don’t have an account?{' '}
-                  <a
-                    className="signUp"
-                    href="http://localhost:3000/signon"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <Link className="signUp" to="http://localhost:3000/signon">
                     Sign up
-                  </a>
+                  </Link>
                 </p>
                 <div className="text2">
                   <p>
                     Are you an employer?{' '}
-                    <a
+                    <Link
                       className="employer"
-                      href="https://talent.stackoverflow.com/users/login"
-                      target="_blank"
-                      rel="noreferrer"
+                      to="https://talent.stackoverflow.com/users/login"
                     >
                       Sign up on Talent{' '}
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </div>
