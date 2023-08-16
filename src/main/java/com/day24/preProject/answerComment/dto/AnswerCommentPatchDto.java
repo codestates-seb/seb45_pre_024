@@ -1,11 +1,11 @@
-package com.day24.preProject.answerReply.dto;
+package com.day24.preProject.answerComment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class AnswerReplyPatchDto {
+public class AnswerCommentPatchDto {
     private Long id;
     private String body;
 }

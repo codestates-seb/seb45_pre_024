@@ -1,4 +1,4 @@
-package com.day24.preProject.answerReply.dto;
+package com.day24.preProject.answerComment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @AllArgsConstructor
-public class AnswerReplyPostDto {
+public class AnswerCommentPostDto {
     @NotBlank
     private String body;
 }
