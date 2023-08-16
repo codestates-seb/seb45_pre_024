@@ -1,10 +1,7 @@
 package com.day24.preProject.auth.handler;
 
 import com.day24.preProject.auth.utils.ErrorResponser;
-import com.day24.preProject.response.ErrorResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
