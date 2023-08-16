@@ -3,7 +3,9 @@ package com.day24.preProject.question.service;
 import com.day24.preProject.exception.BusinessLogicException;
 import com.day24.preProject.exception.ExceptionCode;
 import com.day24.preProject.member.entity.Member;
+import com.day24.preProject.member.repository.MemberRepository;
 import com.day24.preProject.question.entity.Question;
+import com.day24.preProject.question.mapper.QuestionMapper;
 import com.day24.preProject.question.repository.QuestionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,9 +22,21 @@ import java.util.Optional;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
-    public QuestionService(QuestionRepository questionRepository) { this.questionRepository = questionRepository;}
 
-    public Question createQuestion(Question question) {
+    private final QuestionMapper questionMapper;
+
+    private final MemberRepository memberRepository;
+
+    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper, MemberRepository memberRepository) {
+        this.questionRepository = questionRepository;
+        this.questionMapper = questionMapper;
+        this.memberRepository = memberRepository;
+    }
+
+    public Question createQuestion(Question question, long id) {
+        Member member = questionMapper.mapToMember(id);
+        question.setMember(member);
+
 
         return questionRepository.save(question);
     }

@@ -8,7 +8,6 @@ import com.day24.preProject.question.dto.QuestionPostDto;
 import com.day24.preProject.question.dto.QuestionResponseDto;
 import com.day24.preProject.question.entity.Question;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,12 +17,13 @@ import java.util.stream.Collectors;
 public interface QuestionMapper {
     Question questionPatchDtoToQuestion(QuestionPatchDto questionPatchDto);
     QuestionResponseDto questionToQuestionResponseDto(Question question);
-    @Mapping(source = "id", target = "member_id")
     Question questionPostDtoToQuestion(QuestionPostDto questionPostDto);
-//    default Question questionPostDtoToQuestion(QuestionPostDto questionPostDto) {
-//        Member member = new Member();
-//        member.setMemberId(questionPostDto.getId());
-//    };
+    default Member mapToMember(long id) {
+        Member member = new Member();
+        member.setMember_id(id);
+
+        return member;
+    }
 
     default List<QuestionResponseDto> questionsToQuestionResponseDtos(List<Question> questions) {
 
@@ -32,11 +32,14 @@ public interface QuestionMapper {
                 .map(question -> QuestionResponseDto
                         .builder()
                         .question_id(question.getQuestion_id())
-                        .member_id(question.getMember_id())
+                        .member_id(question.getMember().getMember_id())
+                        .username(question.getMember().getUsername())
                         .title(question.getTitle())
                         .body(question.getBody())
                         .view_count(question.getView_count())
                         .accepted(question.isAccepted())
+                        .createdAt(question.getCreatedAt())
+                        .modified_at(question.getModified_at())
                         .build())
                 .collect(Collectors.toList());
 
@@ -46,21 +49,27 @@ public interface QuestionMapper {
         QuestionDetailResponseDto questionDetailResponseDto =
                 QuestionDetailResponseDto.builder()
                         .question_id(question.getQuestion_id())
-                        .member_id(question.getMember_id())
+                        .member_id(question.getMember().getMember_id())
+                        .username(question.getMember().getUsername())
                         .title(question.getTitle())
                         .body(question.getBody())
                         .view_count(question.getView_count())
                         .accepted(question.isAccepted())
+                        .createdAt(question.getCreatedAt())
+                        .modified_at(question.getModified_at())
 
                         .answers(question.getAnswers()
                             .stream()
                             .map(answer -> AnswerResponseDto
                                 .builder()
                                 .answer_id(answer.getAnswer_id())
-                                .member_id(answer.getMember_id())
-                                .question_id(answer.getQuestion_id())
+                                .member_id(answer.getMember().getMember_id())
+                                .username(answer.getMember().getUsername())
+                                .question_id(answer.getQuestion().getQuestion_id())
                                 .body(answer.getBody())
                                 .accepted(answer.isAccepted())
+                                .createdAt(answer.getCreatedAt())
+                                .modified_at(answer.getModified_at())
                                 .build())
                         .collect(Collectors.toList()))
                         .build();
