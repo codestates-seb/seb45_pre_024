@@ -7,6 +7,7 @@ import com.day24.preProject.auth.handler.MemberAuthenticationEntryPoint;
 import com.day24.preProject.auth.handler.MemberAuthenticationFailureHandler;
 import com.day24.preProject.auth.jwt.JwtTokenizer;
 import com.day24.preProject.auth.utils.AuthorityUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -86,7 +87,7 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, new ObjectMapper());
             jwtAuthenticationFilter.setFilterProcessesUrl("/member/signin");
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
