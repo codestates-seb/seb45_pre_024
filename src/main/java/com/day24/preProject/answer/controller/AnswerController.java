@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,6 +49,13 @@ public class AnswerController {
         Answer answer = answerMapper.answerPatchDtoToAnswer(requestBody);
         answer.setAnswer_id(id);
         answerService.updateAnswer(answer, member_id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/accept/{id}")
+    public ResponseEntity patchAcceptAnswer(@PathVariable("id") int id, @AuthenticationPrincipal long member_id){
+        Answer answer = answerService.findAnswer(id);
+        answerService.acceptAnswer(answer, member_id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
