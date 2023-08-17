@@ -20,7 +20,6 @@ public interface AnswerMapper {
 //    @Mapping(source = "id", target = "member")
     Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto);
     Answer answerPatchDtoToAnswer(AnswerPatchDto answerPatchDto);
-    @Mapping(source = "createdAt", target = "created_at")
     AnswerResponseDto answerToAnswerResponseDto(Answer answer);
 
     default Member mapToMember(long id) {

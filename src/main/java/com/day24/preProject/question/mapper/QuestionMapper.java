@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
     Question questionPatchDtoToQuestion(QuestionPatchDto questionPatchDto);
-    @Mapping(source = "createdAt", target = "created_at")
     QuestionResponseDto questionToQuestionResponseDto(Question question);
     Question questionPostDtoToQuestion(QuestionPostDto questionPostDto);
     default Member mapToMember(long id) {
