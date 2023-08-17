@@ -1,5 +1,6 @@
 package com.day24.preProject.member.controller;
 
+import com.day24.preProject.member.dto.MemberCheckDto;
 import com.day24.preProject.member.dto.MemberPostDto;
 import com.day24.preProject.member.entity.Member;
 import com.day24.preProject.member.mapper.MemberMapper;
@@ -32,7 +33,11 @@ public class MemberController {
         memberService.createMember(member);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+    @PostMapping("/check/username")
+    public ResponseEntity postMember(@Valid @RequestBody MemberCheckDto requestBody){
+        boolean check = memberService.checkUsername(requestBody.getUsername());
+        return new ResponseEntity<>(Map.of("is_duplicated", check), HttpStatus.OK);
+    }
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId){
         memberService.deleteMember(memberId);

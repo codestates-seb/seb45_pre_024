@@ -37,7 +37,7 @@ public class AnswerController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("{/question_id}")
+    @GetMapping("/{question_id}")
     public ResponseEntity getAnswers(@PathVariable("question_id") long question_id, @RequestParam int page, @RequestParam int size) {
         Page<Answer> pageAnswers = answerService.findAnswersByQuestion_idAndDeleted(question_id, false, page-1, size);
         List<Answer> answers = pageAnswers.getContent();
