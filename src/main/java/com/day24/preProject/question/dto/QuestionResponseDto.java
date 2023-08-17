@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class QuestionResponseDto {
 
-    private long questionId;
+    private long question_id;
 
-    private long memberId;
+    private long member_id;
 
     private String username;
 
@@ -24,9 +24,9 @@ public class QuestionResponseDto {
 
     private boolean accepted;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
-    private LocalDateTime modifiedAt;
+    private LocalDateTime modified_at;
 
 
 }
