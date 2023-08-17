@@ -146,7 +146,7 @@ const SignIn = ({ loginHandle }) => {
               <div className="text">
                 <p>
                   Don’t have an account?{' '}
-                  <Link className="signUp" to="http://localhost:3000/signon">
+                  <Link className="signUp" to="/signup">
                     Sign up
                   </Link>
                 </p>

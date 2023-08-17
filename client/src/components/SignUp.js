@@ -1,8 +1,10 @@
-import './SignOn.css';
+import './SignUp.css';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 const envURL = process.env.PUBLIC_URL;
-const SignOn = () => {
+const SignUp = () => {
   const [id, setId] = useState('');
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
@@ -14,6 +16,8 @@ const SignOn = () => {
   const [succecsId, setSuccecsId] = useState(false);
   const [succecsEmail, setSuccecsEmail] = useState(false);
   const [succecsPw, setSuccecsPw] = useState(false);
+  const navi = useNavigate();
+
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*[@$!%*?&])(?=.*\d)[A-Za-z@$!%*?&\d]{7,}$/i;
@@ -34,9 +38,11 @@ const SignOn = () => {
 
   const idHandle = (e) => {
     setId(e.target.value);
+    setSuccecsId(false);
   };
   const pwHandle = (e) => {
     setPw(e.target.value);
+    setSuccecsPw(false);
   };
   const verifyPwHandle = (e) => {
     setVerifyPw(e.target.value);
@@ -90,7 +96,18 @@ const SignOn = () => {
       setSuccecsPw(true);
     }
     if (succecsId && succecsEmail && succecsPw) {
-      console.log('회원가입 성공');
+      const data = {
+        username: id,
+        email: email,
+        password: pw,
+      };
+      console.log(data);
+      axios.post('/member/signup', data).then((res) => {
+        console.log(res);
+        if (res.status === 201) {
+          navi('/signin');
+        }
+      });
     }
   };
   const samePw = () => {
@@ -257,4 +274,4 @@ const SignOn = () => {
   );
 };
 
-export default SignOn;
+export default SignUp;
