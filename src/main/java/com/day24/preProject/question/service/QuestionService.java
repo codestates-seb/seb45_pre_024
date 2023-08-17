@@ -1,5 +1,7 @@
 package com.day24.preProject.question.service;
 
+import com.day24.preProject.answer.entity.Answer;
+import com.day24.preProject.answer.repository.AnswerRepository;
 import com.day24.preProject.exception.BusinessLogicException;
 import com.day24.preProject.exception.ExceptionCode;
 import com.day24.preProject.member.entity.Member;
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,9 +26,12 @@ public class QuestionService {
 
     private final QuestionMapper questionMapper;
 
-    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper) {
+    private final AnswerRepository answerRepository;
+
+    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper, AnswerRepository answerRepository) {
         this.questionRepository = questionRepository;
         this.questionMapper = questionMapper;
+        this.answerRepository = answerRepository;
     }
 
     public Question createQuestion(Question question, long id) {
@@ -92,6 +97,9 @@ public class QuestionService {
         question.setDeleted(true);
         questionRepository.save(question);
 
+        List<Answer> answers = question.getAnswers();
+        answers.forEach(answer -> answer.setDeleted(true));
+        answerRepository.saveAll(answers);
     }
 
 }
