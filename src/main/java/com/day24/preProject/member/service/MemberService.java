@@ -37,6 +37,11 @@ public class MemberService {
 
         memberRepository.save(member);
     }
+    @Transactional(readOnly = true)
+    public boolean checkUsername(String username){
+        Optional<Member> optionalMember = memberRepository.findByUsername(username);
+        return optionalMember.isPresent();
+    }
 
     @Transactional(readOnly = true)
     public Member findMember(long memberId){
