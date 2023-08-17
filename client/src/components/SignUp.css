@@ -30,14 +30,20 @@
 
 .join {
     font-size: 27px;
+    margin-bottom: 32px;
 }
 
 .suText {
     text-align: left;
+    margin: 0px 48px 128px 0px;
 }
 
 .suTextSmall {
     font-size: 15px;
+}
+
+.get{
+    margin-bottom: 24px;
 }
 
 .suTextDt {
@@ -49,19 +55,84 @@
     width: 316px;
 }
 
+.suGoogle {
+    display: flex;
+    justify-content: center;
+    padding: 10.4px;
+    border: 1px solid #D6D9DC; 
+    outline: 0;
+    background-color: #ffffff;
+    color: #3b4045;
+    border-radius: 6px 6px 6px 6px;
+}
+
+.suGoogle:hover {
+    background-color: #f8f9f9;
+}
+
+.suGoogle:active {
+    background-color: #f1f2f3;
+}
+
+.suGit {
+    display: flex;
+    justify-content: center;
+    padding: 10.4px;
+    border: 0;
+    outline: 0;
+    background-color: #2F3337;
+    color:  #ffffff;
+    border-radius: 6px 6px 6px 6px;
+}
+
+.suGit:hover {
+    background-color:#232629;
+}
+
+.suGit:active {
+    background-color: #0c0d0e;
+}
+
+.suFacebook {
+    display: flex;
+    justify-content: center;
+    padding: 10.4px;
+    border: 0;
+    outline: 0;
+    background-color: #385499;
+    color:  #ffffff;
+    border-radius: 6px 6px 6px 6px;
+}
+
+.suFacebook:hover {
+    background-color: #314a86;
+}
+
+.suFacebook:active {
+    background-color: #2a4074;
+}
+
 .suInput {
     background-color: #ffffff;
     margin-bottom: 24px;
     text-align: left;
-    height: 234px;
-    
+    height: 641px;
     padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  /* align-items: center; */
     border-radius: 7px 7px 7px 7px;
     box-shadow: 0 10px 24px hsla(0,0%,0%,0.05), 0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
+}
+
+.suID {
+    display: flex;
+    flex-direction: column;
+}
+
+.suPassword {
+    display: flex;
+    flex-direction: column;
 }
 
 .errText{
