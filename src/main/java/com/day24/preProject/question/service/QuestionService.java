@@ -59,7 +59,7 @@ public class QuestionService {
 
     @Transactional(readOnly = true)
     public Page<Question> findAllQuestion(boolean deleted, int page, int size) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt"); //최신순 정렬
+        Sort sort = Sort.by(Sort.Direction.DESC, "created_at"); //최신순 정렬
         Pageable pageable = PageRequest.of(page, size, sort);
         return questionRepository.findAllByDeleted(deleted, pageable);
     }
