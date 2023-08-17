@@ -24,7 +24,7 @@ public interface AnswerCommentMapper {
                         .member_id(answer.getMember_id())
                         .answer_comment_id(answer.getAnswer_comment_id())
                         .modified_at(answer.getModified_at())
-                        .created_at(answer.getCreatedAt())
+                        .created_at(answer.getCreated_at())
                         .build())
                 .collect(Collectors.toList());
     }
