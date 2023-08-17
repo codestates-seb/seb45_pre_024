@@ -8,7 +8,6 @@ import com.day24.preProject.auth.handler.MemberAuthenticationFailureHandler;
 import com.day24.preProject.auth.jwt.JwtTokenizer;
 import com.day24.preProject.auth.userdetails.MemberDetailsService;
 import com.day24.preProject.auth.utils.AuthorityUtils;
-import com.day24.preProject.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
