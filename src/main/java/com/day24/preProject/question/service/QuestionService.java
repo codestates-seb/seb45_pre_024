@@ -42,8 +42,8 @@ public class QuestionService {
     }
 
     @Transactional(readOnly = true)
-    public Question findQuestionByDeleted(long question_id, boolean deleted){
-        Optional<Question> optionalQuestion = questionRepository.findByQuestion_idAndDeleted(question_id, deleted);
+    public Question findQuestionByDeleted(long questionId, boolean deleted){
+        Optional<Question> optionalQuestion = questionRepository.findByQuestionIdAndDeleted(questionId, deleted);
         if(deleted) {
             throw new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND);
         }
@@ -51,14 +51,14 @@ public class QuestionService {
     }
     //관리자용
     @Transactional(readOnly = true)
-    public Question findQuestion(long question_id){
-        Optional<Question> optionalQuestion = questionRepository.findById(question_id);
+    public Question findQuestion(long questionId){
+        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         return optionalQuestion.orElseThrow(()-> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
     public Page<Question> findAllQuestion(boolean deleted, int page, int size) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "created_at"); //최신순 정렬
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt"); //최신순 정렬
         Pageable pageable = PageRequest.of(page, size, sort);
         return questionRepository.findAllByDeleted(deleted, pageable);
     }
@@ -72,9 +72,9 @@ public class QuestionService {
 
     
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public Question updateQuestion(Question question, long member_id){
-        Question modifiedQuestion = findQuestion(question.getQuestion_id());
-        if (modifiedQuestion.getMember().getMember_id() != member_id) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
+    public Question updateQuestion(Question question, long memberId){
+        Question modifiedQuestion = findQuestion(question.getQuestionId());
+        if (modifiedQuestion.getMember().getMemberId() != memberId) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
 
         Optional.ofNullable(question.getTitle())
                 .ifPresent(title -> modifiedQuestion.setTitle(title));
@@ -86,9 +86,9 @@ public class QuestionService {
         return questionRepository.save(modifiedQuestion);
     }
 
-    public void deleteQuestion(long questionId, long member_id){
+    public void deleteQuestion(long questionId, long memberId){
         Question question = findQuestion(questionId);
-        if (question.getMember().getMember_id() != member_id) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
+        if (question.getMember().getMemberId() != memberId) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
         question.setDeleted(true);
         questionRepository.save(question);
 

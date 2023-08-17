@@ -31,37 +31,37 @@ public class AnswerController {
         this.answerMapper = answerMapper;
     }
     @PostMapping("/{id}")
-    public ResponseEntity postAnswer(@PathVariable("id") long question_id, @RequestBody AnswerPostDto requestBody, @AuthenticationPrincipal long member_id) {
+    public ResponseEntity postAnswer(@PathVariable("id") long questionId, @RequestBody AnswerPostDto requestBody, @AuthenticationPrincipal long memberId) {
         Answer answer = answerMapper.answerPostDtoToAnswer(requestBody);
-        answerService.createAnswer(question_id, member_id, answer);
+        answerService.createAnswer(questionId, memberId, answer);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/{question_id}")
-    public ResponseEntity getAnswers(@PathVariable("question_id") long question_id, @RequestParam int page, @RequestParam int size) {
-        Page<Answer> pageAnswers = answerService.findAnswersByQuestion_idAndDeleted(question_id, false, page-1, size);
+    @GetMapping("/{questionId}")
+    public ResponseEntity getAnswers(@PathVariable("questionId") long questionId, @RequestParam int page, @RequestParam int size) {
+        Page<Answer> pageAnswers = answerService.findAnswersByQuestionIdAndDeleted(questionId, false, page-1, size);
         List<Answer> answers = pageAnswers.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(answerMapper.answersToAnswerResponseDtos(answers), pageAnswers), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity patchAnswer(@PathVariable("id") int id, @RequestBody AnswerPatchDto requestBody, @AuthenticationPrincipal long member_id){
+    public ResponseEntity patchAnswer(@PathVariable("id") int id, @RequestBody AnswerPatchDto requestBody, @AuthenticationPrincipal long memberId){
         Answer answer = answerMapper.answerPatchDtoToAnswer(requestBody);
-        answer.setAnswer_id(id);
-        answerService.updateAnswer(answer, member_id);
+        answer.setAnswerId(id);
+        answerService.updateAnswer(answer, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping("/accept/{id}")
-    public ResponseEntity patchAcceptAnswer(@PathVariable("id") int id, @AuthenticationPrincipal long member_id){
+    public ResponseEntity patchAcceptAnswer(@PathVariable("id") int id, @AuthenticationPrincipal long memberId){
         Answer answer = answerService.findAnswer(id);
-        answerService.acceptAnswer(answer, member_id);
+        answerService.acceptAnswer(answer, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteAnswer(@PathVariable("id") int answer_id, @AuthenticationPrincipal long member_id) {
-        answerService.deleteAnswer(answer_id, member_id);
+    public ResponseEntity deleteAnswer(@PathVariable("id") int answerId, @AuthenticationPrincipal long memberId) {
+        answerService.deleteAnswer(answerId, memberId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

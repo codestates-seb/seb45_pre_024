@@ -19,12 +19,12 @@ public interface AnswerCommentMapper {
     default List<AnswerCommentResponseDto> answerReplysToAnswerReplyResponseDtos(List<AnswerComment> answers){
         return answers.stream()
                 .map(answer -> AnswerCommentResponseDto.builder()
-                        .answer_id(answer.getAnswer_id())
+                        .answerId(answer.getAnswerId())
                         .body(answer.getBody())
-                        .member_id(answer.getMember_id())
-                        .answer_comment_id(answer.getAnswer_comment_id())
-                        .modified_at(answer.getModified_at())
-                        .created_at(answer.getCreated_at())
+                        .memberId(answer.getMemberId())
+                        .answer_commentId(answer.getAnswerCommentId())
+                        .modifiedAt(answer.getModifiedAt())
+                        .createdAt(answer.getCreatedAt())
                         .build())
                 .collect(Collectors.toList());
     }

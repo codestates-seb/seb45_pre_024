@@ -24,12 +24,12 @@ public interface AnswerMapper {
 
     default Member mapToMember(long id) {
         Member member = new Member();
-        member.setMember_id(id);
+        member.setMemberId(id);
         return member;
     }
     default Question mapToQuestion(long id) {
         Question question = new Question();
-        question.setQuestion_id(id);
+        question.setQuestionId(id);
         return question;
     }
     default List<AnswerResponseDto> answersToAnswerResponseDtos(List<Answer> answers) {
@@ -38,14 +38,14 @@ public interface AnswerMapper {
                 .stream()
                 .map(answer -> AnswerResponseDto
                         .builder()
-                        .answer_id(answer.getAnswer_id())
-                        .member_id(answer.getMember().getMember_id())
+                        .answerId(answer.getAnswerId())
+                        .memberId(answer.getMember().getMemberId())
                         .username(answer.getMember().getUsername())
-                        .question_id(answer.getQuestion().getQuestion_id())
+                        .questionId(answer.getQuestion().getQuestionId())
                         .body(answer.getBody())
                         .accepted(answer.isAccepted())
-                        .created_at(answer.getCreated_at())
-                        .modified_at(answer.getModified_at())
+                        .created_at(answer.getCreatedAt())
+                        .modified_at(answer.getModifiedAt())
                         .build())
                 .collect(Collectors.toList());
 
