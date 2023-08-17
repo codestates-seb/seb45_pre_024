@@ -6,7 +6,9 @@ import com.day24.preProject.auth.handler.MemberAccessDeniedHandler;
 import com.day24.preProject.auth.handler.MemberAuthenticationEntryPoint;
 import com.day24.preProject.auth.handler.MemberAuthenticationFailureHandler;
 import com.day24.preProject.auth.jwt.JwtTokenizer;
+import com.day24.preProject.auth.userdetails.MemberDetailsService;
 import com.day24.preProject.auth.utils.AuthorityUtils;
+import com.day24.preProject.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,10 +31,12 @@ import java.util.Arrays;
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final AuthorityUtils authorityUtils;
+    private final MemberDetailsService memberDetailsService;
 
-    public SecurityConfiguration(JwtTokenizer jwtTokenizer, AuthorityUtils authorityUtils) {
+    public SecurityConfiguration(JwtTokenizer jwtTokenizer, AuthorityUtils authorityUtils, MemberDetailsService memberDetailsService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
+        this.memberDetailsService = memberDetailsService;
     }
 
     @Bean
@@ -91,7 +95,7 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setFilterProcessesUrl("/member/signin");
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils, memberDetailsService);
             builder.addFilter(jwtAuthenticationFilter)
                     .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
         }

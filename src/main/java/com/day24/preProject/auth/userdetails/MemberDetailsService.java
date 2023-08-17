@@ -30,7 +30,10 @@ public class MemberDetailsService implements UserDetailsService {
         Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return new MemberDetails(findMember);
     }
-
+    public Member getMember(String username) {
+        Optional<Member> optionalMember = memberRepository.findByUsername(username);
+        return optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
     private final class MemberDetails extends Member implements UserDetails {
         MemberDetails(Member member) {
             setMemberId(member.getMemberId());
