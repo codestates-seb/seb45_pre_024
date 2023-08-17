@@ -11,15 +11,30 @@ import org.mapstruct.Mapping;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.IntStream.builder;
+
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
     Question questionPatchDtoToQuestion(QuestionPatchDto questionPatchDto);
-    QuestionResponseDto questionToQuestionResponseDto(Question question);
+    default QuestionResponseDto questionToQuestionResponseDto(Question question){
+        return QuestionResponseDto
+                .builder()
+                .questionId(question.getQuestionId())
+                .memberId(question.getMember().getMemberId())
+                .username(question.getMember().getUsername())
+                .title(question.getTitle())
+                .body(question.getBody())
+                .view_count(question.getView_count())
+                .accepted(question.isAccepted())
+                .createdAt(question.getCreatedAt())
+                .modifiedAt(question.getModifiedAt())
+                .build();
+    };
     Question questionPostDtoToQuestion(QuestionPostDto questionPostDto);
     default Member mapToMember(long id) {
         Member member = new Member();
-        member.setMember_id(id);
+        member.setMemberId(id);
 
         return member;
     }
@@ -30,15 +45,15 @@ public interface QuestionMapper {
                 .stream()
                 .map(question -> QuestionResponseDto
                         .builder()
-                        .question_id(question.getQuestion_id())
-                        .member_id(question.getMember().getMember_id())
+                        .questionId(question.getQuestionId())
+                        .memberId(question.getMember().getMemberId())
                         .username(question.getMember().getUsername())
                         .title(question.getTitle())
                         .body(question.getBody())
                         .view_count(question.getView_count())
                         .accepted(question.isAccepted())
-                        .created_at(question.getCreated_at())
-                        .modified_at(question.getModified_at())
+                        .createdAt(question.getCreatedAt())
+                        .modifiedAt(question.getModifiedAt())
                         .build())
                 .collect(Collectors.toList());
 

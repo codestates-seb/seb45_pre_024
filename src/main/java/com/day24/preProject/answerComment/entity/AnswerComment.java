@@ -15,11 +15,11 @@ public class AnswerComment extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long answer_comment_id;
+    private long answerCommentId;
     @Column(nullable = false, updatable = false)
-    private long answer_id;
+    private long answerId;
     @Column(nullable = false, updatable = false)
-    private long member_id;
+    private long memberId;
     @Column(nullable = false, updatable = false)
     private String body;
     @Column

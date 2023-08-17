@@ -13,11 +13,11 @@ import java.util.Optional;
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     //유저
-    @Query("SELECT q FROM Answer q WHERE q.question = :question_id AND q.deleted = :deleted")
-    Page<Answer> findByQuestion_idAndDeleted(long question_id, boolean deleted, Pageable pageable);
+    @Query("SELECT q FROM Answer q WHERE q.question = :questionId AND q.deleted = :deleted")
+    Page<Answer> findByQuestionIdAndDeleted(long questionId, boolean deleted, Pageable pageable);
 
-    @Query("SELECT q FROM Answer q WHERE q.answer_id = :answer_id AND q.deleted = :deleted")
-    Optional<Answer> findByAnswer_idAndDeleted(long answer_id, boolean deleted);
+    @Query("SELECT q FROM Answer q WHERE q.answerId = :answerId AND q.deleted = :deleted")
+    Optional<Answer> findByAnswerIdAndDeleted(long answerId, boolean deleted);
 
 
     Answer findAllByDeleted(boolean deleted);

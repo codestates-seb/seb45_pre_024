@@ -37,10 +37,10 @@ public class AnswerService {
         this.answerMapper = answerMapper;
     }
 
-    public Answer createAnswer(long question_id, long memberId, Answer answer) {
+    public Answer createAnswer(long questionId, long memberId, Answer answer) {
         Member member = answerMapper.mapToMember(memberId);
-        if (questionService.findQuestion(question_id).getMember().getMember_id() == memberId) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
-        Question question = answerMapper.mapToQuestion(question_id);
+        if (questionService.findQuestion(questionId).getMember().getMemberId() == memberId) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
+        Question question = answerMapper.mapToQuestion(questionId);
         answer.setQuestion(question);
         answer.setMember(member);
 
@@ -48,27 +48,26 @@ public class AnswerService {
     }
 
     @Transactional(readOnly = true)
-    public Answer findAnswer(long answer_id){
-        Optional<Answer> optionalAnswer = answerRepository.findById(answer_id);
+    public Answer findAnswer(long answerId){
+        Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         return optionalAnswer.orElseThrow(()-> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
     }
     @Transactional(readOnly = true)
-    public Answer findAnswerByDeleted(long answer_id, boolean deleted){
-        Optional<Answer> optionalAnswer = answerRepository.findByAnswer_idAndDeleted(answer_id, deleted);
+    public Answer findAnswerByDeleted(long answerId, boolean deleted){
+        Optional<Answer> optionalAnswer = answerRepository.findByAnswerIdAndDeleted(answerId, deleted);
         return optionalAnswer.orElseThrow(()-> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
     }
 //
 //    @Transactional(readOnly = true)
-//    public Answer findAnswer(long answer_id){
-//        Optional<Answer> optionalAnswer = answerRepository.findById(answer_id);
+//    public Answer findAnswer(long answerId){
+//        Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
 //        return optionalAnswer.orElseThrow(()-> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
 //    }
 
     @Transactional(readOnly = true)
-    public Page<Answer> findAnswersByQuestion_idAndDeleted(long question_id, boolean deleted, int page, int size) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "created_at");
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return answerRepository.findByQuestion_idAndDeleted(question_id, deleted, pageable);
+    public Page<Answer> findAnswersByQuestionIdAndDeleted(long questionId, boolean deleted, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, null);
+        return answerRepository.findByQuestionIdAndDeleted(questionId, deleted, pageable);
     }
       //관리자용
 //    @Transactional(readOnly = true)
@@ -79,19 +78,19 @@ public class AnswerService {
 
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public void updateAnswer(Answer answer, long member_id){
-        Answer findAnswer = findAnswerByDeleted(answer.getAnswer_id(), answer.isDeleted());
-        if(findAnswer.getMember().getMember_id() != member_id) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
+    public void updateAnswer(Answer answer, long memberId){
+        Answer findAnswer = findAnswerByDeleted(answer.getAnswerId(), answer.isDeleted());
+        if(findAnswer.getMember().getMemberId() != memberId) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
         Optional.ofNullable(answer.getBody())
                 .ifPresent(body -> findAnswer.setBody(body));
 
         answerRepository.save(findAnswer);
     }
 
-    public void acceptAnswer(Answer answer, long member_id){
-        Answer findAnswer = findAnswer(answer.getAnswer_id());
+    public void acceptAnswer(Answer answer, long memberId){
+        Answer findAnswer = findAnswer(answer.getAnswerId());
         Question question = findAnswer.getQuestion();
-        if(question.getMember().getMember_id() != member_id)
+        if(question.getMember().getMemberId() != memberId)
             throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
         if(findAnswer.isAccepted()){
             findAnswer.setAccepted(false);
@@ -110,9 +109,9 @@ public class AnswerService {
 
     }
 
-    public void deleteAnswer(long answer_id, long member_id){
-        Answer answer = findAnswer(answer_id);
-        if(answer.getMember().getMember_id() != member_id) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
+    public void deleteAnswer(long answerId, long memberId){
+        Answer answer = findAnswer(answerId);
+        if(answer.getMember().getMemberId() != memberId) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
         answer.setDeleted(true);
         answerRepository.save(answer);
 

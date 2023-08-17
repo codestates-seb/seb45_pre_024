@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AnswerResponseDto {
 
-    private long answer_id;
+    private long answerId;
 
-    private long question_id;
+    private long questionId;
 
-    private long member_id;
+    private long memberId;
 
     private String username;
 
@@ -26,7 +26,7 @@ public class AnswerResponseDto {
 
     private boolean accepted;
 
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime modified_at;
+    private LocalDateTime modifiedAt;
 }

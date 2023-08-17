@@ -36,8 +36,8 @@ public class AnswerCommentController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{AnswerReply-id}")
-    public ResponseEntity patchAnswerReply(@PathVariable("AnswerReply-id") @Positive long answerReplyId,
+    @PatchMapping("/{AnswerReplyId}")
+    public ResponseEntity patchAnswerReply(@PathVariable("AnswerReplyId") @Positive long answerReplyId,
                                               @Valid @RequestBody AnswerCommentPatchDto answerCommentPatchDto) {
         AnswerComment answerComment = answerCommentService.updateAnswerReply(answerReplyId, answerCommentMapper.answerReplyPatchDtoToAnswerReply(answerCommentPatchDto));
 
@@ -46,8 +46,8 @@ public class AnswerCommentController {
                 HttpStatus.OK);
     }
 
-    @GetMapping("/{AnswerReply-id}")
-    public ResponseEntity getAnswerReply(@PathVariable("AnswerReply-id") long answerReplyId) {
+    @GetMapping("/{AnswerReplyId}")
+    public ResponseEntity getAnswerReply(@PathVariable("AnswerReplyId") long answerReplyId) {
         AnswerComment answerComment = answerCommentService.findAnswerReply(answerReplyId);
 
         return new ResponseEntity<>(
@@ -67,8 +67,8 @@ public class AnswerCommentController {
                 HttpStatus.OK);
     }
 
-    @DeleteMapping("/{AnswerReply-id}")
-    public ResponseEntity deleteAnswerReply(@PathVariable("AnswerReply-id") long answerReplyId) {
+    @DeleteMapping("/{AnswerReplyId}")
+    public ResponseEntity deleteAnswerReply(@PathVariable("AnswerReplyId") long answerReplyId) {
         answerCommentService.deleteAnswerReply(answerReplyId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -32,15 +32,15 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity postQuestion(@RequestBody QuestionPostDto requstBody, @AuthenticationPrincipal long member_id) {
+    public ResponseEntity postQuestion(@RequestBody QuestionPostDto requstBody, @AuthenticationPrincipal long memberId) {
         Question question = questionMapper.questionPostDtoToQuestion(requstBody);
-        questionService.createQuestion(question, member_id);
+        questionService.createQuestion(question, memberId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getQuestion(@PathVariable("id") long question_id, boolean deleted) {
-        Question question = questionService.findQuestionByDeleted(question_id, deleted);
+    public ResponseEntity getQuestion(@PathVariable("id") long questionId, boolean deleted) {
+        Question question = questionService.findQuestionByDeleted(questionId, deleted);
         question.setView_count(question.getView_count()+1);
         questionService.countView_count(question);
 
@@ -61,16 +61,16 @@ public class QuestionController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity patchQuestion(@PathVariable("id") int id, @RequestBody QuestionPatchDto requestBody, @AuthenticationPrincipal long member_id){
+    public ResponseEntity patchQuestion(@PathVariable("id") int id, @RequestBody QuestionPatchDto requestBody, @AuthenticationPrincipal long memberId){
         Question question = questionMapper.questionPatchDtoToQuestion(requestBody);
-        question.setQuestion_id(id);
-        questionService.updateQuestion(question, member_id);
+        question.setQuestionId(id);
+        questionService.updateQuestion(question, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteQuestion(@PathVariable("id") int question_id, @AuthenticationPrincipal long member_id) {
-        questionService.deleteQuestion(question_id, member_id);
+    public ResponseEntity deleteQuestion(@PathVariable("id") int questionId, @AuthenticationPrincipal long memberId) {
+        questionService.deleteQuestion(questionId, memberId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
