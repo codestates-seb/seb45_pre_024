@@ -45,7 +45,7 @@ public interface AnswerMapper {
                         .question_id(answer.getQuestion().getQuestion_id())
                         .body(answer.getBody())
                         .accepted(answer.isAccepted())
-                        .created_at(answer.getCreatedAt())
+                        .created_at(answer.getCreated_at())
                         .modified_at(answer.getModified_at())
                         .build())
                 .collect(Collectors.toList());

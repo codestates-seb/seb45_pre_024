@@ -29,12 +29,18 @@ public class AnswerController {
         this.answerService = answerService;
         this.answerMapper = answerMapper;
     }
-
     @PostMapping("/{id}")
     public ResponseEntity postAnswer(@PathVariable("id") long question_id, @RequestBody AnswerPostDto requestBody, @AuthenticationPrincipal long member_id) {
         Answer answer = answerMapper.answerPostDtoToAnswer(requestBody);
         answerService.createAnswer(question_id, member_id, answer);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("{/question_id}")
+    public ResponseEntity getAnswers(@PathVariable("question_id") long question_id, @RequestParam int page, @RequestParam int size) {
+        Page<Answer> pageAnswers = answerService.findAnswersByQuestion_idAndDeleted(question_id, false, page-1, size);
+        List<Answer> answers = pageAnswers.getContent();
+        return new ResponseEntity<>(new MultiResponseDto<>(answerMapper.answersToAnswerResponseDtos(answers), pageAnswers), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
