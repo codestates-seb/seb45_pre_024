@@ -8,6 +8,4 @@ import lombok.Getter;
 public class AnswerPatchDto {
     private String body;
 
-    private boolean accepted;
-
 }

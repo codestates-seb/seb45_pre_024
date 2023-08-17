@@ -19,18 +19,20 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AnswerService {
     private final QuestionService questionService;
+
+    private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
 
     private final AnswerMapper answerMapper;
 
-    public AnswerService(QuestionService questionService, AnswerRepository answerRepository, AnswerMapper answerMapper) {
+    public AnswerService(QuestionService questionService, QuestionRepository questionRepository, AnswerRepository answerRepository, AnswerMapper answerMapper) {
         this.questionService = questionService;
+        this.questionRepository = questionRepository;
         this.answerRepository = answerRepository;
         this.answerMapper = answerMapper;
     }
@@ -51,7 +53,7 @@ public class AnswerService {
         return optionalAnswer.orElseThrow(()-> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
     }
     @Transactional(readOnly = true)
-    public Answer findAnswerBydeleted(long answer_id, boolean deleted){
+    public Answer findAnswerByDeleted(long answer_id, boolean deleted){
         Optional<Answer> optionalAnswer = answerRepository.findByAnswer_idAndDeleted(answer_id, deleted);
         return optionalAnswer.orElseThrow(()-> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
     }
@@ -77,15 +79,35 @@ public class AnswerService {
 
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public Answer updateAnswer(Answer answer, long member_id){
-        Answer findAnswer = findAnswerBydeleted(answer.getAnswer_id(), answer.isDeleted());
+    public void updateAnswer(Answer answer, long member_id){
+        Answer findAnswer = findAnswerByDeleted(answer.getAnswer_id(), answer.isDeleted());
         if(findAnswer.getMember().getMember_id() != member_id) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
         Optional.ofNullable(answer.getBody())
                 .ifPresent(body -> findAnswer.setBody(body));
-        Optional.ofNullable(answer.isAccepted())
-                .ifPresent(accepted -> findAnswer.setAccepted(accepted));
 
-        return answerRepository.save(findAnswer);
+        answerRepository.save(findAnswer);
+    }
+
+    public void acceptAnswer(Answer answer, long member_id){
+        Answer findAnswer = findAnswer(answer.getAnswer_id());
+        Question question = findAnswer.getQuestion();
+        if(question.getMember().getMember_id() != member_id)
+            throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
+        if(findAnswer.isAccepted()){
+            findAnswer.setAccepted(false);
+            if(!question.isAccepted()) {
+                question.setAccepted(false);
+            }
+        }
+        else {findAnswer.setAccepted(true);
+            if (!question.isAccepted()) {
+                question.setAccepted(true);
+            }
+        }
+
+        answerRepository.save(findAnswer);
+        questionRepository.save(question);
+
     }
 
     public void deleteAnswer(long answer_id, long member_id){
