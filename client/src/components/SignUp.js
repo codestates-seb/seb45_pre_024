@@ -126,54 +126,59 @@ const SignUp = () => {
           <div className="suText">
             <h1 className="join">Join the Stack Overflow community</h1>
             <div className="suTextSmall">
-              <p>Get unstuck — ask a question</p>
+              <div className="get">Get unstuck — ask a question</div>
             </div>
             <div className="suTextSmall">
-              <p>Unlock new privileges like voting and commenting</p>
+              <div className="get">
+                Unlock new privileges like voting and commenting
+              </div>
             </div>
             <div className="suTextSmall">
-              <p>Save your favorite questions, answers, watch tags, and more</p>
+              <div className="get">
+                Save your favorite questions, answers, watch tags, and <br />
+                more
+              </div>
             </div>
             <div className="suTextSmall">
-              <p>Earn reputation and badges</p>
+              <div className="get">Earn reputation and badges</div>
             </div>
-            <p className="suTextDt">
+            <div className="suTextDt">
               Collaborate and share knowledge with a private group for FREE.
               <br />
               Get Stack Overflow for Teams free for up to 50 users.
-            </p>
+            </div>
           </div>
           <div className="suBox">
             <div className="suButtonContainer">
-              <button className="google" onClick={handleGoogleSignIn}>
+              <button className="suGoogle" onClick={handleGoogleSignIn}>
                 <img
                   className="googleImg"
                   src={envURL + '/google.png'}
                   alt="google_logo"
                 ></img>
-                <span>Log in with Google</span>
+                <span>Sign up with Google</span>
               </button>
-              <button className="git" onClick={GithubLoginRequestHandler}>
+              <button className="suGit" onClick={GithubLoginRequestHandler}>
                 <img
                   className="githubImg"
                   src={envURL + '/github.png'}
                   alt="github_logo"
                 ></img>
-                <span>Log in with Github</span>
+                <span>Sign up with Github</span>
               </button>
-              <button className="facebook">
+              <button className="suFacebook">
                 <img
                   className="facebookImg"
                   src={envURL + '/facebook.png'}
                   alt="facebook_logo"
                 ></img>
-                <span>Log in with Facebook</span>
+                <span>Sign up with Facebook</span>
               </button>
             </div>
             <div className="suInputContainer">
               <div className="suInput">
                 <div className="suID">
-                  아이디
+                  ID
                   <input
                     type="text"
                     value={id}
@@ -181,7 +186,7 @@ const SignUp = () => {
                       idHandle(e);
                     }}
                   />
-                  <button>중복확인</button>
+                  <button>Check Availability</button>
                   <span className="errText">
                     {idErr
                       ? !succecsId
@@ -191,7 +196,7 @@ const SignUp = () => {
                   </span>
                 </div>
                 <div className="suEmail">
-                  이메일
+                  Email
                   <input
                     type="text"
                     value={email}
@@ -209,7 +214,7 @@ const SignUp = () => {
                   </span>
                 </div>
                 <div className="suPwd">
-                  비밀번호
+                  Password
                   <input
                     type="password"
                     value={pw}
@@ -224,7 +229,7 @@ const SignUp = () => {
                   </span>
                 </div>
                 <div className="suPwd2">
-                  비밀번호 확인
+                  Confirm Password
                   <input
                     type="password"
                     value={verifyPw}
@@ -232,7 +237,7 @@ const SignUp = () => {
                       verifyPwHandle(e);
                     }}
                   />
-                  <button onClick={() => samePw()}>비밀번호 확인</button>
+                  <button onClick={() => samePw()}>Verify</button>
                   <span className="errText">
                     {verifyPwErr ? '비밀번호를 확인해주세요.' : null}
                   </span>
@@ -250,7 +255,7 @@ const SignUp = () => {
               <div className="text3">
                 <p>
                   Already have an account?{' '}
-                  <Link className="suLogin" to="http://localhost:3000/signin">
+                  <Link className="suLogin" to="/signin">
                     Log in
                   </Link>
                 </p>
