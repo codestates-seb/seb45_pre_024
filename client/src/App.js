@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import CreateQuestion from './components/CreateQuestion';
 import Footer from './components/footer';
 import Header from './components/Header';
-import SignOn from './components/SignOn';
+import SignUp from './components/SignUp';
 import QuestionDetail from './components/QuestionDetail';
 import LeftSidebar from './components/LeftSideBar';
 import { styled } from 'styled-components';
@@ -86,7 +86,7 @@ function App() {
             path="/create_question"
             element={<CreateQuestion user={user} />}
           />
-          <Route path="/signon" element={<SignOn />} />
+          <Route path="/signon" element={<SignUp />} />
         </Routes>
         <Footer />
       </BrowserRouter>
