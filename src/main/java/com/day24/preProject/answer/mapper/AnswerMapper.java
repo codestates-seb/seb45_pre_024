@@ -38,10 +38,10 @@ public interface AnswerMapper {
                 .stream()
                 .map(answer -> AnswerResponseDto
                         .builder()
-                        .answerId(answer.getAnswerId())
-                        .memberId(answer.getMember().getMemberId())
+                        .answer_id(answer.getAnswerId())
+                        .member_id(answer.getMember().getMemberId())
                         .username(answer.getMember().getUsername())
-                        .questionId(answer.getQuestion().getQuestionId())
+                        .question_id(answer.getQuestion().getQuestionId())
                         .body(answer.getBody())
                         .accepted(answer.isAccepted())
                         .created_at(answer.getCreatedAt())
