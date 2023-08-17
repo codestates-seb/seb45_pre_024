@@ -10,6 +10,10 @@ import com.day24.preProject.member.entity.Member;
 import com.day24.preProject.question.entity.Question;
 import com.day24.preProject.question.repository.QuestionRepository;
 import com.day24.preProject.question.service.QuestionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -59,9 +63,10 @@ public class AnswerService {
 //    }
 
     @Transactional(readOnly = true)
-    public List<Answer> findAnswersByQuestion_idAndDeleted(long question_id, boolean deleted) {
-
-        return answerRepository.findByQuestion_idAndDeleted(question_id, deleted);
+    public Page<Answer> findAnswersByQuestion_idAndDeleted(long question_id, boolean deleted, int page, int size) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "created_at");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return answerRepository.findByQuestion_idAndDeleted(question_id, deleted, pageable);
     }
       //관리자용
 //    @Transactional(readOnly = true)
