@@ -1,12 +1,7 @@
 package com.day24.preProject.question.controller;
 
 
-import com.day24.preProject.answer.dto.AnswerResponseDto;
-import com.day24.preProject.answer.entity.Answer;
-import com.day24.preProject.answer.mapper.AnswerMapper;
-import com.day24.preProject.answer.service.AnswerService;
 import com.day24.preProject.dto.MultiResponseDto;
-import com.day24.preProject.question.dto.QuestionDetailResponseDto;
 import com.day24.preProject.question.dto.QuestionPatchDto;
 import com.day24.preProject.question.dto.QuestionPostDto;
 import com.day24.preProject.question.dto.QuestionResponseDto;
@@ -14,21 +9,13 @@ import com.day24.preProject.question.entity.Question;
 import com.day24.preProject.question.mapper.QuestionMapper;
 import com.day24.preProject.question.service.QuestionService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Validated
 @RestController
@@ -57,8 +44,8 @@ public class QuestionController {
         question.setView_count(question.getView_count()+1);
         questionService.countView_count(question);
 
-        QuestionDetailResponseDto questionDetailResponseDto =
-                questionMapper.questionToQuestionDetailResponseDto(question);
+        QuestionResponseDto questionDetailResponseDto =
+                questionMapper.questionToQuestionResponseDto(question);
 
         return new ResponseEntity<>(questionDetailResponseDto, HttpStatus.OK);
     }

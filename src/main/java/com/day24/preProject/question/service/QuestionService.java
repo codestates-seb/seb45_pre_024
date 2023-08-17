@@ -3,7 +3,6 @@ package com.day24.preProject.question.service;
 import com.day24.preProject.exception.BusinessLogicException;
 import com.day24.preProject.exception.ExceptionCode;
 import com.day24.preProject.member.entity.Member;
-import com.day24.preProject.member.repository.MemberRepository;
 import com.day24.preProject.question.entity.Question;
 import com.day24.preProject.question.mapper.QuestionMapper;
 import com.day24.preProject.question.repository.QuestionRepository;
