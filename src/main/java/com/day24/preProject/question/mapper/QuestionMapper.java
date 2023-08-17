@@ -40,7 +40,7 @@ public interface QuestionMapper {
                         .body(question.getBody())
                         .view_count(question.getView_count())
                         .accepted(question.isAccepted())
-                        .created_at(question.getCreatedAt())
+                        .created_at(question.getCreated_at())
                         .modified_at(question.getModified_at())
                         .build())
                 .collect(Collectors.toList());
@@ -57,7 +57,7 @@ public interface QuestionMapper {
                         .body(question.getBody())
                         .view_count(question.getView_count())
                         .accepted(question.isAccepted())
-                        .createdAt(question.getCreatedAt())
+                        .createdAt(question.getCreated_at())
                         .modified_at(question.getModified_at())
 
                         .answers(question.getAnswers()
@@ -70,7 +70,7 @@ public interface QuestionMapper {
                                 .question_id(answer.getQuestion().getQuestion_id())
                                 .body(answer.getBody())
                                 .accepted(answer.isAccepted())
-                                .created_at(answer.getCreatedAt())
+                                .created_at(answer.getCreated_at())
                                 .modified_at(answer.getModified_at())
                                 .build())
                         .collect(Collectors.toList()))
