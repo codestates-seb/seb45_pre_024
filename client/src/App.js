@@ -10,6 +10,7 @@ import SignUp from './components/SignUp';
 import QuestionDetail from './components/QuestionDetail';
 import LeftSidebar from './components/LeftSideBar';
 import { styled } from 'styled-components';
+import UserList from './components/Users';
 const MouseStalker = styled.div`
   width: 40px;
   height: 40px;
@@ -89,6 +90,7 @@ function App() {
             element={<CreateQuestion user={user} />}
           />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/users" element={<UserList />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -49,6 +49,7 @@ function UserList() {
           <div className="user-item" key={user.id}>
             <strong>Name:</strong> {user.name}
             <strong>Email:</strong> {user.email}
+            {user.company && <p className="user-company">{user.company.bs}</p>}
           </div>
         ))}
       </ul>
