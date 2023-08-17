@@ -60,6 +60,8 @@ function App() {
     setUser(null);
     setIsLogin(false);
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('authorization');
+    sessionStorage.removeItem('refresh');
   };
 
   return (
@@ -86,7 +88,7 @@ function App() {
             path="/create_question"
             element={<CreateQuestion user={user} />}
           />
-          <Route path="/signon" element={<SignUp />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
         <Footer />
       </BrowserRouter>

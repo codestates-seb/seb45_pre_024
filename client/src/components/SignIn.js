@@ -3,10 +3,8 @@ import { useState, useEffect } from 'react';
 import './SignIn.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { SHA256 } from 'crypto-js';
 const envURL = process.env.PUBLIC_URL;
 const SignIn = ({ loginHandle }) => {
-  const salt = 'salt';
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -64,16 +62,25 @@ const SignIn = ({ loginHandle }) => {
     setPw(e.target.value);
   };
   const signInHandle = () => {
-    const data = {
-      username: id,
-      password: SHA256(pw + salt).toString(),
+    const formData = new FormData();
+    formData.append('username', id);
+    formData.append('password', pw);
+    const header = {
+      header: {
+        Authorization: 'Bearer your_access_token',
+        'Content-Type': 'multipart/form-data',
+      },
     };
+    // const data = {
+    //   username: id,
+    //   password: pw,
+    // };
     axios
-      .post('/member/signin', data)
+      .post('/member/signin', formData, header)
       .then((res) => {
-        console.log(res.data);
         loginHandle(res.data);
-        sessionStorage.setItem('user', JSON.stringify(res.data));
+        sessionStorage.setItem('authorization', res.headers['authorization']);
+        sessionStorage.setItem('refresh', res.headers['refresh']);
         navi('/');
       })
       .catch(console.error('err'));
