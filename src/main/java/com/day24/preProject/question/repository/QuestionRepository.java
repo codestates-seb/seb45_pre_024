@@ -14,11 +14,4 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     Optional<Question> findByQuestion_idAndDeleted(long question_id, boolean deleted);
 
     Page<Question> findAllByDeleted(boolean deleted, Pageable pageable);
-
-
-
-
-
-
-
 }
