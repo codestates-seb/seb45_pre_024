@@ -29,9 +29,9 @@ function App() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const sessionUser = sessionStorage.getItem('user');
+    const sessionUser = sessionStorage.getItem('username');
     if (sessionUser) {
-      setUser(JSON.parse(sessionUser));
+      setUser(sessionUser);
       setIsLogin(true);
     }
   }, []);
@@ -60,7 +60,8 @@ function App() {
   const logoutHandle = () => {
     setUser(null);
     setIsLogin(false);
-    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('email');
     sessionStorage.removeItem('authorization');
     sessionStorage.removeItem('refresh');
   };
@@ -74,7 +75,10 @@ function App() {
         </span>
         <Routes>
           <Route path="/" element={<QuestionList isLogin={isLogin} />} />
-          <Route path="/questions/:question_id" element={<QuestionDetail />} />
+          <Route
+            path="/questions/:question_id"
+            element={<QuestionDetail isLogin={isLogin} user={user} />}
+          />
           <Route
             path="/signin"
             element={
@@ -87,7 +91,7 @@ function App() {
           />
           <Route
             path="/create_question"
-            element={<CreateQuestion user={user} />}
+            element={<CreateQuestion user={user} isLogin={isLogin} />}
           />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/users" element={<UserList />} />

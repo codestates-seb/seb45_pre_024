@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import './Question.css';
 import { Link } from 'react-router-dom';
 const Question = ({ info }) => {
+  const created_at =
+    info.created_at.slice(0, 10) + ' ' + info.created_at.slice(11, 19);
   return (
     <div>
       <section className="quBox">
@@ -20,6 +22,9 @@ const Question = ({ info }) => {
             <div className="quUser">{info.username}</div>
             <div className="quTime">asked {info.created_at} ago</div>
           </div>
+
+          <div className="username">{info.username}</div>
+          <div className="create_At">작성일:{created_at}</div>
         </div>
       </section>
     </div>
