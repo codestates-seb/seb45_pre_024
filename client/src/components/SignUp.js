@@ -145,7 +145,9 @@ const SignUp = () => {
             <div className="suTextDt">
               Collaborate and share knowledge with a private group for FREE.
               <br />
-              Get Stack Overflow for Teams free for up to 50 users.
+              <Link className="stack">
+                Get Stack Overflow for Teams free for up to 50 users.
+              </Link>
             </div>
           </div>
           <div className="suBox">
@@ -178,26 +180,32 @@ const SignUp = () => {
             <div className="suInputContainer">
               <div className="suInput">
                 <div className="suID">
-                  ID
-                  <input
-                    type="text"
-                    value={id}
-                    onChange={(e) => {
-                      idHandle(e);
-                    }}
-                  />
-                  <button>Check Availability</button>
+                  <b>ID</b>
+                  <div className="suIDCK">
+                    <input
+                      className="suInputId"
+                      type="text"
+                      value={id}
+                      onChange={(e) => {
+                        idHandle(e);
+                      }}
+                    />
+                    <div className="checkCenter">
+                      <button className="check">Check Availability</button>
+                    </div>
+                  </div>
                   <span className="errText">
                     {idErr
                       ? !succecsId
-                        ? '아이디 중복검사를 실행해 주세요'
-                        : '아이디는 5글자 이상 20글자 이하여야 합니다.'
+                        ? 'Please run a duplicate ID check.'
+                        : 'ID must contain at least five characters, most 20 characters'
                       : null}
                   </span>
                 </div>
                 <div className="suEmail">
-                  Email
+                  <b>Email</b>
                   <input
+                    className="suInputDg"
                     type="text"
                     value={email}
                     onChange={(e) => {
@@ -207,15 +215,16 @@ const SignUp = () => {
                   />
                   <span className={emailErr ? 'errText' : 'succecsText'}>
                     {succecsEmail
-                      ? '올바른 이메일 형식입니다.'
+                      ? 'This is a valid email.'
                       : emailErr
-                      ? '유효하지 않은 이메일 형식입니다.'
+                      ? 'Please enter a valid email address.'
                       : null}
                   </span>
                 </div>
                 <div className="suPwd">
-                  Password
+                  <b>Password</b>
                   <input
+                    className="suInputDg"
                     type="password"
                     value={pw}
                     onChange={(e) => {
@@ -224,22 +233,29 @@ const SignUp = () => {
                   />
                   <span className="errText">
                     {pwErr
-                      ? '비밀번호는 영단어,숫자,특수문자가 1글자 이상씩 포함되어야 하며 7글자 이상이여야 합니다.'
+                      ? 'Passwords must contain at least seven characters, including at least 1 letter, 1 number and 1 symbol.'
                       : null}
                   </span>
                 </div>
                 <div className="suPwd2">
-                  Confirm Password
-                  <input
-                    type="password"
-                    value={verifyPw}
-                    onChange={(e) => {
-                      verifyPwHandle(e);
-                    }}
-                  />
-                  <button onClick={() => samePw()}>Verify</button>
+                  <b>Confirm Password</b>
+                  <div className="suPwdCon">
+                    <input
+                      className="suInputCp"
+                      type="password"
+                      value={verifyPw}
+                      onChange={(e) => {
+                        verifyPwHandle(e);
+                      }}
+                    />
+                    <div className="verifyCenter">
+                      <button className="verify" onClick={() => samePw()}>
+                        Verify
+                      </button>
+                    </div>
+                  </div>
                   <span className="errText">
-                    {verifyPwErr ? '비밀번호를 확인해주세요.' : null}
+                    {verifyPwErr ? 'Please check your Password.' : null}
                   </span>
                 </div>
                 <button
@@ -249,27 +265,35 @@ const SignUp = () => {
                   Sign up
                 </button>
                 <div className="text2">
-                  <p>ddd</p>
+                  <p>
+                    By clicking “Sign up”, you agree to our
+                    <Link className="terms"> terms of service</Link> and
+                    acknowledge that you have read and understand our
+                    <Link className="terms"> privacy policy </Link>and
+                    <Link className="terms"> code of conduct.</Link>
+                  </p>
                 </div>
               </div>
-              <div className="text3">
-                <p>
-                  Already have an account?{' '}
-                  <Link className="suLogin" to="/signin">
-                    Log in
-                  </Link>
-                </p>
-              </div>
-              <div className="text4">
-                <p>
-                  Are you an employer?{' '}
-                  <Link
-                    className="suEmployer"
-                    to="https://talent.stackoverflow.com/users/login"
-                  >
-                    Sign up on Talent{' '}
-                  </Link>
-                </p>
+              <div className="txt">
+                <div className="text3">
+                  <p>
+                    Already have an account?{' '}
+                    <Link className="suLogin" to="/signin">
+                      Log in
+                    </Link>
+                  </p>
+                </div>
+                <div className="text4">
+                  <p>
+                    Are you an employer?{' '}
+                    <Link
+                      className="suEmployer"
+                      to="https://talent.stackoverflow.com/users/login"
+                    >
+                      Sign up on Talent{' '}
+                    </Link>
+                  </p>
+                </div>
               </div>
             </div>
           </div>

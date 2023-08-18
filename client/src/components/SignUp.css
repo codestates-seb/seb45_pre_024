@@ -48,6 +48,16 @@
 
 .suTextDt {
     font-size: 13px;
+    color :#6a737c;
+}
+
+.stack {
+    text-decoration:none;
+    color: #0074cc;
+}
+
+.stack:hover {
+    color: #0a95ff;
 }
 
 .suBox {
@@ -58,7 +68,7 @@
 .suGoogle {
     display: flex;
     justify-content: center;
-    padding: 10.4px;
+    padding: 8.2px;
     border: 1px solid #D6D9DC; 
     outline: 0;
     background-color: #ffffff;
@@ -125,14 +135,107 @@
     box-shadow: 0 10px 24px hsla(0,0%,0%,0.05), 0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
 }
 
+.check {
+    width: 120px;
+    height: 20px;
+    border: none;
+    border-radius: 5px 5px 5px 5px;
+    color: #000000b2;
+}
+
+.check:hover, .verify:hover {
+    color: #000000;
+}
+
+.verify {
+    width: 50px;
+    height: 20px;
+    border: none;
+    border-radius: 5px 5px 5px 5px;
+    color: #000000b2;
+}
+
 .suID {
     display: flex;
     flex-direction: column;
+    gap: 2px;
 }
 
-.suPassword {
+.checkCenter, .verifyCenter {
+    display: flex;
+    justify-content: right;
+}
+
+.suIDCK {
     display: flex;
     flex-direction: column;
+    gap: 10px;
+}
+.suEmail {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+}
+
+.suPwd {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.suPwd2 {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.suPwdCon {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.suInputId {
+    width: 264.6px;
+    padding: 7.8px 9.1px;
+    border: 0;
+    outline: 1.2px solid #BABFC4;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.suInputCp {
+    width: 264.6px;
+    padding: 7.8px 9.1px;
+    border: 0;
+    outline: 1.2px solid #BABFC4;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.suInputDg {
+    width: 264.6px;
+    padding: 7.8px 9.1px;
+    border: 0;
+    outline: 1.2px solid #BABFC4;
+    border-radius: 5px 5px 5px 5px;
+    margin-bottom: 30px;
+}
+
+.signupBtn {
+    background-color: #0a95ff;
+    color : #ffffff;
+    border: 0;
+    outline: 0;
+    padding: 11px;
+    border-radius: 6px 6px 6px 6px;
+}
+
+.signupBtn:hover {
+    background-color: #0074cc;
+}
+
+.signupBtn:active {
+    background-color: #0063bf;
 }
 
 .errText{
@@ -144,4 +247,34 @@
 .succecsText{
     color: rgb(116, 174, 240);
     font-size: 0.8em;
+}
+
+.text2 {
+    font-size: 13px;
+    color : #6a737c;
+    
+}
+
+.txt {
+    font-size: 13px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.suLogin, .suEmployer {
+    color: #0074cc;
+    text-decoration:none;
+}
+
+.suLogin:hover, .suEmployer:hover{
+    color: #0a95ff;
+}
+
+.terms {
+    color: #0074cc;
+    text-decoration:none;
+}
+
+.terms:hover {
+    color: #0a95ff;
 }

@@ -56,29 +56,45 @@ const QuestionList = ({ isLogin }) => {
   };
   return (
     <section className="mainContiner">
-      <div className="buttonContiner">
-        <div className="QuestionLength">{totalQuestions}개의 질문</div>
-        {isLogin ? (
-          <Link to="/create_question">
-            <button className="ask_Question_Button">Ask Question</button>
-          </Link>
-        ) : (
-          <Link to="/signin">
-            <button className="ask_Question_Button">Ask Question</button>
-          </Link>
-        )}
-      </div>
-      <div className="filterButtonContiner">
-        <button className="filterBtn" onClick={filterHandle}>
-          Week
-        </button>
-        <button className="filterBtn">Month</button>
-      </div>
-      <div>
-        {questions.map((el) => {
-          return <Question info={el} key={el.question_id} />;
-        })}
-        {isLoading ? <div>Loading...</div> : <div ref={bottom}></div>}
+      <div className="mainContent">
+        <div className="line1">
+          <h1 className="allQuestions">All questions</h1>
+          {isLogin ? (
+            <Link to="/create_question">
+              <div className="questionBtn">
+                <button className="ask_Question_Button">Ask Question</button>
+              </div>
+            </Link>
+          ) : (
+            <Link to="/signin">
+              <div className="buttonContiner">
+                <button className="ask_Question_Button">Ask Question</button>
+              </div>
+            </Link>
+          )}
+        </div>
+        <div className="line2">
+          <div className="questionCount">{totalQuestions} questions</div>
+          <div className="filterContainer">
+            <button className="filterBtn1">Interesting</button>
+            <button className="filterBtn2">Bountied</button>
+            <button className="filterBtn3">Hot</button>
+            <button className="filterBtn4" onClick={filterHandle}>
+              Week
+            </button>
+            <button className="filterBtn5">Month</button>
+          </div>
+        </div>
+        <div className="qtContainer">
+          <div className="qtLiContainer">
+            <div className="qtLiDiv">
+              {questions.map((el) => {
+                return <Question info={el} key={el.question_id} />;
+              })}
+              {isLoading ? <div>Loading...</div> : <div ref={bottom}></div>}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

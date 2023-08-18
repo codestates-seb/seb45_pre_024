@@ -6,6 +6,13 @@
     background-color: aliceblue;
 }
 
+.quBox {
+    border-bottom-color: #e3e6e8;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    padding: 16px;
+    display: flex;
+}
 .username{
     margin-top: 10px;
     text-align: right;
@@ -20,4 +27,29 @@
     font-size: 0.8rem;
     color: gray;
     text-align: right;
+}
+
+.quContent {
+    display: flex;
+}
+
+.quAuthor {
+    display: flex;
+    text-align: right;
+    
+}
+
+.quTitle {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 17px;
+    text-align: left;
+}
+
+.quStats {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    font-size: 13px;
+    justify-content: space-between;
 }
