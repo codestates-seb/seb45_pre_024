@@ -41,9 +41,11 @@ public class QuestionService {
 
         return questionRepository.save(question);
     }
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void countView_count(Question question) {
-        questionRepository.save(question);
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    public Question getQuestionAndUpdateViewCount(long questionId, boolean deleted) {
+        Question question = findQuestionByDeleted(questionId, deleted);
+        questionRepository.incrementViewCountAndSave(question);
+        return question;
     }
 
     @Transactional(readOnly = true)
