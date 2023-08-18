@@ -7,6 +7,7 @@ const envURL = process.env.PUBLIC_URL;
 const SignIn = ({ loginHandle }) => {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
+  const [oauthType, setOauthType] = useState(null);
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
   const GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
   const navi = useNavigate();
@@ -15,43 +16,64 @@ const SignIn = ({ loginHandle }) => {
     const redirectUri = 'http://localhost:3000/signin'; // 승인된 리디렉션 URI
 
     // Google OAuth URL 생성
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=token&scope=email`;
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=email`;
 
     // Google 로그인 페이지로 리디렉션
+    setOauthType('google');
     window.location.assign(authUrl);
   };
   const GithubLoginRequestHandler = () => {
+    setOauthType('github');
     return window.location.assign(
       `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`,
     );
   };
 
   // 엑세스 토큰을 사용하여 사용자 데이터를 가져오는 함수
-  const fetchUserData = async (accessToken) => {
-    try {
-      // Google API 엔드포인트에 엑세스 토큰을 포함하여 요청을 보냄
-      const res = await axios.get(
-        'https://www.googleapis.com/oauth2/v2/userinfo',
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 헤더에 추가
-          },
-        },
-      );
-      sessionStorage.setItem('user', JSON.stringify(res.data));
-      loginHandle(res.data);
-      navi('/');
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
+  // const fetchUserData = async (accessToken) => {
+  //   try {
+  //     // Google API 엔드포인트에 엑세스 토큰을 포함하여 요청을 보냄
+  //     const res = await axios.get(
+  //       'https://www.googleapis.com/oauth2/v2/userinfo',
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 헤더에 추가
+  //         },
+  //       },
+  //     );
+  //     sessionStorage.setItem('user', JSON.stringify(res.data));
+  //     loginHandle(res.data);
+  //     console.log(res.data);
+  //     navi('/');
+  //   } catch (error) {
+  //     console.error('Error fetching user data:', error);
+  //   }
+  // };
 
-  // 페이지가 로드되면 URL의 해시 값을 파싱하고 사용자 데이터를 가져오는 효과 훅
+  //리디렉션 후 실행
   useEffect(() => {
-    const hash = window.location.hash; // 현재 URL의 해시 값을 가져옴
-    if (hash) {
-      const accessToken = hash.split('=')[1].split('&')[0]; // 해시에서 엑세스 토큰 추출
-      fetchUserData(accessToken); // 엑세스 토큰으로 사용자 데이터 가져옴
+    const params = new URLSearchParams(window.location.search);
+    const Authorization = params.get('code');
+    const header = {
+      headers: {
+        'Authorization-code': `${oauthType} ${Authorization}`,
+      },
+    };
+    if (Authorization) {
+      console.log(Authorization);
+      axios.post('./oauth', null, header).then((res) => {
+        if (res.status === 200) {
+          loginHandle(res.data);
+          sessionStorage.setItem('username', res.data.username);
+          sessionStorage.setItem('email', res.data.email);
+          sessionStorage.setItem('authorization', res.headers['authorization']);
+          sessionStorage.setItem('refresh', res.headers['refresh']);
+          navi('/');
+        } else if (res.status === 206) {
+          sessionStorage.setItem('email', res.data.email);
+          navi('/signIn');
+        }
+      });
     }
   }, []);
 
@@ -79,6 +101,8 @@ const SignIn = ({ loginHandle }) => {
       .post('/member/signin', formData, header)
       .then((res) => {
         loginHandle(res.data);
+        sessionStorage.setItem('username', res.data.username);
+        sessionStorage.setItem('email', res.data.email);
         sessionStorage.setItem('authorization', res.headers['authorization']);
         sessionStorage.setItem('refresh', res.headers['refresh']);
         navi('/');

@@ -10,5 +10,12 @@
 }
 
 .title{
-margin-bottom: 50px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.detailContainer{
+    display: flex;
+    justify-content: space-between;
 }

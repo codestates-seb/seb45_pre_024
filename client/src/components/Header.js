@@ -74,9 +74,11 @@ const Header = ({ isLogin, logout }) => {
                 Y
               </Link>
             </Avatar>
-            <button className="nav-item nav-links" onClick={logout}>
-              Log out
-            </button>
+            <Link to="/">
+              <button className="nav-item nav-links" onClick={logout}>
+                Log out
+              </button>
+            </Link>
           </>
         )}
       </div>

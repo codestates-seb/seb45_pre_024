@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Wepediter from './Wepediter';
 import PropTypes from 'prop-types';
 import './CreateQuestion.css';
-const CreateQuestion = ({ user }) => {
+const CreateQuestion = ({ user, isLogin }) => {
   const [textContent, setTextContent] = useState('');
   const [isError, setIsError] = useState(false);
   const [errText, setErrText] = useState('');
@@ -28,6 +28,7 @@ const CreateQuestion = ({ user }) => {
         user={user}
         type="Question"
         errhandle={errhandle}
+        isLogin={isLogin}
       />
       {isError ? <div className="errText">{errText}</div> : null}
     </div>
@@ -35,5 +36,6 @@ const CreateQuestion = ({ user }) => {
 };
 CreateQuestion.propTypes = {
   user: PropTypes.object,
+  isLogin: PropTypes.bool,
 };
 export default CreateQuestion;
