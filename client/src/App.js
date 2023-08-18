@@ -2,25 +2,79 @@ import './App.css';
 import QuestionList from './components/QuestionList';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SignIn from './components/SignIn';
-import { useState } from 'react';
-import Wepediter from './components/Wepediter';
+import { useEffect, useState } from 'react';
+import CreateQuestion from './components/CreateQuestion';
 import Footer from './components/footer';
+import Header from './components/Header';
+import SignUp from './components/SignUp';
+import QuestionDetail from './components/QuestionDetail';
+import LeftSidebar from './components/LeftSideBar';
+import { styled } from 'styled-components';
+import UserList from './components/Users';
+const MouseStalker = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: hsla(0, 0%, 75%, 0.2);
+  position: fixed;
+  left: ${(props) => props.position.x - 20}px;
+  top: ${(props) => props.position.y - 20}px;
+  pointer-events: none;
+  border: 1px solid #aaa;
+`;
+
 function App() {
   const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const sessionUser = sessionStorage.getItem('user');
+    if (sessionUser) {
+      setUser(JSON.parse(sessionUser));
+      setIsLogin(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setPosition({ x: event.clientX, y: event.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   const userHandle = (e) => {
     setUser(e);
   };
-  const loginHandle = () => {
+
+  const loginHandle = (e) => {
     setIsLogin(true);
+    userHandle(e);
   };
+
+  const logoutHandle = () => {
+    setUser(null);
+    setIsLogin(false);
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('authorization');
+    sessionStorage.removeItem('refresh');
+  };
+
   return (
     <div>
-      {isLogin ? <div>로그인 완료</div> : null}
-      {user ? <div>{user.email}님 안녕하세요</div> : null}
       <BrowserRouter>
+        <Header isLogin={isLogin} logout={logoutHandle} />
+        <span className="leftside">
+          <LeftSidebar />
+        </span>
         <Routes>
-          <Route path="/" element={<QuestionList />} />
+          <Route path="/" element={<QuestionList isLogin={isLogin} />} />
+          <Route path="/questions/:question_id" element={<QuestionDetail />} />
           <Route
             path="/signin"
             element={
@@ -31,10 +85,16 @@ function App() {
               />
             }
           />
-          <Route path="/test" element={<Wepediter />} />
+          <Route
+            path="/create_question"
+            element={<CreateQuestion user={user} />}
+          />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/users" element={<UserList />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
-      <Footer />
+      <MouseStalker position={position} />
     </div>
   );
 }

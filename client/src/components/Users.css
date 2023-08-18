@@ -1,0 +1,36 @@
+.user-list-container {
+  text-align: center;
+  font-size: 14px;
+  margin-left: 200px;
+}
+
+.user-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.user-item {
+  border: 2px solid #ef8236;
+  margin: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  width: 30%;
+  text-align: left;
+}
+
+.user-item strong {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.user-company {
+  color: #1e90ff;
+  font-weight: 600;
+}

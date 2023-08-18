@@ -1,5 +1,6 @@
 .mainContiner{
-    
+    margin-top: 150px;
+    margin-left: 150px;
 }
 .buttonContiner{
     display: flex;

@@ -1,16 +1,16 @@
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import './SignIn.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
-import { SHA256 } from 'crypto-js';
-const SignIn = ({ user, userHandle, loginHandle }) => {
-  const salt = 'salt';
-  const [userData, setUserData] = useState(null);
+const envURL = process.env.PUBLIC_URL;
+const SignIn = ({ loginHandle }) => {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  const GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
   const navi = useNavigate();
-  // Google 로그인 버튼을 클릭할 때 실행되는 함수
+
   const handleGoogleSignIn = () => {
     const redirectUri = 'http://localhost:3000/signin'; // 승인된 리디렉션 URI
 
@@ -20,12 +20,17 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
     // Google 로그인 페이지로 리디렉션
     window.location.assign(authUrl);
   };
+  const GithubLoginRequestHandler = () => {
+    return window.location.assign(
+      `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`,
+    );
+  };
 
   // 엑세스 토큰을 사용하여 사용자 데이터를 가져오는 함수
   const fetchUserData = async (accessToken) => {
     try {
       // Google API 엔드포인트에 엑세스 토큰을 포함하여 요청을 보냄
-      const response = await axios.get(
+      const res = await axios.get(
         'https://www.googleapis.com/oauth2/v2/userinfo',
         {
           headers: {
@@ -33,8 +38,8 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
           },
         },
       );
-      setUserData(response.data); // 가져온 사용자 데이터를 상태에 저장
-      userHandle(userData);
+      sessionStorage.setItem('user', JSON.stringify(res.data));
+      loginHandle(res.data);
       navi('/');
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -57,49 +62,117 @@ const SignIn = ({ user, userHandle, loginHandle }) => {
     setPw(e.target.value);
   };
   const signInHandle = () => {
-    if (id !== null) {
-      axios
-        .get(`http://localhost:3001/user`)
-        .then((res) => {
-          if (res.data[id].password === pw) {
-            const bash = SHA256(pw + salt).toString();
-            console.log(bash);
-            loginHandle();
-            userHandle(res.data[id]);
-            navi('/');
-          }
-        })
-        .catch(console.log('err'));
-    }
+    const formData = new FormData();
+    formData.append('username', id);
+    formData.append('password', pw);
+    const header = {
+      header: {
+        Authorization: 'Bearer your_access_token',
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    // const data = {
+    //   username: id,
+    //   password: pw,
+    // };
+    axios
+      .post('/member/signin', formData, header)
+      .then((res) => {
+        loginHandle(res.data);
+        sessionStorage.setItem('authorization', res.headers['authorization']);
+        sessionStorage.setItem('refresh', res.headers['refresh']);
+        navi('/');
+      })
+      .catch(console.error('err'));
   };
   return (
     <div>
-      <div>
-        아이디
-        <input
-          type="text"
-          value={id}
-          onChange={(e) => {
-            idHandle(e);
-          }}
-        />
-        비밀번호
-        <input
-          type="password"
-          value={pw}
-          onChange={(e) => {
-            pwHandle(e);
-          }}
-        />
-      </div>
-      <button onClick={handleGoogleSignIn}>Google 로그인</button>
-      <button onClick={signInHandle}>로그인</button>
-      {user && (
-        <div>
-          <h2>User Data</h2>
-          <p>Email: {userData.email}</p>
+      <div className="mainContainer">
+        <div className="content">
+          <div className="loginBox">
+            <div className="logoContainer">
+              <Link to="http://localhost:3000">
+                <img className="logo" src={envURL + '/logo.png'} alt="logo" />
+              </Link>
+            </div>
+            <div className="buttonContainer">
+              <button className="google" onClick={handleGoogleSignIn}>
+                <img
+                  className="googleImg"
+                  src={envURL + '/google.png'}
+                  alt="google_logo"
+                ></img>
+                <span>Log in with Google</span>
+              </button>
+              <button className="git" onClick={GithubLoginRequestHandler}>
+                <img
+                  className="githubImg"
+                  src={envURL + '/github.png'}
+                  alt="github_logo"
+                ></img>
+                <span>Log in with Github</span>{' '}
+              </button>
+              <button className="facebook">
+                <img
+                  className="facebookImg"
+                  src={envURL + '/facebook.png'}
+                  alt="facebook_logo"
+                ></img>
+                <span>Log in with Facebook</span>
+              </button>
+            </div>
+            <div className="inputContainer">
+              <div className="input">
+                <div className="id">
+                  <b>ID</b>
+                  <input
+                    className="idInput"
+                    type="text"
+                    value={id}
+                    onChange={(e) => {
+                      idHandle(e);
+                    }}
+                  />
+                </div>
+                <div className="pwd">
+                  <b>Password</b>
+                  <input
+                    className="pwdInput"
+                    type="password"
+                    value={pw}
+                    onChange={(e) => {
+                      pwHandle(e);
+                    }}
+                  />
+                </div>
+
+                <button className="loginBtn" onClick={signInHandle}>
+                  Log in
+                </button>
+              </div>
+              <div className="text">
+                <p>
+                  Don’t have an account?{' '}
+                  <Link className="signUp" to="/signup">
+                    Sign up
+                  </Link>
+                </p>
+                <div className="text2">
+                  <p>
+                    Are you an employer?{' '}
+                    <Link
+                      className="employer"
+                      to="https://talent.stackoverflow.com/users/login"
+                    >
+                      Sign up on Talent{' '}
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
