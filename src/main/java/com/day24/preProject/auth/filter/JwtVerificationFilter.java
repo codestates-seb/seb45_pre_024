@@ -1,9 +1,9 @@
 package com.day24.preProject.auth.filter;
 
 import com.day24.preProject.auth.jwt.JwtTokenizer;
-import com.day24.preProject.auth.userdetails.MemberDetailsService;
 import com.day24.preProject.auth.utils.AuthorityUtils;
 import com.day24.preProject.member.entity.Member;
+import com.day24.preProject.member.service.MemberService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,11 +23,11 @@ import java.util.Map;
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final AuthorityUtils authorityUtils;
-    private final MemberDetailsService memberDetailsService;
-    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, AuthorityUtils authorityUtils, MemberDetailsService memberDetailsService) {
+    private final MemberService memberService;
+    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, AuthorityUtils authorityUtils, MemberService memberService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
-        this.memberDetailsService = memberDetailsService;
+        this.memberService = memberService;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         } catch (ExpiredJwtException accessEx) {
             try {
                 String username = verfiRefreshJwt(request);
-                Member member = memberDetailsService.getMember(username);
+                Member member = memberService.findMember(username);
                 response.setHeader("Authorization", "Bearer "+jwtTokenizer.generateAccessToken(member));
                 request.setAttribute("exception", new JwtException("Access token has expired"));
             } catch (ExpiredJwtException refreshEx) {
