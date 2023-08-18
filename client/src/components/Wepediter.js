@@ -4,6 +4,7 @@ import '@toast-ui/editor/dist/i18n/ko-kr';
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import './Webeditor.css';
 import { useNavigate } from 'react-router-dom';
 const Wepediter = ({ title, type, errhandle, question_id }) => {
   const [content, setContent] = useState(' ');
@@ -57,7 +58,7 @@ const Wepediter = ({ title, type, errhandle, question_id }) => {
       <Editor
         initialValue={content}
         previewStyle="tab"
-        height="600px"
+        height="300px"
         ref={editorRef}
         onChange={onChange}
         initialEditType="wysiwyg"

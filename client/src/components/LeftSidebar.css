@@ -1,12 +1,20 @@
+*{
+  box-sizing: border-box;
+}
 .left-sidebar {
   display: inline-block;
   width: 150px;
   box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   background-color: white;
   height: auto;
+  height: 100vh;
   min-height: 100vh;
-  transition: box-shadow ease-in-out 0.1s, transform ease-in-out 0.1s;
+  z-index: 5;
+  transition:
+    box-shadow ease-in-out 0.1s,
+    transform ease-in-out 0.1s;
   box-sizing: border-box;
+  flex-grow: 1 1 1;
 }
 
 .font {
