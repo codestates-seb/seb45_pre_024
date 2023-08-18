@@ -6,12 +6,21 @@ const Question = ({ info }) => {
     info.created_at.slice(0, 10) + ' ' + info.created_at.slice(11, 19);
   return (
     <div>
-      <section className="container">
-        <div>
-          <div className="title">
+      <section className="quBox">
+        <div className="quStats">
+          <div className="quVote">0 votes</div>
+          <div className="quAnswer">{info.accepted} 0 answers</div>
+          <div className="quView">{info.view_count} views</div>
+        </div>
+        <div className="quContent">
+          <h3 className="quTitle">
             <Link to={`/questions/${info.question_id}`}>
               <span>{info.title}</span>
             </Link>
+          </h3>
+          <div className="quAuthor">
+            <div className="quUser">{info.username}</div>
+            <div className="quTime">asked {info.created_at} ago</div>
           </div>
 
           <div className="username">{info.username}</div>
