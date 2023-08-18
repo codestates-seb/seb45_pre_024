@@ -57,6 +57,9 @@ const Header = ({ isLogin, logout }) => {
             <Link to="/signin" className="login">
               <button className="login">Log in</button>
             </Link>
+            <Link to="/signup" className="signup">
+              <button className="signup">Sign Up</button>
+            </Link>
           </>
         ) : (
           <>

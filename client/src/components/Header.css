@@ -30,7 +30,7 @@
   justify-content: space-between;
   justify-content: center;
   align-items: center;
-  gap: 60px;
+  gap: 45px;
 }
 
 .nav-logo {
@@ -94,6 +94,15 @@
 }
 
 .login {
+  cursor: pointer;
+  height: 32px;
+  width: 60px;
+  border-radius: 10px;
+  border: none;
+  background-color: #d3e4eb;
+}
+
+.signup {
   cursor: pointer;
   height: 32px;
   width: 60px;

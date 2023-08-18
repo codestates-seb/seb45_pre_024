@@ -1,21 +1,19 @@
-.bodyContainer{
-    background-color: aqua;
-
+.bodyContainer {
+  background-color: aqua;
 }
-.body{
-
+.body {
 }
-.mainContainer{
-    margin-left: 150px;
+.mainContainer {
+  margin-left: 150px;
 }
 
-.title{
-    margin-bottom: 50px;
-    display: flex;
-    justify-content: space-between;
+.title {
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.detailContainer{
-    display: flex;
-    justify-content: space-between;
+.detailContainer {
+  display: flex;
+  justify-content: space-between;
 }

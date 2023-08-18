@@ -41,11 +41,13 @@ function UserList() {
       });
   }, []);
 
+  const filteredUsers = users.filter((user) => user.id !== 10);
+
   return (
     <div className="user-list-container">
       <h1>User List</h1>
       <ul className="user-list">
-        {users.map((user) => (
+        {filteredUsers.map((user) => (
           <div className="user-item" key={user.id}>
             <strong>Name:</strong> {user.name}
             <strong>Email:</strong> {user.email}
