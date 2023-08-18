@@ -1,87 +1,19 @@
-/* .bodyContainer {
-  background-color: white;
-  border-radius: 30px;
-  margin-top: 50px;
-  margin-bottom: 50px;
-}
-
-.mainContainer {
-  margin-bottom: 50px;
-}
-
-.body {
-    height: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.mainContainer {
-  margin-left: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.title {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items:flex-start;
-}
-
-.createAnswer {
-  width: 700px;
-} */
-
-/* QuestionDetail.css */
-
-.mainContainer {
-  width: 70%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
 .bodyContainer {
-  margin-top: 20px;
+  background-color: aqua;
 }
-
 .body {
-  font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 20px;
+}
+.mainContainer {
+  margin-left: 150px;
 }
 
-.createAnswer {
-  margin-top: 20px;
+.title {
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.answer {
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 20px;
+.detailContainer {
+  display: flex;
+  justify-content: space-between;
 }
-
-/* Styling for the Wepediter component (adjust as needed) */
-.Wepediter {
-  border: 1px solid #ccc;
-  padding: 10px;
-}
-
-/* Additional styling for links within the body text */
-.body a {
-  color: #0077cc;
-  text-decoration: none;
-}
-
-.body a:hover {
-  text-decoration: underline;
-}
-

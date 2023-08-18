@@ -1,6 +1,45 @@
 .mainContiner{
-    margin-top: 150px;
-    margin-left: 150px;
+    margin-left: 251px;
+    margin-right: 87px;
+}
+
+.mainContent {
+    padding: 24px;
+}
+
+.line1 {
+    display: flex;
+    margin-bottom: 13px;
+    justify-content: space-between;
+    font-size: 18px;
+    color: #232629;
+}
+
+.ask_Question_Button {
+    margin-bottom: 12px;
+}
+
+.questionCount {
+    display: flex;
+    font-size: 17px;
+    align-items: center;
+}
+
+.filterContainer {
+    display: flex;
+}
+
+.line2 {
+    display: flex;
+    justify-content: space-between;
+    height: 38.59px;
+    margin-bottom: 16px;
+}
+
+.allQuestions {
+    margin-top: 0px;
+    margin-bottom: 12px;
+    margin-right: 12px;
 }
 .buttonContiner{
     display: flex;
@@ -13,15 +52,38 @@
     color: white;
     border: solid 1px black;
 }
-.filterBtn{
-    width: 100px;
-    margin-top: 10px;
+.filterBtn1, .filterBtn2, .filterBtn3, .filterBtn4, .filterBtn5 {
+    display: inline-block;
+    padding: 5.2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 13px;
+    border: solid 1px #BABFC4;
+    color: #3B4045;
 }
-.filterButtonContiner{
-    display: flex;
-    justify-content: end;
+
+.filterBtn2, .filterBtn3, .filterBtn4, .filterBtn5 {
+    background-color: white;
 }
-.QuestionLength{
-    margin-top: 10px;
-    margin-left: 10px;
+
+.filterBtn1, .filterBtn2, .filterBtn3, .filterBtn4 {
+    margin-right: -1.5px;
+}
+
+.filterBtn1 {
+    background-color: #E3E6E8;
+    border-radius: 5px 0px 0px 5px;
+}
+
+.filterBtn5 {
+    border-radius: 0px 5px 5px 0px;
+}
+
+.qtContainer {
+    border-top: 1px solid #d6d9dc;
+    margin-left: -24px;
+}
+
+.qtLiContainer {
+    margin-bottom: 30px;
 }
