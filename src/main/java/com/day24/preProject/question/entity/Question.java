@@ -46,11 +46,5 @@ public class Question extends Auditable {
 
         public void setMember(Member member) {this.member = member;}
 
-        public void  addAnswer(Answer answer) {
-                answers.add(answer);
-                if (answer.getQuestion() != this) {
-                        answer.setQuestion(this);
-                }
-        }
 
 }

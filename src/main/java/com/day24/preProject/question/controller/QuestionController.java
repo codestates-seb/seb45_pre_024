@@ -40,9 +40,7 @@ public class QuestionController {
 
     @GetMapping("/{id}")
     public ResponseEntity getQuestion(@PathVariable("id") long questionId, boolean deleted) {
-        Question question = questionService.findQuestionByDeleted(questionId, deleted);
-        question.setView_count(question.getView_count()+1);
-        questionService.countView_count(question);
+        Question question = questionService.getQuestionAndUpdateViewCount(questionId, deleted);
 
         QuestionResponseDto questionDetailResponseDto =
                 questionMapper.questionToQuestionResponseDto(question);
