@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -19,8 +18,7 @@ public class ErrorResponser {
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
 
-    public static void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, HttpStatus status) throws IOException {
-        RuntimeException exception = (RuntimeException) request.getAttribute("exception");
+    public static void sendErrorResponse(Exception exception, HttpServletResponse response, HttpStatus status) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
         ErrorResponse errorResponse = ErrorResponse.of(status, exception.getMessage());
