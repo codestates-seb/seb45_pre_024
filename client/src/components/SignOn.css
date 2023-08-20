@@ -1,0 +1,13 @@
+.mainContainer{
+    margin-top: 150px;
+}
+
+.errText{
+    color: red;
+    font-size: 0.8em;
+}
+
+.succecsText{
+    color: rgb(116, 174, 240);
+    font-size: 0.8em;
+}
