@@ -8,13 +8,13 @@ public enum ExceptionCode {
     INVALID_MEMBER_STATUS(400, "Invalid member status"),
     MEMBER_WRONG_PASSWORD(400, "Wrong password"),
     INVALID_BODY_VALUE(400, "Invalid body value"),
-    INVALID_REQUEST_PARAMETER(400, "Invalid request parpameter"),
+    INVALID_REQUEST_PARAMETER(400, "Invalid request parameter"),
     FORBIDDEN_REQUEST(403, "Forbidden request"),
 
     QUESTION_NOT_FOUND(404, "Question not found"),
     ANSWER_NOT_FOUND(404, "Answer not found"),
-    QUESTION_REPLY_NOT_FOUND(404, "Question reply not found"),
-    ANSWER_REPLY_NOT_FOUND(404, "Answer reply not found"),
+    QUESTION_COMMENT_NOT_FOUND(404, "Question comment not found"),
+    ANSWER_COMMENT_NOT_FOUND(404, "Answer comment not found"),
 
     ;
     @Getter

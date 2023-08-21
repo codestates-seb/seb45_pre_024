@@ -3,6 +3,7 @@ package com.day24.preProject.question.entity;
 import com.day24.preProject.answer.entity.Answer;
 import com.day24.preProject.audit.Auditable;
 import com.day24.preProject.member.entity.Member;
+import com.day24.preProject.questionComment.entity.QuestionComment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,7 +45,7 @@ public class Question extends Auditable {
         @OneToMany(mappedBy = "question")
         private List<Answer> answers = new ArrayList<>();
 
-        public void setMember(Member member) {this.member = member;}
-
+        @OneToMany(mappedBy = "question")
+        private List<QuestionComment> questionComments = new ArrayList<>();
 
 }

@@ -1,66 +1,77 @@
 package com.day24.preProject.questionComment.controller;
 
+import com.day24.preProject.questionComment.dto.QuestionCommentPatchDto;
+import com.day24.preProject.questionComment.dto.QuestionCommentPostDto;
+import com.day24.preProject.questionComment.entity.QuestionComment;
+import com.day24.preProject.questionComment.mapper.QuestionCommentMapper;
+import com.day24.preProject.questionComment.service.QuestionCommentService;
+import com.day24.preProject.dto.MultiResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import java.util.List;
+
 @Controller
-@RequestMapping("/v11/QustionComments")
+@RequestMapping("/question/comment")
 @Validated
 public class QuestionCommentController {
-//    private QuestionCommentService questionCommentService;
-//    private QuestionCommentMapper questionCommentMapper;
-//
-//    public QuestionCommentController(QuestionCommentService questionCommentService, QuestionCommentMapper questionCommentMapper) {
-//        this.questionCommentService = questionCommentService;
-//        this.questionCommentMapper = questionCommentMapper;
-//    }
-//
-//    @PostMapping
-//    public ResponseEntity postQustionComment(@Valid @RequestBody QustionCommentPostDto QustionCommentPostDto) {
-//        QustionComment QustionComment = questionCommentService.createQustionComment(mapper.QustionCommentPostDtoToQustionComment(QustionCommentPostDto));
-//        URI location = UriCreator.createUri(QustionComment_DEFAULT_URL, QustionComment.getQustionCommentId());
-//
-//        return ResponseEntity.created(location).build();
-//    }
-//
-//    @PatchMapping("/{QustionComment-id}")
-//    public ResponseEntity patchQustionComment(@PathVariable("QustionComment-id") @Positive long QustionCommentId,
-//                                      @Valid @RequestBody QustionCommentPatchDto QustionCommentPatchDto) {
-//        QustionCommentPatchDto.setQustionCommentId(QustionCommentId);
-//        QustionComment QustionComment = QustionCommentService.updateQustionComment(mapper.QustionCommentPatchDtoToQustionComment(QustionCommentPatchDto));
+    private QuestionCommentService questionCommentService;
+    private QuestionCommentMapper questionCommentMapper;
+
+    public QuestionCommentController(QuestionCommentService questionCommentService, QuestionCommentMapper questionCommentMapper) {
+        this.questionCommentService = questionCommentService;
+        this.questionCommentMapper = questionCommentMapper;
+    }
+
+    @PostMapping("/{questionId}")
+    public ResponseEntity postQuestionComment(@PathVariable("questionId") long questionId, @Valid @RequestBody QuestionCommentPostDto questionCommentPostDto, @AuthenticationPrincipal long memberId) {
+        QuestionComment questionComment = questionCommentMapper.questionCommentPostDtoToQuestionComment(questionCommentPostDto);
+        questionCommentService.createQuestionComment(questionId, memberId, questionComment);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity getQuestionComment(@PathVariable("id") long questionCommentId) {
+//        QuestionComment questionComment = questionCommentService.findQuestionComment(questionCommentId);
 //
 //        return new ResponseEntity<>(
-//                new SingleResponseDto<>(mapper.QustionCommentToQustionCommentResponseDto(QustionComment)),
-//                HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/{QustionComment-id}")
-//    public ResponseEntity getQustionComment(@PathVariable("QustionComment-id") long QustionCommentId) {
-//        QustionComment QustionComment = QustionCommentService.findQustionComment(QustionCommentId);
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(mapper.QustionCommentToQustionCommentResponseDto(QustionComment)),
+//                questionCommentMapper.questionCommentToQuestionCommentResponseDto(questionComment),
 //                HttpStatus.OK);
 //    }
 //
 //    @GetMapping
-//    public ResponseEntity getQustionComments(@Positive @RequestParam int page,
-//                                     @Positive @RequestParam int size) {
-//        Page<QustionComment> pageQustionComments = QustionCommentService.findQustionComments(page - 1, size);
-//        List<QustionComment> QustionComments = pageQustionComments.getContent();
+//    public ResponseEntity getQuestionComments(@Positive @RequestParam int page,
+//                                             @Positive @RequestParam int size) {
+//        Page<QuestionComment> pageQuestionComments = questionCommentService.findQuestionComments(page - 1, size);
+//        List<QuestionComment> questionComments = pageQuestionComments.getContent();
 //
 //        return new ResponseEntity<>(
-//                new MultiResponseDto<>(mapper.QustionCommentsToQustionCommentResponseDtos(QustionComments),
-//                        pageQustionComments),
+//                new MultiResponseDto<>(questionCommentMapper.questionCommentsToQuestionCommentResponseDtos(questionComments),
+//                        pageQuestionComments),
 //                HttpStatus.OK);
 //    }
-//
-//    @DeleteMapping("/{QustionComment-id}")
-//    public ResponseEntity deleteQustionComment(@PathVariable("QustionComment-id") long QustionCommentId) {
-//        QustionCommentService.deleteQustionComment(QustionCommentId);
-//
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity patchQuestionComment(@PathVariable("id") @Positive long id,
+                                             @Valid @RequestBody QuestionCommentPatchDto requestbody, @AuthenticationPrincipal long memberId) {
+        QuestionComment questionComment = questionCommentMapper.questionCommentPatchDtoToQuestionComment(requestbody);
+        questionComment.setQuestionCommentId(id);
+        questionCommentService.updateQuestionComment(questionComment, memberId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteQuestionComment(@PathVariable("id") long questionCommentId, @AuthenticationPrincipal long memberId) {
+        questionCommentService.deleteQuestionComment(questionCommentId, memberId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
 
