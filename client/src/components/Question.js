@@ -1,9 +1,38 @@
 import PropTypes from 'prop-types';
 import './Question.css';
 import { Link } from 'react-router-dom';
+
+function timeSince(date) {
+  // "2023-08-18T07:13:57.415783"
+  let newDate = Date.parse(date);
+  console.log(newDate);
+  let seconds = Math.floor((new Date() - newDate) / 1000);
+  let interval = seconds / 31536000;
+
+  if (interval > 1) {
+    return Math.floor(interval) + ' years';
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    return Math.floor(interval) + ' months';
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    return Math.floor(interval) + ' days';
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    return Math.floor(interval) + ' hours';
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    return Math.floor(interval) + ' minutes';
+  }
+  return Math.floor(seconds) + ' seconds';
+}
+
 const Question = ({ info }) => {
-  const created_at =
-    info.created_at.slice(0, 10) + ' ' + info.created_at.slice(11, 19);
+  console.log(info);
   return (
     <div>
       <section className="quBox">
@@ -20,11 +49,8 @@ const Question = ({ info }) => {
           </h3>
           <div className="quAuthor">
             <div className="quUser">{info.username}</div>
-            <div className="quTime">asked {info.created_at} ago</div>
+            <div className="quTime">asked {timeSince(info.created_at)} ago</div>
           </div>
-
-          <div className="username">{info.username}</div>
-          <div className="create_At">작성일:{created_at}</div>
         </div>
       </section>
     </div>
