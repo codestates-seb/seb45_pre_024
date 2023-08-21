@@ -29,8 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Oauth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    @Value("${redirect.front.url}")
-    private String baseUrl;
+    private String baseUrl = "http://localhost:3000";
     private final JwtTokenizer jwtTokenizer;
     private final MemberService memberService;
     private final ObjectMapper objectMapper;
