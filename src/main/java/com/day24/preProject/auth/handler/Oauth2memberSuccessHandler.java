@@ -5,6 +5,7 @@ import com.day24.preProject.member.entity.Member;
 import com.day24.preProject.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -28,6 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Oauth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    @Value("${redirect.front.url}")
+    private String baseUrl;
     private final JwtTokenizer jwtTokenizer;
     private final MemberService memberService;
     private final ObjectMapper objectMapper;
@@ -46,8 +49,16 @@ public class Oauth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         if (email.equals("null")) email = getEmailFromGitHub(getOAuthAccessToken(authentication));
 
         Member findMember = memberService.findMemberByEmail(email);
-        if (findMember == null) signUpResponse(response, email);
-        else signInRespnose(response, findMember);
+        String redirectUrl;
+        if (findMember == null) {
+            signUpResponse(response, email);
+            redirectUrl = "/oauth";
+        }
+        else {
+            signInRespnose(response, findMember);
+            redirectUrl = "";
+        }
+        getRedirectStrategy().sendRedirect(request, response, baseUrl+redirectUrl);
     }
     private String getEmailFromGitHub(String accessToken) throws IOException {
         HttpURLConnection conn = (HttpURLConnection) githubUrl.openConnection();
