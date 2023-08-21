@@ -66,4 +66,5 @@
 input::placeholder {
   font-size: 15px;
   margin-bottom: 5px;
+  margin-top: 1px;
 }
