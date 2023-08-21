@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './SignIn.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -7,75 +7,13 @@ const envURL = process.env.PUBLIC_URL;
 const SignIn = ({ loginHandle }) => {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
-  const [oauthType, setOauthType] = useState(null);
-  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-  const GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
   const navi = useNavigate();
 
-  const handleGoogleSignIn = () => {
-    const redirectUri = 'http://localhost:3000/signin'; // 승인된 리디렉션 URI
-
-    // Google OAuth URL 생성
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=email`;
-
-    // Google 로그인 페이지로 리디렉션
-    setOauthType('google');
-    window.location.assign(authUrl);
+  const oauthHandle = (type) => {
+    axios
+      .get(`/oauth2/authorization/${type}`)
+      .then((res) => window.location.assign(res.data.redirect_url));
   };
-  const GithubLoginRequestHandler = () => {
-    setOauthType('github');
-    return window.location.assign(
-      `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`,
-    );
-  };
-
-  // 엑세스 토큰을 사용하여 사용자 데이터를 가져오는 함수
-  // const fetchUserData = async (accessToken) => {
-  //   try {
-  //     // Google API 엔드포인트에 엑세스 토큰을 포함하여 요청을 보냄
-  //     const res = await axios.get(
-  //       'https://www.googleapis.com/oauth2/v2/userinfo',
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 헤더에 추가
-  //         },
-  //       },
-  //     );
-  //     sessionStorage.setItem('user', JSON.stringify(res.data));
-  //     loginHandle(res.data);
-  //     console.log(res.data);
-  //     navi('/');
-  //   } catch (error) {
-  //     console.error('Error fetching user data:', error);
-  //   }
-  // };
-
-  //리디렉션 후 실행
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const Authorization = params.get('code');
-    const header = {
-      headers: {
-        'Authorization-code': `${oauthType} ${Authorization}`,
-      },
-    };
-    if (Authorization) {
-      console.log(Authorization);
-      axios.post('./oauth', null, header).then((res) => {
-        if (res.status === 200) {
-          loginHandle(res.data);
-          sessionStorage.setItem('username', res.data.username);
-          sessionStorage.setItem('email', res.data.email);
-          sessionStorage.setItem('authorization', res.headers['authorization']);
-          sessionStorage.setItem('refresh', res.headers['refresh']);
-          navi('/');
-        } else if (res.status === 206) {
-          sessionStorage.setItem('email', res.data.email);
-          navi('/signIn');
-        }
-      });
-    }
-  }, []);
 
   const idHandle = (e) => {
     setId(e.target.value);
@@ -93,10 +31,6 @@ const SignIn = ({ loginHandle }) => {
         'Content-Type': 'multipart/form-data',
       },
     };
-    // const data = {
-    //   username: id,
-    //   password: pw,
-    // };
     axios
       .post('/member/signin', formData, header)
       .then((res) => {
@@ -120,7 +54,7 @@ const SignIn = ({ loginHandle }) => {
               </Link>
             </div>
             <div className="buttonContainer">
-              <button className="google" onClick={handleGoogleSignIn}>
+              <button className="google" onClick={() => oauthHandle('google')}>
                 <img
                   className="googleImg"
                   src={envURL + '/google.png'}
@@ -128,7 +62,7 @@ const SignIn = ({ loginHandle }) => {
                 ></img>
                 <span>Log in with Google</span>
               </button>
-              <button className="git" onClick={GithubLoginRequestHandler}>
+              <button className="git" onClick={() => oauthHandle('github')}>
                 <img
                   className="githubImg"
                   src={envURL + '/github.png'}
@@ -136,7 +70,10 @@ const SignIn = ({ loginHandle }) => {
                 ></img>
                 <span>Log in with Github</span>{' '}
               </button>
-              <button className="facebook">
+              <button
+                className="facebook"
+                onClick={() => oauthHandle('facebook')}
+              >
                 <img
                   className="facebookImg"
                   src={envURL + '/facebook.png'}

@@ -11,6 +11,7 @@ import QuestionDetail from './components/QuestionDetail';
 import LeftSidebar from './components/LeftSideBar';
 import { styled } from 'styled-components';
 import UserList from './components/Users';
+import SearchQuestion from './components/SearchQuestion';
 const MouseStalker = styled.div`
   width: 40px;
   height: 40px;
@@ -95,6 +96,7 @@ function App() {
           />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/users" element={<UserList />} />
+          <Route path="/search/:text" element={<SearchQuestion />} />
         </Routes>
         <Footer />
       </BrowserRouter>
