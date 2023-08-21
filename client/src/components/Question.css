@@ -12,10 +12,23 @@
     border-bottom-width: 1px;
     padding: 16px;
     display: flex;
+    height: 106px;
 }
+
+.quAuthor {
+    display: flex;
+    text-align: right;
+    gap: 3px;
+}
+
 .username{
     margin-top: 10px;
     text-align: right;
+}
+
+.quUser {
+    font-size: 12px;
+    color: #0074cc;
 }
 
 .title{
@@ -35,7 +48,7 @@
 
 .quAuthor {
     display: flex;
-    text-align: right;
+    justify-content: right;
     
 }
 
@@ -44,6 +57,21 @@
     margin-bottom: 0px;
     font-size: 17px;
     text-align: left;
+
+}
+
+.quTitle > a {
+    color: #0a95ff;
+    text-decoration: none;
+}
+.quTitle > a:hover {
+    color: #41aafa;
+}
+
+
+.quTime {
+    font-size: 12px;
+    color: #6A737C;
 }
 
 .quStats {

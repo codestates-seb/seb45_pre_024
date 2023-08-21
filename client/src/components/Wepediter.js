@@ -4,7 +4,6 @@ import '@toast-ui/editor/dist/i18n/ko-kr';
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-// import './Webeditor.css';
 import { useNavigate } from 'react-router-dom';
 import './Wepediter.css';
 const Wepediter = ({
@@ -13,7 +12,7 @@ const Wepediter = ({
   errhandle,
   question_id,
   isLogin,
-  FetchAnswerData,
+  renderCurrentPage,
 }) => {
   const [content, setContent] = useState(' ');
   const [errRes, setErrRes] = useState('');
@@ -63,7 +62,7 @@ const Wepediter = ({
       };
       axios
         .post(`/answer/${question_id}`, Data, header)
-        .then(FetchAnswerData())
+        .then(renderCurrentPage())
         .then(clearEditor)
         .catch((res) => {
           if (res.response.data.message === 'Forbidden request') {
@@ -117,6 +116,6 @@ Wepediter.propTypes = {
   errhandle: PropTypes.func,
   question_id: PropTypes.string,
   isLogin: PropTypes.bool,
-  FetchAnswerData: PropTypes.func,
+  renderCurrentPage: PropTypes.func,
 };
 export default Wepediter;

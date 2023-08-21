@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
-
+import './Answer.css';
 const Answer = ({ info }) => {
   return (
     <div className={info.accepted ? `accepted` : ''}>
