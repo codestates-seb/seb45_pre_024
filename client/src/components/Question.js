@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import './Question.css';
 import { Link } from 'react-router-dom';
+import ReactHtmlParser from 'react-html-parser';
 
 function timeSince(date) {
   // "2023-08-18T07:13:57.415783"
   let newDate = Date.parse(date);
-  console.log(newDate);
   let seconds = Math.floor((new Date() - newDate) / 1000);
   let interval = seconds / 31536000;
 
@@ -32,7 +32,7 @@ function timeSince(date) {
 }
 
 const Question = ({ info }) => {
-  console.log(info);
+  const quDetail = info.body.slice(0, 60);
   return (
     <div>
       <section className="quBox">
@@ -47,6 +47,10 @@ const Question = ({ info }) => {
               <span>{info.title}</span>
             </Link>
           </h3>
+          <div className="quDetail">
+            <span>{ReactHtmlParser(quDetail)}</span>
+          </div>
+
           <div className="quAuthor">
             <div className="quUser">{info.username}</div>
             <div className="quTime">asked {timeSince(info.created_at)} ago</div>
@@ -59,5 +63,4 @@ const Question = ({ info }) => {
 Question.propTypes = {
   info: PropTypes.object,
 };
-
 export default Question;
