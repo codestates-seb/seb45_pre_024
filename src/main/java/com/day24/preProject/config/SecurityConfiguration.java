@@ -5,8 +5,10 @@ import com.day24.preProject.auth.filter.JwtVerificationFilter;
 import com.day24.preProject.auth.handler.MemberAccessDeniedHandler;
 import com.day24.preProject.auth.handler.MemberAuthenticationEntryPoint;
 import com.day24.preProject.auth.handler.MemberAuthenticationFailureHandler;
+import com.day24.preProject.auth.handler.Oauth2memberSuccessHandler;
 import com.day24.preProject.auth.jwt.JwtTokenizer;
 import com.day24.preProject.auth.utils.AuthorityUtils;
+import com.day24.preProject.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,23 +18,28 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.net.MalformedURLException;
 import java.util.Arrays;
 
 @Configuration
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final AuthorityUtils authorityUtils;
+    private final MemberService memberService;
+    private final OAuth2AuthorizedClientService auth2AuthorizedClientService;
 
-    public SecurityConfiguration(JwtTokenizer jwtTokenizer, AuthorityUtils authorityUtils) {
+    public SecurityConfiguration(JwtTokenizer jwtTokenizer, AuthorityUtils authorityUtils, MemberService memberService, OAuth2AuthorizedClientService auth2AuthorizedClientService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
+        this.memberService = memberService;
+        this.auth2AuthorizedClientService = auth2AuthorizedClientService;
     }
 
     @Bean
@@ -65,6 +72,15 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.PATCH, "/answer/**").hasRole("USER")
                         .antMatchers(HttpMethod.DELETE, "/answer/**").hasRole("USER")
                         .anyRequest().permitAll()
+                )
+                .oauth2Login(oauth2 -> {
+                            try {
+                                oauth2
+                                        .successHandler(new Oauth2memberSuccessHandler(jwtTokenizer, memberService, new ObjectMapper(), auth2AuthorizedClientService));
+                            } catch (MalformedURLException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                 );
         return http.build();
     }
@@ -78,10 +94,6 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
@@ -91,9 +103,9 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setFilterProcessesUrl("/member/signin");
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils, memberService);
             builder.addFilter(jwtAuthenticationFilter)
-                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
+                    .addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
         }
     }
 }

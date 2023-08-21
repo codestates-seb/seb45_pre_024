@@ -2,6 +2,10 @@ package com.day24.preProject.auth.filter;
 
 import com.day24.preProject.auth.jwt.JwtTokenizer;
 import com.day24.preProject.auth.utils.AuthorityUtils;
+import com.day24.preProject.member.entity.Member;
+import com.day24.preProject.member.service.MemberService;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,21 +23,31 @@ import java.util.Map;
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final AuthorityUtils authorityUtils;
-
-    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, AuthorityUtils authorityUtils) {
+    private final MemberService memberService;
+    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, AuthorityUtils authorityUtils, MemberService memberService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
+        this.memberService = memberService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
-            Map<String, Object> claims = verifyJws(request);
+            Map<String, Object> claims = verifyAccessJwt(request);
             setAuthenticationToContext(claims);
-        } catch (Exception e) {
+        } catch (ExpiredJwtException accessEx) {
+            try {
+                String username = verfiRefreshJwt(request);
+                Member member = memberService.findMember(username);
+                response.setHeader("Authorization", "Bearer "+jwtTokenizer.generateAccessToken(member));
+                request.setAttribute("exception", new JwtException("Access token has expired"));
+            } catch (ExpiredJwtException refreshEx) {
+                request.setAttribute("exception", new JwtException("Refresh token has expired"));
+            }
+        }
+        catch (Exception e) {
             request.setAttribute("exception", e);
         }
-
         filterChain.doFilter(request, response);
     }
 
@@ -43,11 +57,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         return authorization == null || !authorization.startsWith("Bearer ");
     }
 
-    private Map<String, Object> verifyJws(HttpServletRequest request) {
+    private Map<String, Object> verifyAccessJwt(HttpServletRequest request) {
         String jws = request.getHeader("Authorization").replace("Bearer ", "");
         return jwtTokenizer.getClaims(jws).getBody();
     }
-
+    private String verfiRefreshJwt(HttpServletRequest request) {
+        String jws = request.getHeader("Refresh");
+        return jwtTokenizer.getClaims(jws).getBody().getSubject();
+    }
     private void setAuthenticationToContext(Map<String, Object> claims){
         Long member_id = Long.parseLong(claims.get("member_id").toString());
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List<String>)claims.get("roles"));

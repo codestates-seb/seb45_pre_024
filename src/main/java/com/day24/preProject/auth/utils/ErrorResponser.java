@@ -12,9 +12,18 @@ public class ErrorResponser {
     public static void sendErrorResponse(HttpServletResponse response, HttpStatus status) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.UNAUTHORIZED);
+        ErrorResponse errorResponse = ErrorResponse.of(status);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(errorResponse.getStatus_code());
+        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+    }
+
+    public static void sendErrorResponse(Exception exception, HttpServletResponse response, HttpStatus status) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        ErrorResponse errorResponse = ErrorResponse.of(status, exception.getMessage());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(status.value());
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
 }
