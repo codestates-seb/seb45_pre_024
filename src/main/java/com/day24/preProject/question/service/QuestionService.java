@@ -8,6 +8,8 @@ import com.day24.preProject.member.entity.Member;
 import com.day24.preProject.question.entity.Question;
 import com.day24.preProject.question.mapper.QuestionMapper;
 import com.day24.preProject.question.repository.QuestionRepository;
+import com.day24.preProject.questionComment.entity.QuestionComment;
+import com.day24.preProject.questionComment.repository.QuestionCommentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,15 +25,16 @@ import java.util.Optional;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
-
     private final QuestionMapper questionMapper;
-
     private final AnswerRepository answerRepository;
 
-    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper, AnswerRepository answerRepository) {
+    private final QuestionCommentRepository questionCommentRepository;
+
+    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper, AnswerRepository answerRepository, QuestionCommentRepository questionCommentRepository) {
         this.questionRepository = questionRepository;
         this.questionMapper = questionMapper;
         this.answerRepository = answerRepository;
+        this.questionCommentRepository = questionCommentRepository;
     }
 
     public Question createQuestion(Question question, long id) {
@@ -56,7 +59,14 @@ public class QuestionService {
         }
         return optionalQuestion.orElseThrow(()-> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
     }
-    //관리자용
+
+    @Transactional(readOnly = true)
+    public Page<Question> findQuestionByTextAndDeleted(String text, boolean deleted, int page, int size) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt"); //최신순 정렬
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return questionRepository.findByTitleOrBody(text, deleted, pageable);
+    }
+
     @Transactional(readOnly = true)
     public Question findQuestion(long questionId){
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
@@ -102,6 +112,10 @@ public class QuestionService {
         List<Answer> answers = question.getAnswers();
         answers.forEach(answer -> answer.setDeleted(true));
         answerRepository.saveAll(answers);
+
+        List<QuestionComment> questionComments = question.getQuestionComments();
+        questionComments.forEach(questionComment -> questionComment.setDeleted(true));
+        questionCommentRepository.saveAll(questionComments);
     }
 
 }

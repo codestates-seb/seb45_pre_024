@@ -9,6 +9,7 @@ import com.day24.preProject.dto.MultiResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,48 +30,47 @@ public class AnswerCommentController {
         this.answerCommentMapper = answerCommentMapper;
     }
 
-    @PostMapping
-    public ResponseEntity postAnswerReply(@Valid @RequestBody AnswerCommentPostDto answerCommentPostDto) {
-        answerCommentService.createAnswerReply(answerCommentMapper.answerReplyPostDtoToAnswerReply(answerCommentPostDto));
+    @PostMapping("/{answerId}")
+    public ResponseEntity postAnswerComment(@PathVariable("answerId") long answerId, @Valid @RequestBody AnswerCommentPostDto answerCommentPostDto, @AuthenticationPrincipal long memberId) {
+        AnswerComment answerComment = answerCommentMapper.answerCommentPostDtoToAnswerComment(answerCommentPostDto);
+        answerCommentService.createAnswerComment(answerId, memberId, answerComment);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{AnswerReplyId}")
-    public ResponseEntity patchAnswerReply(@PathVariable("AnswerReplyId") @Positive long answerReplyId,
-                                              @Valid @RequestBody AnswerCommentPatchDto answerCommentPatchDto) {
-        AnswerComment answerComment = answerCommentService.updateAnswerReply(answerReplyId, answerCommentMapper.answerReplyPatchDtoToAnswerReply(answerCommentPatchDto));
+//    @GetMapping("/{id}")
+//    public ResponseEntity getAnswerComment(@PathVariable("id") long answerCommentId) {
+//        AnswerComment answerComment = answerCommentService.findAnswerComment(answerCommentId);
+//
+//        return new ResponseEntity<>(
+//                answerCommentMapper.answerCommentToAnswerCommentResponseDto(answerComment),
+//                HttpStatus.OK);
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity getAnswerComments(@Positive @RequestParam int page,
+//                                             @Positive @RequestParam int size) {
+//        Page<AnswerComment> pageAnswerComments = answerCommentService.findAnswerComments(page - 1, size);
+//        List<AnswerComment> answerComments = pageAnswerComments.getContent();
+//
+//        return new ResponseEntity<>(
+//                new MultiResponseDto<>(answerCommentMapper.answerCommentsToAnswerCommentResponseDtos(answerComments),
+//                        pageAnswerComments),
+//                HttpStatus.OK);
+//    }
 
-        return new ResponseEntity<>(
-                answerCommentMapper.answerReplyToAnswerReplyResponseDto(answerComment),
-                HttpStatus.OK);
+    @PatchMapping("/{id}")
+    public ResponseEntity patchAnswerComment(@PathVariable("id") @Positive long id,
+                                             @Valid @RequestBody AnswerCommentPatchDto requestbody, @AuthenticationPrincipal long memberId) {
+        AnswerComment answerComment = answerCommentMapper.answerCommentPatchDtoToAnswerComment(requestbody);
+        answerComment.setAnswerCommentId(id);
+        answerCommentService.updateAnswerComment(answerComment, memberId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{AnswerReplyId}")
-    public ResponseEntity getAnswerReply(@PathVariable("AnswerReplyId") long answerReplyId) {
-        AnswerComment answerComment = answerCommentService.findAnswerReply(answerReplyId);
-
-        return new ResponseEntity<>(
-                answerCommentMapper.answerReplyToAnswerReplyResponseDto(answerComment),
-                HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity getAnswerReplys(@Positive @RequestParam int page,
-                                             @Positive @RequestParam int size) {
-        Page<AnswerComment> pageAnswerReplys = answerCommentService.findAnswerReplys(page - 1, size);
-        List<AnswerComment> answerComments = pageAnswerReplys.getContent();
-
-        return new ResponseEntity<>(
-                new MultiResponseDto<>(answerCommentMapper.answerReplysToAnswerReplyResponseDtos(answerComments),
-                        pageAnswerReplys),
-                HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{AnswerReplyId}")
-    public ResponseEntity deleteAnswerReply(@PathVariable("AnswerReplyId") long answerReplyId) {
-        answerCommentService.deleteAnswerReply(answerReplyId);
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteAnswerComment(@PathVariable("id") long answerCommentId, @AuthenticationPrincipal long memberId) {
+        answerCommentService.deleteAnswerComment(answerCommentId, memberId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

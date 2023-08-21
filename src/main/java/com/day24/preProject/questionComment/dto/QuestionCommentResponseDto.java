@@ -1,5 +1,4 @@
-package com.day24.preProject.answerComment.dto;
-
+package com.day24.preProject.questionComment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,13 +9,13 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-public class AnswerCommentResponseDto {
+public class QuestionCommentResponseDto {
 
-    private long answerId;
+    private long questionId;
 
     private long memberId;
 
-    private long answerCommentId;
+    private long questionCommentId;
 
     private String body;
 
