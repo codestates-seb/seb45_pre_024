@@ -1,14 +1,20 @@
 package com.day24.preProject.answerComment.service;
 
+import com.day24.preProject.answer.entity.Answer;
 import com.day24.preProject.answer.repository.AnswerRepository;
 import com.day24.preProject.answerComment.entity.AnswerComment;
+import com.day24.preProject.answerComment.mapper.AnswerCommentMapper;
 import com.day24.preProject.answerComment.repository.AnswerCommentRepository;
 import com.day24.preProject.exception.BusinessLogicException;
 import com.day24.preProject.exception.ExceptionCode;
+import com.day24.preProject.member.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -17,47 +23,71 @@ public class AnswerCommentService {
     private final AnswerCommentRepository answerCommentRepository;
     private final AnswerRepository answerRepository;
 
-    public AnswerCommentService(AnswerCommentRepository answerCommentRepository, AnswerRepository answerRepository) {
+    private final AnswerCommentMapper answerCommentMapper;
+
+    public AnswerCommentService(AnswerCommentRepository answerCommentRepository, AnswerRepository answerRepository, AnswerCommentMapper answerCommentMapper) {
         this.answerCommentRepository = answerCommentRepository;
         this.answerRepository = answerRepository;
+        this.answerCommentMapper = answerCommentMapper;
     }
 
-    public AnswerComment createAnswerReply(AnswerComment asnwerReply) {
+    public AnswerComment createAnswerComment(long answerId, long memberId, AnswerComment answerComment) {
+        Member member = answerCommentMapper.mapToMember(memberId);
+        Answer answer = answerCommentMapper.mapToAnswer(answerId);
+        answerComment.setMember(member);
+        answerComment.setAnswer(answer);
 
-        return answerCommentRepository.save(asnwerReply);
+        return answerCommentRepository.save(answerComment);
     }
 
-    public AnswerComment updateAnswerReply(long answerId, AnswerComment answerComment) {
+    @Transactional(readOnly = true)
+    public AnswerComment findAnswerComment(long answerCommentId) {
+        Optional<AnswerComment> optionalAnswerComment = answerCommentRepository.findById(answerCommentId);
+        return optionalAnswerComment.orElseThrow(()-> new BusinessLogicException(ExceptionCode.ANSWER_COMMENT_NOT_FOUND));
+    }
 
-        AnswerComment findAnswerComment = findVerifiedAnswerReply(answerId);
+    @Transactional(readOnly = true)
+    public AnswerComment findAnswerCommentByDeleted(long answerCommentId, boolean deleted){
+        Optional<AnswerComment> optionalAnswerComment = answerCommentRepository.findByAnswerCommentIdAndDeleted(answerCommentId, deleted);
+        return optionalAnswerComment.orElseThrow(()-> new BusinessLogicException(ExceptionCode.ANSWER_COMMENT_NOT_FOUND));
+    }
 
+    @Transactional(readOnly = true)
+    public Page<AnswerComment> findAnswerCommentsByAnswerIdAndDeleted(long answerId, boolean deleted, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, null);
+        return answerCommentRepository.findByAnswerIdAndDeleted(answerId, deleted, pageable);
+    }
+
+      //관리자용
+//    @Transactional(readOnly = true)
+//    public Page<AnswerComment> findAnswerComments(int page, int size) {
+//        return answerCommentRepository.findAll(PageRequest.of(page, size,
+//                Sort.by("AnswerCommentId").descending()));
+//    }
+
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    public void updateAnswerComment(AnswerComment answerComment, long memberId) {
+        AnswerComment findAnswerComment = findAnswerCommentByDeleted(answerComment.getAnswerCommentId(), answerComment.isDeleted());
+        if(findAnswerComment.getMember().getMemberId() != memberId) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
         Optional.ofNullable(answerComment.getBody())
-                .ifPresent(findAnswerComment::setBody);
+                .ifPresent(body -> findAnswerComment.setBody(body));
 
 
-        return answerCommentRepository.save(findAnswerComment);
+        answerCommentRepository.save(findAnswerComment);
     }
 
-    public AnswerComment findAnswerReply(long AnswerReplyId) {
-        return findVerifiedAnswerReply(AnswerReplyId);
-    }
-
-    public Page<AnswerComment> findAnswerReplys(int page, int size) {
-        return answerCommentRepository.findAll(PageRequest.of(page, size,
-                Sort.by("AnswerReplyId").descending()));
-    }
-
-    public void deleteAnswerReply(long answerReplyId) {
-        AnswerComment answerComment = findVerifiedAnswerReply(answerReplyId);
+    public void deleteAnswerComment(long answerCommentId, long memberId) {
+        AnswerComment answerComment = findVerifiedAnswerComment(answerCommentId);
+        if(answerComment.getMember().getMemberId() != memberId) throw new BusinessLogicException(ExceptionCode.FORBIDDEN_REQUEST);
         answerComment.setDeleted(true);
         answerCommentRepository.save(answerComment);
     }
 
-    private AnswerComment findVerifiedAnswerReply(long answerReplyId) {
-        Optional<AnswerComment> optionalAnswerReply = answerCommentRepository.findById(answerReplyId);
+    private AnswerComment findVerifiedAnswerComment(long answerCommentId) {
+        Optional<AnswerComment> optionalAnswerComment = answerCommentRepository.findById(answerCommentId);
         AnswerComment findAnswerComment =
-                optionalAnswerReply.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.ANSWER_REPLY_NOT_FOUND));
+                optionalAnswerComment.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.ANSWER_COMMENT_NOT_FOUND));
 
         return findAnswerComment;
     }

@@ -48,6 +48,16 @@ public class QuestionController {
         return new ResponseEntity<>(questionDetailResponseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/find")
+    public ResponseEntity getQuestionsBytext(@RequestParam int page, @RequestParam int size, @RequestParam String query) {
+        Page<Question> pageQuestions = questionService.findQuestionByTextAndDeleted(query,false, page-1, size);
+        List<Question> questions = pageQuestions.getContent();
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(
+                        questionMapper.questionsToQuestionResponseDtos(questions), pageQuestions), HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity getQuestions(@RequestParam int page, @RequestParam int size) {
         Page<Question> pageQuestions = questionService.findAllQuestion(false, page-1, size);
