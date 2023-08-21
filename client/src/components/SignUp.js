@@ -16,92 +16,74 @@ const SignUp = () => {
   const [succecsId, setSuccecsId] = useState(false);
   const [succecsEmail, setSuccecsEmail] = useState(false);
   const [succecsPw, setSuccecsPw] = useState(false);
+  const [succecsSamePw, setSuccecsSamePw] = useState(false);
   const navi = useNavigate();
 
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*[@$!%*?&])(?=.*\d)[A-Za-z@$!%*?&\d]{7,}$/i;
 
-  // 0816_수정한(추가된) 부분(33번줄까지)//
-  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-  const GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
-  const handleGoogleSignIn = () => {
-    const redirectUri = 'http://localhost:3000/signin';
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=token&scope=email`;
-    window.location.assign(authUrl);
-  };
-  const GithubLoginRequestHandler = () => {
-    return window.location.assign(
-      `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`,
-    );
+  const oauthHandle = (type) => {
+    axios
+      .get(`/oauth2/authorization/${type}`)
+      .then((res) => window.location.assign(res.data.redirect_url));
   };
 
   const idHandle = (e) => {
     setId(e.target.value);
     setSuccecsId(false);
   };
-  const pwHandle = (e) => {
-    setPw(e.target.value);
-    setSuccecsPw(false);
+
+  const idCheck = () => {
+    axios.post('/member/check/username', { username: id }).then((res) => {
+      res.data.is_duplicated ? setIdErr(true) : setIdErr(false);
+    });
   };
+
+  const pwHandle = (e) => {
+    setSuccecsSamePw(false);
+    setPw(e.target.value);
+    if (!passwordRegex.test(e.target.value)) {
+      setSuccecsPw(false);
+      setPwErr(true);
+    } else {
+      setSuccecsPw(true);
+      setPwErr(false);
+    }
+  };
+
   const verifyPwHandle = (e) => {
     setVerifyPw(e.target.value);
   };
-  const errHandle = (type) => {
-    if (type === 'id') {
-      setIdErr(true);
-    }
-    if (type === 'email') {
-      setEmailErr(true);
-    }
-    if (type === 'pw') {
-      setPwErr(true);
-    }
-  };
+
   const emailBlurHandle = () => {
     if (!emailRegex.test(email)) {
-      errHandle('email');
+      setEmailErr(true);
       setSuccecsEmail(false);
     } else {
       setEmailErr(false);
       setSuccecsEmail(true);
     }
   };
+
   const emailHandle = (e) => {
     setEmail(e.target.value);
-    if (!emailRegex.test(email)) {
-      errHandle('email');
+    if (!emailRegex.test(e.target.value)) {
+      setEmailErr(true);
+      setSuccecsEmail(false);
     } else {
       setEmailErr(false);
       setSuccecsEmail(true);
     }
   };
+
   const submitHandle = (id, email, pw) => {
-    if (id.length > 20 || id.length < 5) {
-      errHandle('id');
-    } else {
-      setIdErr(false);
-      setSuccecsId(true);
-    }
-    if (!emailRegex.test(email)) {
-      errHandle('email');
-    } else {
-      setEmailErr(false);
-      setSuccecsEmail(true);
-    }
-    if (!passwordRegex.test(pw)) {
-      errHandle('pw');
-    } else {
-      setPwErr(false);
-      setSuccecsPw(true);
-    }
-    if (succecsId && succecsEmail && succecsPw) {
+    if (succecsId && succecsEmail && succecsPw && succecsSamePw) {
       const data = {
         username: id,
         email: email,
         password: pw,
       };
-      console.log(data);
       axios.post('/member/signup', data).then((res) => {
         console.log(res);
         if (res.status === 201) {
@@ -111,13 +93,14 @@ const SignUp = () => {
     }
   };
   const samePw = () => {
-    if (pw === verifyPw) {
-      setSuccecsPw(true);
+    if (pw === verifyPw && succecsPw) {
+      setSuccecsSamePw(true);
       setVerifyPwErr(false);
     } else {
-      setSuccecsPw(false);
+      setSuccecsSamePw(false);
       setVerifyPwErr(true);
     }
+    console.log(succecsId, succecsEmail, succecsPw, succecsSamePw);
   };
   return (
     <div className="suMainContainer">
@@ -152,7 +135,10 @@ const SignUp = () => {
           </div>
           <div className="suBox">
             <div className="suButtonContainer">
-              <button className="suGoogle" onClick={handleGoogleSignIn}>
+              <button
+                className="suGoogle"
+                onClick={() => oauthHandle('google')}
+              >
                 <img
                   className="googleImg"
                   src={envURL + '/google.png'}
@@ -160,7 +146,7 @@ const SignUp = () => {
                 ></img>
                 <span>Sign up with Google</span>
               </button>
-              <button className="suGit" onClick={GithubLoginRequestHandler}>
+              <button className="suGit" onClick={() => oauthHandle('github')}>
                 <img
                   className="githubImg"
                   src={envURL + '/github.png'}
@@ -168,7 +154,10 @@ const SignUp = () => {
                 ></img>
                 <span>Sign up with Github</span>
               </button>
-              <button className="suFacebook">
+              <button
+                className="suFacebook"
+                onClick={() => oauthHandle('facebook')}
+              >
                 <img
                   className="facebookImg"
                   src={envURL + '/facebook.png'}
@@ -191,7 +180,9 @@ const SignUp = () => {
                       }}
                     />
                     <div className="checkCenter">
-                      <button className="check">Check Availability</button>
+                      <button className="check" onClick={idCheck}>
+                        Check Availability
+                      </button>
                     </div>
                   </div>
                   <span className="errText">
