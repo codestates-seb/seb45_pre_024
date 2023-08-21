@@ -1,20 +1,13 @@
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2
   datasource:
-    url: jdbc:h2:mem:test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://:3306/underflow?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username:
+    password:
   jpa:
     hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-  sql:
-    init:
-      data-locations: classpath*:db/h2/data.sql
+      ddl-auto: update
+    database: mysql
   security:
     oauth2:
       client:
@@ -43,6 +36,6 @@ mail:
     admin: admin@email.com
 
 jwt:
-  key: day24preprojectcodestatesseb45preproject024team
+  key:
   accessTokenExp: 30
   refreshTokenExp: 240
