@@ -39,3 +39,7 @@ jwt:
   key:
   accessTokenExp: 30
   refreshTokenExp: 240
+
+redirect:
+  front:
+    url: http://localhost:3000
