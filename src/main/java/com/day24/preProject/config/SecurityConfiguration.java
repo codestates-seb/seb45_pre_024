@@ -76,7 +76,7 @@ public class SecurityConfiguration {
                 .oauth2Login(oauth2 -> {
                             try {
                                 oauth2
-                                        .successHandler(new Oauth2memberSuccessHandler(jwtTokenizer, memberService, new ObjectMapper(), auth2AuthorizedClientService));
+                                        .successHandler(new Oauth2memberSuccessHandler(jwtTokenizer, memberService, auth2AuthorizedClientService));
                             } catch (MalformedURLException e) {
                                 throw new RuntimeException(e);
                             }
