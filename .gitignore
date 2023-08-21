@@ -40,3 +40,7 @@ out/
 ### secret data ###
 
 src/main/resources/application-server.yml
+
+### test ###
+
+src/test/*
