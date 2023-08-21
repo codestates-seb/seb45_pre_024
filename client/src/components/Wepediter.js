@@ -90,10 +90,10 @@ const Wepediter = ({
           />
           <div>
             <span></span>
-            <button onClick={axiosData}>
+            <button onClick={axiosData} className="post_your_answer">
               {type === 'Question'
-                ? '질문 작성'
-                : type === 'Answer' && '답변 작성'}
+                ? 'Post Your Question'
+                : type === 'Answer' && 'Post Your Answer'}
             </button>{' '}
             {errRes && <span className="errRes">{errRes}</span>}
           </div>
