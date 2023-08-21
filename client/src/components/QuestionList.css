@@ -1,10 +1,14 @@
 .mainContiner{
-    margin-left: 251px;
-    margin-right: 87px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .mainContent {
     padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .line1 {
