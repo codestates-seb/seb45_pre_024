@@ -79,17 +79,19 @@ const QuestionDetail = ({ isLogin }) => {
       {data && (
         <div>
           <div className="title">
-            <span>타이틀 : {data.title}</span>
-            <span>작성자 : {data.username}</span>
+            <span className="title">{data.title}</span>
+            <span className="username">Username: {data.username}</span>
           </div>
           <div className="detailContainer">
-            <span> 조회수 : {data.view_count}</span>
-            <span>
-              최근수정:
+            <span className="view_count"> Viewed: {data.view_count}</span>
+            <span className="detail_modified">
+              Modified:
               {data.modified_at.slice(0, 10) +
                 ' ' +
                 data.modified_at.slice(11, 19)}{' '}
-              작성일자:
+            </span>
+            <span className="detail_asked">
+              Asked:
               {data.created_at.slice(0, 10) +
                 ' ' +
                 data.created_at.slice(11, 19)}
@@ -100,6 +102,7 @@ const QuestionDetail = ({ isLogin }) => {
               <div>질문내용 {ReactHtmlParser(data.body)}</div>
             </div>
           </div>
+          <div className="your_answer">Your Answer</div>
           <div className="createAnswer">
             <Wepediter
               type="Answer"

@@ -1,31 +1,14 @@
-.errRes{
-    color: red;
-    font-size: 0.8em;
+.errRes {
+  color: red;
+  font-size: 0.8em;
 }
 
-.wepediter-container {
-    margin: 20px 0;
-  }
-  
-  /* Toast UI Editor 스타일 */
-  .tui-editor {
-    border: 1px solid #ccc;
-    border-radius: 30px;
-  }
-  
-  /* 글 작성 버튼 스타일 */
-  .wepediter-button {
-    background-color: #0077cc;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition:
-      background-color 0.2s,
-      color 0.2s;
-  }
-  
-  .wepediter-button:hover {
-    background-color: #005499;
-  }
+.post_your_answer {
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  background-color: #0a95ff;
+  border-radius: 20px;
+  padding: 10px;
+  border: none;
+}
