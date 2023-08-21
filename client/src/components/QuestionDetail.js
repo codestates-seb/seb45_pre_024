@@ -37,7 +37,27 @@ const QuestionDetail = ({ isLogin }) => {
       });
     }
   }, [page, answer]);
-
+  const renderCurrentPage = () => {
+    setAnswer(null);
+    setIsLoading(true);
+    for (let i = 1; i <= page; i++) {
+      axios.get(`/answer/${question_id}?page=${i}&size=10`).then((res) => {
+        setAnswer(answer.concat(res.data.data));
+        console.log(answer);
+      });
+    }
+    setIsLoading(false);
+  };
+  const acceptHandle = (answer_id) => {
+    const header = {
+      headers: {
+        Authorization: sessionStorage.getItem('authorization'),
+        Refresh: sessionStorage.getItem('refresh'),
+      },
+    };
+    axios.patch(`/answer/accept/${answer_id}`, null, header);
+    renderCurrentPage();
+  };
   useEffect(() => {
     if (bottom.current) {
       const observer = new IntersectionObserver(
@@ -85,13 +105,22 @@ const QuestionDetail = ({ isLogin }) => {
               type="Answer"
               question_id={question_id}
               isLogin={isLogin}
-              FetchAnswerData={FetchAnswerData}
+              renderCurrentPage={renderCurrentPage}
             />
           </div>
           <div>
             {answer &&
               answer.map((el) => {
-                return <Answer info={el} key={el.answer_id} />;
+                return (
+                  <div key={el.answer_id}>
+                    <Answer info={el} />
+                    {data.username === sessionStorage.getItem('username') && (
+                      <button onClick={() => acceptHandle(el.answer_id)}>
+                        {el.accepted ? '채택취소하기' : '채택하기'}
+                      </button>
+                    )}
+                  </div>
+                );
               })}
             {isLoading ? <div>Loading...</div> : <div ref={bottom}></div>}
           </div>
@@ -103,5 +132,6 @@ const QuestionDetail = ({ isLogin }) => {
 
 QuestionDetail.propTypes = {
   isLogin: PropTypes.bool,
+  user: PropTypes.string,
 };
 export default QuestionDetail;
