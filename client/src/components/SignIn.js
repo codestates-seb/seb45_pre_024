@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import './SignIn.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -8,11 +8,12 @@ const SignIn = ({ loginHandle }) => {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
   const navi = useNavigate();
+  const inputRef = useRef(null);
 
   const oauthHandle = (type) => {
-    axios
-      .get(`/oauth2/authorization/${type}`)
-      .then((res) => window.location.assign(res.data.redirect_url));
+    window.location.assign(
+      `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/${type}`,
+    );
   };
 
   const idHandle = (e) => {
@@ -42,6 +43,9 @@ const SignIn = ({ loginHandle }) => {
         navi('/');
       })
       .catch(console.error('err'));
+  };
+  const enterHandle = (e) => {
+    console.log(e);
   };
   return (
     <div>
@@ -104,6 +108,8 @@ const SignIn = ({ loginHandle }) => {
                     onChange={(e) => {
                       pwHandle(e);
                     }}
+                    ref={inputRef}
+                    onKeyUp={(e) => enterHandle(e)}
                   />
                 </div>
 
