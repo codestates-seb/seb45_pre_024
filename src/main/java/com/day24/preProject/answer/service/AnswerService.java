@@ -62,7 +62,7 @@ public class AnswerService {
 
     @Transactional(readOnly = true)
     public Page<Answer> findAnswersByQuestionIdAndDeleted(long questionId, boolean deleted, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, null);
+        Pageable pageable = PageRequest.of(page, size);
         return answerRepository.findByQuestionIdAndDeleted(questionId, deleted, pageable);
     }
 

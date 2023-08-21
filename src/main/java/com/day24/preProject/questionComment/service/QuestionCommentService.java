@@ -54,7 +54,7 @@ public class QuestionCommentService {
 
     @Transactional(readOnly = true)
     public Page<QuestionComment> findQuestionCommentsByQuestionIdAndDeleted(long questionId, boolean deleted, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, null);
+        Pageable pageable = PageRequest.of(page, size);
         return questionCommentRepository.findByQuestionIdAndDeleted(questionId, deleted, pageable);
     }
 

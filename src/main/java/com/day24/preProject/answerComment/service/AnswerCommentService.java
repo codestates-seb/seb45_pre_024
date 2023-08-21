@@ -54,7 +54,7 @@ public class AnswerCommentService {
 
     @Transactional(readOnly = true)
     public Page<AnswerComment> findAnswerCommentsByAnswerIdAndDeleted(long answerId, boolean deleted, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, null);
+        Pageable pageable = PageRequest.of(page, size);
         return answerCommentRepository.findByAnswerIdAndDeleted(answerId, deleted, pageable);
     }
 
