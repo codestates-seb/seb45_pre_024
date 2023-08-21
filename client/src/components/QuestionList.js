@@ -4,6 +4,7 @@ import Question from './Question';
 import './QuestionList.css';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import LeftSidebar from './LeftSideBar';
 const QuestionList = ({ isLogin }) => {
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(1);
@@ -56,6 +57,7 @@ const QuestionList = ({ isLogin }) => {
   };
   return (
     <section className="mainContiner">
+      <LeftSidebar />
       <div className="mainContent">
         <div className="line1">
           <h1 className="allQuestions">All questions</h1>

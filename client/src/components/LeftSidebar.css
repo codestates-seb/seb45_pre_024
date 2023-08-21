@@ -2,19 +2,23 @@
   box-sizing: border-box;
 }
 .left-sidebar {
-  display: inline-block;
-  width: 150px;
+  /* display: block;
+  position: sticky;
+  width: 164px;
   box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   background-color: white;
-  height: auto;
   height: 100vh;
-  min-height: 100vh;
-  z-index: 5;
-  transition:
-    box-shadow ease-in-out 0.1s,
-    transform ease-in-out 0.1s;
-  box-sizing: border-box;
-  flex-grow: 1 1 1;
+  /* min-height: 100vh; */
+  /* box-sizing: border-box;*/
+  margin-left: 377px;
+  position:sticky;
+  top:0px;
+  background-color:yellow;
+}
+
+.leftside {
+  display: flex;
+  justify-content: center;
 }
 
 .font {
