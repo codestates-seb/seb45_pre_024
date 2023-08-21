@@ -3,9 +3,11 @@ import ReactHtmlParser from 'react-html-parser';
 import './Answer.css';
 const Answer = ({ info }) => {
   return (
-    <div className={info.accepted ? `accepted` : ''}>
-      <div>유저 네임 : {info.username}</div>
-      <div>답변 내용 : {ReactHtmlParser(info.body)}</div>
+    <div className="answerContainer">
+      <div className={info.accepted ? `accepted` : ''}>
+        <div className="username">Username : {info.username}</div>
+        <div className="answer">Answer : {ReactHtmlParser(info.body)}</div>
+      </div>
     </div>
   );
 };

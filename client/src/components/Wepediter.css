@@ -1,4 +1,14 @@
-.errRes{
-    color: red;
-    font-size: 0.8em;
+.errRes {
+  color: red;
+  font-size: 0.8em;
+}
+
+.post_your_answer {
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  background-color: #0a95ff;
+  border-radius: 20px;
+  padding: 10px;
+  border: none;
 }

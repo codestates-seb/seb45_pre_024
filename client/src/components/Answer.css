@@ -1,4 +1,44 @@
-.accepted{
-    background-color: blue;
-    color: white;
+.accepted {
+  background-color: blue;
+  color: white;
 }
+
+/* Answer.css */
+.answerContainer {
+  border: 1px solid #e1e4e8;
+  padding: 15px;
+  margin: 10px 0;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(36, 44, 58, 0.09);
+}
+
+.answerContainer.accepted {
+  border-color: #4caf50;
+}
+
+.username {
+  font-size: 14px;
+  color: #6a737d;
+  margin-bottom: 5px;
+}
+
+.answer {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.acceptedBadge {
+  display: inline-block;
+  padding: 2px 6px;
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+/* Answer.css */
+/* ... existing styles ... */
+
+/* ... existing styles ... */

@@ -1,6 +1,7 @@
+/* QuestionDetail.css */
 .mainContainer {
-  height: 100%;
-  font-family: Arial, sans-serif;
+  background-color: white;
+  margin-top: 0px;
   padding: 20px;
   margin-left: 150px;
 }
@@ -9,91 +10,96 @@
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
+  margin-left: 0px;
+}
+
+.username {
+  margin-left: 100px;
+  align-items: end;
+  font-size: 14px;
+  color: #777;
 }
 
 .detailContainer {
   font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.view_count {
+  margin-right: 10px;
+  color: black;
+}
+
+.detail_info {
+  padding: 20px;
+  color: black;
+}
+
+.detail_modified {
+  padding: 30px;
+  color: black;
+}
+
+.detail_asked {
+  padding: 30px;
+  color: black;
+}
+
+.your_answer {
+  padding-top: 80px;
+  font-weight: 700;
 }
 
 .bodyContainer {
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
-  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
 }
 
 .body {
   font-size: 16px;
   line-height: 1.6;
+  margin-top: 10px;
 }
 
 .createAnswer {
   margin-top: 20px;
 }
 
-.createAnswer textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  resize: vertical;
-}
-
 .createAnswer button {
-  margin-top: 10px;
-  padding: 8px 16px;
-  background-color: #0077cc;
-  color: white;
+  padding: 8px 15px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
 }
 
-.answer {
-  border-top: 1px solid #ccc;
-  padding: 10px 0;
-  margin-top: 20px;
+.createAnswer button:hover {
+  background-color: #0a95ff;
 }
 
-.answer:first-child {
-  border-top: none;
-  margin-top: 0;
+.answerContainer {
+  border-top: 1px solid #ddd;
+  padding: 15px 0;
 }
 
-.answer .username {
-  font-weight: bold;
-  color: #0077cc;
-  margin-right: 10px;
-}
-
-.answer .timestamp {
-  color: #777;
+.answerContainer button {
+  margin-top: 10px;
+  padding: 6px 10px;
+  background-color: #0a95ff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
   font-size: 12px;
 }
 
-.loading {
+.answerContainer button:hover {
+  background-color: #0a95ff;
+}
+
+.loadingContainer {
   text-align: center;
   margin-top: 20px;
-  color: #777;
-}
-
-.loading::before {
-  content: '';
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #777;
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  color: #888;
 }
