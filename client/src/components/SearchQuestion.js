@@ -15,19 +15,23 @@ const SearchQuestion = ({ isLogin }) => {
   useEffect(() => {
     axios.get(`/question/find?page=1&size=10&query=${text}`).then((res) => {
       setSearchList(res.data.data);
-      setMaxPage(res.data.page_info.total_page);
-      setTotalSearch(res.data.page_info.total_size);
+      console.log(res.data);
+      setMaxPage(res.data.pageInfo.totalPages);
+      setTotalSearch(res.data.pageInfo.totalElements);
+      setPage(page + 1);
       setIsLoading(false);
     });
-  });
+  }, [text]);
   const renderNextPage = useCallback(() => {
     if (page <= maxPage) {
       setIsLoading(true);
-      axios.get(`/question?page=${page}&size=10`).then((res) => {
-        setSearchList(searchList.concat(res.data.data));
-        setPage(page + 1);
-        setIsLoading(false);
-      });
+      axios
+        .get(`/question/find?page=${page}&size=10&query=${text}`)
+        .then((res) => {
+          setSearchList(searchList.concat(res.data.data));
+          setPage(page + 1);
+          setIsLoading(false);
+        });
     }
   }, [page, searchList]);
   useEffect(() => {
@@ -50,7 +54,7 @@ const SearchQuestion = ({ isLogin }) => {
     <section className="mainContiner">
       <div className="mainContent">
         <div className="line1">
-          <h1 className="allQuestions">search : {text}</h1>
+          <h1 className="allQuestions">Search Results</h1>
           {isLogin ? (
             <Link to="/create_question">
               <div className="questionBtn">
@@ -78,9 +82,10 @@ const SearchQuestion = ({ isLogin }) => {
         <div className="qtContainer">
           <div className="qtLiContainer">
             <div className="qtLiDiv">
-              {searchList.map((el) => {
-                return <Question info={el} key={el.question_id} />;
-              })}
+              {searchList &&
+                searchList.map((el) => {
+                  return <Question info={el} key={el.question_id} />;
+                })}
               {isLoading ? <div>Loading...</div> : <div ref={bottom}></div>}
             </div>
           </div>
