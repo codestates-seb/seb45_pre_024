@@ -3,11 +3,7 @@ package com.day24.preProject.auth.handler;
 import com.day24.preProject.auth.jwt.JwtTokenizer;
 import com.day24.preProject.member.entity.Member;
 import com.day24.preProject.member.service.MemberService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -15,6 +11,9 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,21 +23,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Oauth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private String baseUrl = "http://localhost:3000";
     private final JwtTokenizer jwtTokenizer;
     private final MemberService memberService;
-    private final ObjectMapper objectMapper;
     private final OAuth2AuthorizedClientService auth2AuthorizedClientService;
     private final URL githubUrl = new URL("https://api.github.com/user/emails");
-    public Oauth2memberSuccessHandler(JwtTokenizer jwtTokenizer, MemberService memberService, ObjectMapper objectMapper, OAuth2AuthorizedClientService auth2AuthorizedClientService) throws MalformedURLException {
+    public Oauth2memberSuccessHandler(JwtTokenizer jwtTokenizer, MemberService memberService, OAuth2AuthorizedClientService auth2AuthorizedClientService) throws MalformedURLException {
         this.jwtTokenizer = jwtTokenizer;
         this.memberService = memberService;
-        this.objectMapper = objectMapper;
         this.auth2AuthorizedClientService = auth2AuthorizedClientService;
     }
     @Override
@@ -48,16 +43,18 @@ public class Oauth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         if (email.equals("null")) email = getEmailFromGitHub(getOAuthAccessToken(authentication));
 
         Member findMember = memberService.findMemberByEmail(email);
-        String redirectUrl;
+        String path;
+        MultiValueMap<String, String> queryParams;
         if (findMember == null) {
-            signUpResponse(response, email);
-            redirectUrl = "/oauth";
+            queryParams = signUpResponse(email);
+            path = "/oauth";
         }
         else {
-            signInRespnose(response, findMember);
-            redirectUrl = "";
+            queryParams = signInRespnose(findMember);
+            path = "";
         }
-        getRedirectStrategy().sendRedirect(request, response, baseUrl+redirectUrl);
+        String uri = createURI(path, queryParams).toString();
+        getRedirectStrategy().sendRedirect(request, response, uri);
     }
     private String getEmailFromGitHub(String accessToken) throws IOException {
         HttpURLConnection conn = (HttpURLConnection) githubUrl.openConnection();
@@ -85,21 +82,29 @@ public class Oauth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return accessToken.getTokenValue();
     }
 
-    private void signUpResponse(HttpServletResponse response, String email) throws IOException {
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.PARTIAL_CONTENT.value());
-        response.getWriter().write(objectMapper.writeValueAsString(Map.of("email", email)));
+    private MultiValueMap<String, String> signUpResponse(String email) {
+        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        queryParams.add("email", email);
+
+        return queryParams;
     }
 
-    private void signInRespnose(HttpServletResponse response, Member member) throws IOException {
-        Map<String, Object> responseData = new HashMap<>();
-        responseData.put("username", member.getUsername());
-        responseData.put("email", member.getEmail());
+    private MultiValueMap<String, String> signInRespnose(Member member) {
+        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        queryParams.add("access_token", jwtTokenizer.generateAccessToken(member));
+        queryParams.add("refresh_token", jwtTokenizer.generateRefreshToken(member));
+        queryParams.add("username", member.getUsername());
+        queryParams.add("email", member.getEmail());
 
-        response.setHeader("Authorization", "Bearer "+jwtTokenizer.generateAccessToken(member));
-        response.setHeader("Refresh", jwtTokenizer.generateRefreshToken(member));
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(responseData));
+        return queryParams;
+    }
+    private URI createURI(String path, MultiValueMap<String, String> queryParams){
+        return UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("localhost")
+                .port(3000)
+                .path(path)
+                .queryParams(queryParams)
+                .build().toUri();
     }
 }
