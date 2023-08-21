@@ -80,6 +80,7 @@ const QuestionDetail = ({ isLogin }) => {
         <div>
           <div className="title">
             <span className="title">{data.title}</span>
+            <span className="username">Username: {data.username}</span>
           </div>
           <div className="detailContainer">
             <span className="view_count"> Viewed: {data.view_count}</span>
