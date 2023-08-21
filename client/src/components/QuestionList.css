@@ -15,10 +15,6 @@
     color: #232629;
 }
 
-.ask_Question_Button {
-    margin-bottom: 12px;
-}
-
 .questionCount {
     display: flex;
     font-size: 17px;
@@ -36,6 +32,10 @@
     margin-bottom: 16px;
 }
 
+.askBtn {
+    text-decoration: none;
+}
+
 .allQuestions {
     margin-top: 0px;
     margin-bottom: 12px;
@@ -46,11 +46,14 @@
     justify-content: space-between;
 }
 .ask_Question_Button{
-    background-color: rgb(3, 132, 252);
+    margin-bottom: 12px;
+    cursor: pointer;
+    background-color: #0a95ff;
     border-radius: 5px;
     padding: 10px;
     color: white;
-    border: solid 1px black;
+    border: solid 1px #0a95ff;
+    text-decoration:none;
 }
 .filterBtn1, .filterBtn2, .filterBtn3, .filterBtn4, .filterBtn5 {
     display: inline-block;
