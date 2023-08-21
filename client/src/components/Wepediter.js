@@ -4,9 +4,9 @@ import '@toast-ui/editor/dist/i18n/ko-kr';
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import './Webeditor.css';
+// import './Webeditor.css';
 import { useNavigate } from 'react-router-dom';
-// import './Wepediter.css';
+import './Wepediter.css';
 const Wepediter = ({
   title,
   type,
