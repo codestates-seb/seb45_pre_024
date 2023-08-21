@@ -36,7 +36,9 @@ const Header = ({ isLogin, logout }) => {
             onChange={(e) => setText(e.target.value)}
             className="search-input"
           />
-          <img src={search} alt="search" width="18" className="search-icon" />
+          <Link to={`/search/${text}`}>
+            <img src={search} alt="search" width="18" className="search-icon" />
+          </Link>
         </form>
         {!isLogin ? (
           <>
