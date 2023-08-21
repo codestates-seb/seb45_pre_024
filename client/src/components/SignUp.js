@@ -6,6 +6,10 @@ import axios from 'axios';
 const envURL = process.env.PUBLIC_URL;
 const SignUp = () => {
   const [id, setId] = useState('');
+  const [possibleId, setPossibleId] = useState(false);
+  const [idMessage, setIdMessage] = useState(
+    'Please run a duplicate ID check.',
+  );
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [verifyPw, setVerifyPw] = useState('');
@@ -24,20 +28,41 @@ const SignUp = () => {
     /^(?=.*[A-Za-z])(?=.*[@$!%*?&])(?=.*\d)[A-Za-z@$!%*?&\d]{7,}$/i;
 
   const oauthHandle = (type) => {
-    axios
-      .get(`/oauth2/authorization/${type}`)
-      .then((res) => window.location.assign(res.data.redirect_url));
+    window.location.assign(
+      `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/${type}`,
+    );
   };
 
   const idHandle = (e) => {
     setId(e.target.value);
     setSuccecsId(false);
+    setPossibleId(false);
   };
 
   const idCheck = () => {
-    axios.post('/member/check/username', { username: id }).then((res) => {
-      res.data.is_duplicated ? setIdErr(true) : setIdErr(false);
-    });
+    if (4 < id.length && id.length < 21) {
+      axios.post('/member/check/username', { username: id }).then((res) => {
+        if (res.data.is_duplicated) {
+          setIdErr(true); // 응답이 ture면 idErr true 나머지 성공 false
+          setSuccecsId(false);
+          setPossibleId(false);
+          setIdMessage('This ID is already in use.');
+        } else {
+          setIdErr(false); // 응답이 false면 idErr false 나머지 성공 true
+          setSuccecsId(true);
+          setPossibleId(true);
+          setIdMessage('This ID is available.');
+        }
+      });
+    } else {
+      setIdErr(true); //글자수 조건 안맞으니 idErr true 나머지 성공 false
+      setSuccecsId(false);
+      setPossibleId(false);
+      setIdMessage(
+        'ID must contain at least five characters, most 20 characters',
+      );
+    }
+    console.log(possibleId);
   };
 
   const pwHandle = (e) => {
@@ -185,12 +210,8 @@ const SignUp = () => {
                       </button>
                     </div>
                   </div>
-                  <span className="errText">
-                    {idErr
-                      ? !succecsId
-                        ? 'Please run a duplicate ID check.'
-                        : 'ID must contain at least five characters, most 20 characters'
-                      : null}
+                  <span className={idErr ? 'errText' : 'succecsText'}>
+                    {idMessage}
                   </span>
                 </div>
                 <div className="suEmail">
