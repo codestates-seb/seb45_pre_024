@@ -48,7 +48,7 @@ const CreateQuestion = ({ user, isLogin }) => {
 };
 
 CreateQuestion.propTypes = {
-  user: PropTypes.object,
+  user: PropTypes.string,
   isLogin: PropTypes.bool,
 };
 

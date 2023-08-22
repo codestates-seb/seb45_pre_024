@@ -94,13 +94,7 @@ function App() {
         />
         <Route
           path="/signin"
-          element={
-            <SignIn
-              user={user}
-              userHandle={userHandle}
-              loginHandle={loginHandle}
-            />
-          }
+          element={<SignIn userHandle={userHandle} loginHandle={loginHandle} />}
         />
         <Route
           path="/create_question"

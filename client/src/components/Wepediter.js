@@ -37,7 +37,22 @@ const Wepediter = ({
         Refresh: refresh,
       },
     };
-
+    const expired_Access_token = (res, Method, URL, params, Data) => {
+      if (res.response.data.message === 'Access token has expired') {
+        sessionStorage.removeItem('authorization');
+        sessionStorage.setItem(
+          'authorization',
+          res.response.headers.authorization,
+        );
+        const authorization = sessionStorage.getItem('authorization');
+        axios[Method](`${URL}${params}`, Data, {
+          headers: {
+            authorization: authorization,
+            refresh: refresh,
+          },
+        }).then(navi('/'));
+      }
+    };
     if (
       content === '' ||
       content === ' ' ||
@@ -58,7 +73,9 @@ const Wepediter = ({
       axios
         .post(`/question`, Data, header)
         .then(navi('/'))
-        .catch(console.log('err'));
+        .catch((res) => {
+          expired_Access_token(res, 'post', '/question', '', Data);
+        });
     } else if (type === 'Answer') {
       const Data = {
         body: content,
@@ -71,12 +88,26 @@ const Wepediter = ({
           if (res.response.data.message === 'Forbidden request') {
             setErrRes('자신이 작성한 글에는 답변을 달 수 없습니다.');
           }
+          if (res.response.data.message === 'Access token has expired') {
+            expired_Access_token(
+              res,
+              'post',
+              '/answer',
+              `/${question_id}`,
+              Data,
+            );
+          }
         });
     } else if (type === 'FixAnswer') {
       const Data = {
         body: content,
       };
-      axios.patch(`/answer/${answer_id}`, Data, header).then(navi('/'));
+      axios
+        .patch(`/answer/${answer_id}`, Data, header)
+        .then(navi('/'))
+        .catch((res) => {
+          expired_Access_token(res, 'patch', '/answer', `/${answer_id}`, Data);
+        });
     } else if (type === 'FixQuestion') {
       if (title.length === 0 || title.length > 100) {
         errhandle('제목은 공란이거나 100글자 이상일 수 없습니다.');
@@ -90,13 +121,13 @@ const Wepediter = ({
         .patch(`/question/${question_id}`, Data, header)
         .then(navi('/'))
         .catch((res) => {
-          console.log(res);
-          if (
-            res.status === 401 &&
-            res.message === 'Access token has expired'
-          ) {
-            navi('/log');
-          }
+          expired_Access_token(
+            res,
+            'patch',
+            '/question',
+            `/${question_id}`,
+            Data,
+          );
         });
     }
   };
@@ -155,7 +186,6 @@ const Wepediter = ({
 
 Wepediter.propTypes = {
   title: PropTypes.string,
-  user: PropTypes.object,
   type: PropTypes.string,
   errhandle: PropTypes.func,
   question_id: PropTypes.string,
