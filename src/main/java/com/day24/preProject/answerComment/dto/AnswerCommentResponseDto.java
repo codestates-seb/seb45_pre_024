@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AnswerCommentResponseDto {
 
-    private long answerId;
+    private long answer_id;
 
-    private long memberId;
+    private long member_id;
 
-    private long answerCommentId;
+    private long answer_comment_id;
 
     private String body;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
-    private LocalDateTime modifiedAt;
+    private LocalDateTime modified_at;
 }

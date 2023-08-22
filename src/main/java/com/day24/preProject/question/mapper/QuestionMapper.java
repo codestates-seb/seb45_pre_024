@@ -5,6 +5,7 @@ import com.day24.preProject.question.dto.QuestionPatchDto;
 import com.day24.preProject.question.dto.QuestionPostDto;
 import com.day24.preProject.question.dto.QuestionResponseDto;
 import com.day24.preProject.question.entity.Question;
+import com.day24.preProject.questionComment.dto.QuestionCommentResponseDto;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -21,6 +22,16 @@ public interface QuestionMapper {
                 .username(question.getMember().getUsername())
                 .title(question.getTitle())
                 .body(question.getBody())
+                .question_comment(question.getQuestionComments().stream()
+                        .map(comment -> QuestionCommentResponseDto.builder()
+                                .question_comment_id(comment.getQuestionCommentId())
+                                .question_id(question.getQuestionId())
+                                .member_id(comment.getMember().getMemberId())
+                                .body(comment.getBody())
+                                .created_at(comment.getCreatedAt())
+                                .modified_at(comment.getModifiedAt())
+                                .build())
+                        .collect(Collectors.toList()))
                 .view_count(question.getView_count())
                 .accepted(question.isAccepted())
                 .created_at(question.getCreatedAt())
