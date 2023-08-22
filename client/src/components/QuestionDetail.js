@@ -6,6 +6,8 @@ import Wepediter from './Wepediter';
 import './QuestionDetail.css';
 import Answer from './Answer';
 import PropTypes from 'prop-types';
+import CommentForm from './QuestionComment';
+
 const QuestionDetail = ({ isLogin }) => {
   const { question_id } = useParams();
   const [data, setData] = useState(null);
@@ -111,6 +113,20 @@ const QuestionDetail = ({ isLogin }) => {
               renderCurrentPage={renderCurrentPage}
             />
           </div>
+          <div className="comment-section">
+            {' '}
+            <h3>댓글 작성</h3>
+            <CommentForm
+              question_id={question_id}
+              renderCurrentPage={renderCurrentPage}
+            />
+          </div>
+          {data &&
+            data.question_comment &&
+            data.question_comment.length &&
+            data.question_comment.map((el, index) => {
+              return <div key={index}>{el.body}</div>;
+            })}
           <div>
             {answer &&
               answer.map((el) => {
