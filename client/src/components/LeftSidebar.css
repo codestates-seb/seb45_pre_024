@@ -1,14 +1,9 @@
 *{
   box-sizing: border-box;
+  list-style-type: none;
 }
+
 .left-sidebar {
-  /* position:sticky;
-  top:0px;
-  background-color:rgb(255, 255, 255);
-  margin-top: 4px;
-  --side-bar-width: 270px;
-  --side-bar-height: 90vh;
-  overflow: hidden; */
   width: 164px;
   flex-shrink: 0;
   box-shadow: 0 0 0 hsla(210,8%,5%,0.05);
@@ -17,7 +12,7 @@
 
 .sbPublic {
   color: #6a737c;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .leftside {
@@ -28,12 +23,19 @@
 .sbQu, .sbTags, .sbUsers{
   font-size: 13px;
   color: #525960;
+  padding-left: 15px;
+  font-size: 14px;
+}
+
+.sbQu:hover, .sbTags:hover, .sbUsers:hover {
+  color: black;
 }
 
 .sbHome {
-  font-size: 13px;
+  font-size: 14px;
   margin-top: 10px;
   margin-bottom: 10px;
+  list-style-type: none;
 }
 
 .nav-btn {
@@ -41,6 +43,10 @@
   width: 100%;
   border: none;
   padding: 0%;
+}
+
+.sbLinks{
+  padding: 0px;
 }
 
 .side-nav {
@@ -52,11 +58,28 @@
 }
 
 .side-nav-div {
-  padding: 10px 0px;
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  align-items: left;
 }
 
 .side-nav-div div {
+  margin-top: 16px;
+  margin-left: 8px;
+  margin-bottom: 4px;
+  width: 156px;
+}
+
+.sbHomeDiv {
+  text-decoration: none;
+  color: #3a3a3a;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   padding-left: 10px;
+  transition: 0.2s;
+  text-align: center;
 }
 
 .side-nav-links {
@@ -67,6 +90,9 @@
   justify-content: flex-start;
   padding-left: 10px;
   transition: 0.2s;
+  text-align: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .side-nav-links:hover {
