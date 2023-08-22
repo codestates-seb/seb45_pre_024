@@ -46,6 +46,7 @@ public interface AnswerMapper {
                         .body(answer.getBody())
                         .answer_comment(answer.getAnswerComments().stream()
                                 .map(comment -> AnswerCommentResponseDto.builder()
+                                        .answer_comment_id(comment.getAnswerCommentId())
                                         .username(comment.getMember().getUsername())
                                         .body(comment.getBody())
                                         .created_at(comment.getCreatedAt())
