@@ -24,6 +24,7 @@ public interface QuestionMapper {
                 .body(question.getBody())
                 .question_comment(question.getQuestionComments().stream()
                         .map(comment -> QuestionCommentResponseDto.builder()
+                                .answer_comment_id(comment.getQuestionCommentId())
                                 .username(comment.getMember().getUsername())
                                 .body(comment.getBody())
                                 .created_at(comment.getCreatedAt())
