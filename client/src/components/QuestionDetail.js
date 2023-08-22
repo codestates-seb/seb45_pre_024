@@ -230,7 +230,11 @@ const QuestionDetail = ({ isLogin }) => {
               answer.map((el) => {
                 return (
                   <div key={el.answer_id}>
-                    <Answer info={el} isLogin={isLogin} />
+                    <Answer
+                      info={el}
+                      isLogin={isLogin}
+                      renderCurrentPage={renderCurrentPage}
+                    />
                     {data.username === sessionStorage.getItem('username') && (
                       <button onClick={() => acceptHandle(el.answer_id)}>
                         {el.accepted ? '채택취소하기' : '채택하기'}

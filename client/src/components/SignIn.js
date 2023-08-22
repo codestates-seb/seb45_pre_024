@@ -7,6 +7,7 @@ const envURL = process.env.PUBLIC_URL;
 const SignIn = ({ loginHandle }) => {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
+  const [loginErr, setLoginErr] = useState(false);
   const navi = useNavigate();
   const inputRef = useRef(null);
 
@@ -42,7 +43,9 @@ const SignIn = ({ loginHandle }) => {
         sessionStorage.setItem('refresh', res.headers['refresh']);
         navi('/');
       })
-      .catch(console.error('err'));
+      .catch((res) => {
+        if (res.response.data.message === 'Unauthorized') setLoginErr(true);
+      });
   };
   const enterHandle = (e) => {
     console.log(e);
@@ -112,7 +115,11 @@ const SignIn = ({ loginHandle }) => {
                     onKeyUp={(e) => enterHandle(e)}
                   />
                 </div>
-
+                {loginErr && (
+                  <span className="errText">
+                    ID혹은 비밀번호를 확인해주세요
+                  </span>
+                )}
                 <button className="loginBtn" onClick={signInHandle}>
                   Log in
                 </button>
