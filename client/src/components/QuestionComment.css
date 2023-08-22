@@ -1,0 +1,23 @@
+.comment_form {
+  margin-top: 5px;
+  width: 500px;
+  height: 35px;
+  font-size: 15px;
+  border: 0;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgb(233, 233, 233);
+}
+
+.comment_button {
+  cursor: pointer;
+  width: 70px;
+  background-color: #ef8236;
+  height: 35px;
+  border-style: none;
+  border-top-right-radius: 13px;
+  border-bottom-right-radius: 13px;
+  color: white;
+}

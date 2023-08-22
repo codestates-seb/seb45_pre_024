@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import './QuestionComment.css';
 
 const QuestionComment = ({ question_id, renderCurrentPage }) => {
   const [comment, setComment] = useState('');
+  const [editedCommentId, setEditedCommentId] = useState(null); // Track edited comment
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -23,27 +25,68 @@ const QuestionComment = ({ question_id, renderCurrentPage }) => {
       },
     };
 
+    {
+      // Adding a new comment
+      axios
+        .post(`/question/comment/${question_id}`, { body: comment }, header)
+        .then(() => {
+          setComment('');
+          renderCurrentPage();
+        });
+    }
+  };
+
+  //   const handleEdit = (commentId, commentBody) => {
+  //     setEditedCommentId(commentId);
+  //     setComment(commentBody);
+  //   };
+
+  const handleDelete = (commentId) => {
+    const header = {
+      headers: {
+        Authorization: sessionStorage.getItem('authorization'),
+        Refresh: sessionStorage.getItem('refresh'),
+      },
+    };
+
     axios
-      .post(`/answer/${question_id}`, { body: comment }, header)
+      .delete(`/question/comment/${commentId}`, header)
       .then(() => {
-        setComment('');
         renderCurrentPage();
       })
       .catch((error) => {
-        console.error('Error posting comment:', error);
+        console.error('Error deleting comment:', error);
       });
   };
 
   return (
     <div className="comment-form">
-      <textarea
-        rows="4"
-        cols="50"
+      <input
+        className="comment_form"
+        type="text"
         placeholder="댓글을 입력하세요..."
         value={comment}
-        onChange={handleCommentChange}
-      ></textarea>
-      <button onClick={handleSubmit}>댓글 작성</button>
+        onChange={(e) => handleCommentChange(e)}
+      />
+      <button onClick={handleSubmit} className="comment_button">
+        {editedCommentId ? '수정' : '등록'}
+      </button>
+      {editedCommentId && (
+        <button
+          onClick={() => setEditedCommentId(null)}
+          className="comment_button"
+        >
+          취소
+        </button>
+      )}
+      {editedCommentId && (
+        <button
+          onClick={() => handleDelete(editedCommentId)}
+          className="comment_button"
+        >
+          삭제
+        </button>
+      )}
     </div>
   );
 };
