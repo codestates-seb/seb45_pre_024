@@ -1,7 +1,7 @@
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/i18n/ko-kr';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +13,8 @@ const Wepediter = ({
   question_id,
   isLogin,
   renderCurrentPage,
+  answer_id,
+  init,
 }) => {
   const [content, setContent] = useState(' ');
   const [errRes, setErrRes] = useState('');
@@ -47,6 +49,7 @@ const Wepediter = ({
     } else if (type === 'Question') {
       if (title.length === 0 || title.length > 100) {
         errhandle('제목은 공란이거나 100글자 이상일 수 없습니다.');
+        return;
       }
       const Data = {
         title: title,
@@ -69,18 +72,55 @@ const Wepediter = ({
             setErrRes('자신이 작성한 글에는 답변을 달 수 없습니다.');
           }
         });
+    } else if (type === 'FixAnswer') {
+      const Data = {
+        body: content,
+      };
+      axios.patch(`/answer/${answer_id}`, Data, header).then(navi('/'));
+    } else if (type === 'FixQuestion') {
+      if (title.length === 0 || title.length > 100) {
+        errhandle('제목은 공란이거나 100글자 이상일 수 없습니다.');
+        return;
+      }
+      const Data = {
+        title: title,
+        body: content,
+      };
+      axios
+        .patch(`/question/${question_id}`, Data, header)
+        .then(navi('/'))
+        .catch((res) => {
+          console.log(res);
+          if (
+            res.status === 401 &&
+            res.message === 'Access token has expired'
+          ) {
+            navi('/log');
+          }
+        });
     }
   };
 
+  useEffect(() => {
+    if (init) {
+      setContent(init);
+    }
+  }, []);
   return (
     <div>
       {isLogin ? (
         <div>
           <Editor
-            initialValue={content}
+            initialValue={init ? init : content}
             previewStyle="tab"
             height={
-              type === 'Question' ? '600px' : type === 'Answer' && '300px'
+              type === 'Question'
+                ? '600px'
+                : type === 'Answer'
+                ? '300px'
+                : type === 'FixAnswer'
+                ? '300px'
+                : type === 'FixQuestion' && '550px'
             }
             ref={editorRef}
             onChange={onChange}
@@ -93,7 +133,11 @@ const Wepediter = ({
             <button onClick={axiosData} className="post_your_answer">
               {type === 'Question'
                 ? 'Post Your Question'
-                : type === 'Answer' && 'Post Your Answer'}
+                : type === 'Answer'
+                ? 'Post Your Answer'
+                : type === 'FixAnswer'
+                ? 'Fix Your Answer'
+                : type === 'FixQuestion' && 'Fix Your Question'}
             </button>{' '}
             {errRes && <span className="errRes">{errRes}</span>}
           </div>
@@ -117,5 +161,7 @@ Wepediter.propTypes = {
   question_id: PropTypes.string,
   isLogin: PropTypes.bool,
   renderCurrentPage: PropTypes.func,
+  answer_id: PropTypes.number,
+  init: PropTypes.any,
 };
 export default Wepediter;
