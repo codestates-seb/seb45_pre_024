@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import ReactHtmlParser from 'react-html-parser';
@@ -16,8 +16,17 @@ const QuestionDetail = ({ isLogin }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [maxPage, setMaxPage] = useState(null);
   const bottom = useRef(null);
+  const [isDelete, setIsDelete] = useState(false);
+  const [isFix, setIsFix] = useState(false);
+  const [textContent, setTextContent] = useState('');
+  const [isError, setIsError] = useState(false);
+  const [errText, setErrText] = useState('');
+  const navi = useNavigate();
   useEffect(() => {
-    axios.get(`/question/${question_id}`).then((res) => setData(res.data));
+    axios.get(`/question/${question_id}`).then((res) => {
+      setData(res.data);
+      setTextContent(res.data.title);
+    });
     FetchAnswerData();
   }, []);
   const FetchAnswerData = () => {
@@ -60,6 +69,32 @@ const QuestionDetail = ({ isLogin }) => {
     axios.patch(`/answer/accept/${answer_id}`, null, header);
     renderCurrentPage();
   };
+  const deleteQuestion = () => {
+    if (!isDelete) {
+      setIsDelete(true);
+    } else {
+      const header = {
+        headers: {
+          Authorization: sessionStorage.getItem('authorization'),
+          Refresh: sessionStorage.getItem('refresh'),
+        },
+      };
+      axios
+        .delete(`/question/${question_id}`, header)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 204) navi('/');
+        })
+        .catch(console.error('err'));
+    }
+  };
+  const textHandle = (e) => {
+    setTextContent(e.target.value);
+  };
+  const errhandle = (e) => {
+    setIsError(true);
+    setErrText(e);
+  };
   useEffect(() => {
     if (bottom.current) {
       const observer = new IntersectionObserver(
@@ -98,12 +133,43 @@ const QuestionDetail = ({ isLogin }) => {
                 ' ' +
                 data.created_at.slice(11, 19)}
             </span>
+            {data.username === sessionStorage.getItem('username') && (
+              <span>
+                <button onClick={() => setIsFix(!isFix)}>수정하기</button>
+                <button onClick={deleteQuestion}>삭제하기</button>
+                {isDelete && (
+                  <span className="reqText">정말 삭제하시겠습니까?</span>
+                )}
+              </span>
+            )}
           </div>
-          <div className="bodyContainer">
-            <div className="body">
-              <div>질문내용 {ReactHtmlParser(data.body)}</div>
+          {isFix ? (
+            <div>
+              <input
+                type="text"
+                placeholder="Enter Fix Question title"
+                value={textContent}
+                onChange={(e) => {
+                  textHandle(e);
+                }}
+              ></input>
+              <Wepediter
+                type={'FixQuestion'}
+                init={data.body}
+                title={textContent}
+                isLogin={isLogin}
+                question_id={question_id}
+                errhandle={errhandle}
+              />
+              {isError && <div className="errText">{errText}</div>}
             </div>
-          </div>
+          ) : (
+            <div className="bodyContainer">
+              <div className="body">
+                <div>질문내용 {ReactHtmlParser(data.body)}</div>
+              </div>
+            </div>
+          )}
           <div className="your_answer">Your Answer</div>
           <div className="createAnswer">
             <Wepediter
