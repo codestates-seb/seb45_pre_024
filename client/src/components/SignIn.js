@@ -144,7 +144,6 @@ const SignIn = ({ loginHandle }) => {
   );
 };
 SignIn.propTypes = {
-  user: PropTypes.object,
   userHandle: PropTypes.func,
   loginHandle: PropTypes.func,
 };

@@ -19,7 +19,35 @@ const Answer = ({ info, isLogin }) => {
           Refresh: sessionStorage.getItem('refresh'),
         },
       };
-      axios.delete(`/answer/${info.answer_id}`, header).then(navi('/'));
+      axios
+        .delete(`/answer/${info.answer_id}`, header)
+        .then(navi('/'))
+        .catch((res) => {
+          expired_Access_token(
+            res,
+            'delete',
+            '/answer',
+            `/${info.answer_id}`,
+            '',
+            header.headers.Refresh,
+          );
+        });
+    }
+  };
+  const expired_Access_token = (res, Method, URL, params, Data, refresh) => {
+    if (res.response.data.message === 'Access token has expired') {
+      sessionStorage.removeItem('authorization');
+      sessionStorage.setItem(
+        'authorization',
+        res.response.headers.authorization,
+      );
+      const authorization = sessionStorage.getItem('authorization');
+      axios[Method](`${URL}${params}`, Data, {
+        headers: {
+          authorization: authorization,
+          refresh: refresh,
+        },
+      }).then(navi('/'));
     }
   };
   return (

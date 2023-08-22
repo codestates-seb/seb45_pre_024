@@ -27,10 +27,10 @@ const QuestionDetail = ({ isLogin }) => {
       setData(res.data);
       setTextContent(res.data.title);
     });
-    FetchAnswerData();
+    fetchAnswerData(page);
   }, []);
-  const FetchAnswerData = () => {
-    axios.get(`/answer/${question_id}?page=1&size=10`).then((res) => {
+  const fetchAnswerData = (page) => {
+    axios.get(`/answer/${question_id}?page=${page}&size=10`).then((res) => {
       setAnswer(res.data.data);
       setPage(page + 1);
       setIsLoading(false);
@@ -48,16 +48,11 @@ const QuestionDetail = ({ isLogin }) => {
       });
     }
   }, [page, answer]);
+
   const renderCurrentPage = () => {
-    setAnswer(null);
+    setAnswer([]);
     setIsLoading(true);
-    for (let i = 1; i <= page; i++) {
-      axios.get(`/answer/${question_id}?page=${i}&size=10`).then((res) => {
-        setAnswer(answer.concat(res.data.data));
-        console.log(answer);
-      });
-    }
-    setIsLoading(false);
+    fetchAnswerData(1);
   };
   const acceptHandle = (answer_id) => {
     const header = {
@@ -66,8 +61,19 @@ const QuestionDetail = ({ isLogin }) => {
         Refresh: sessionStorage.getItem('refresh'),
       },
     };
-    axios.patch(`/answer/accept/${answer_id}`, null, header);
-    renderCurrentPage();
+    axios
+      .patch(`/answer/accept/${answer_id}`, null, header)
+      .then(renderCurrentPage())
+      .catch((res) =>
+        expired_Access_token(
+          res,
+          'patch',
+          '/answer/accept',
+          `/${answer_id}`,
+          null,
+          header.headers.Refresh,
+        ),
+      );
   };
   const deleteQuestion = () => {
     if (!isDelete) {
@@ -85,7 +91,16 @@ const QuestionDetail = ({ isLogin }) => {
           console.log(res);
           if (res.status === 204) navi('/');
         })
-        .catch(console.error('err'));
+        .catch((res) =>
+          expired_Access_token(
+            res,
+            'delete',
+            '/question',
+            `/${question_id}`,
+            '',
+            header.headers.Refresh,
+          ),
+        );
     }
   };
   const textHandle = (e) => {
@@ -94,6 +109,22 @@ const QuestionDetail = ({ isLogin }) => {
   const errhandle = (e) => {
     setIsError(true);
     setErrText(e);
+  };
+  const expired_Access_token = (res, Method, URL, params, Data, refresh) => {
+    if (res.response.data.message === 'Access token has expired') {
+      sessionStorage.removeItem('authorization');
+      sessionStorage.setItem(
+        'authorization',
+        res.response.headers.authorization,
+      );
+      const authorization = sessionStorage.getItem('authorization');
+      axios[Method](`${URL}${params}`, Data, {
+        headers: {
+          authorization: authorization,
+          refresh: refresh,
+        },
+      }).then(navi('/'));
+    }
   };
   useEffect(() => {
     if (bottom.current) {
@@ -199,7 +230,7 @@ const QuestionDetail = ({ isLogin }) => {
               answer.map((el) => {
                 return (
                   <div key={el.answer_id}>
-                    <Answer info={el} />
+                    <Answer info={el} isLogin={isLogin} />
                     {data.username === sessionStorage.getItem('username') && (
                       <button onClick={() => acceptHandle(el.answer_id)}>
                         {el.accepted ? '채택취소하기' : '채택하기'}
