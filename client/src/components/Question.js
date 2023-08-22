@@ -32,7 +32,10 @@ function timeSince(date) {
 }
 
 const Question = ({ info }) => {
-  const quDetail = info.body.slice(0, 60);
+  const quDetail = info.body.replace(/<[^>]*>?/g, ' ');
+  // const changer = ReactHtmlParser(info.body);
+  // const quDetail = changer.slice(0, 60);
+
   return (
     <div>
       <section className="quBox">

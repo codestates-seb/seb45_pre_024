@@ -7,11 +7,11 @@ const LeftSidebar = () => {
     <div className="left-sidebar">
       <nav className="side-nav">
         <NavLink to="/" className="side-nav-links" activeclassname="active">
-          <p className="font">Home</p>
+          <p className="sbHome">Home</p>
         </NavLink>
         <div className="side-nav-div">
           <div>
-            <p className="font">PUBLIC</p>
+            <p className="sbPublic">PUBLIC</p>
           </div>
           <NavLink
             to="/Questions"
@@ -19,9 +19,8 @@ const LeftSidebar = () => {
             activeclassname="active"
           >
             {/* <img src={Globe} alt="Globe" /> */}
-            <p style={{ paddingLeft: '10px' }} className="font">
-              {' '}
-              Questions{' '}
+            <p style={{ paddingLeft: '10px' }} className="sbQu">
+              Questions
             </p>
           </NavLink>
           <NavLink
@@ -30,7 +29,7 @@ const LeftSidebar = () => {
             activeclassname="active"
             style={{ paddingLeft: '40px' }}
           >
-            <p className="font">Tags</p>
+            <p className="sbTags">Tags</p>
           </NavLink>
           <NavLink
             to="/Users"
@@ -38,7 +37,7 @@ const LeftSidebar = () => {
             activeclassname="active"
             style={{ paddingLeft: '40px' }}
           >
-            <p className="font">Users</p>
+            <p className="sbUsers">Users</p>
           </NavLink>
         </div>
       </nav>
