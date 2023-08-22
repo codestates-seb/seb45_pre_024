@@ -1,16 +1,16 @@
-/* * {
+* {
   box-sizing: border-box;
   margin: 0;
-} */
+}
 
 .nav {
-  /* min-height: 30px; */
+
   width: 100%;
-  /* margin: 0% auto; */
+
   margin-bottom: 0;
   border-top: solid 3px #ef8236;
   box-shadow: 0px 1px 5px #00000033;
-  /* z-index: 5; */
+
   top: 0%;
   left: 0%;
   background-color: #f8f9f9;
@@ -26,7 +26,7 @@
   min-height: 85%;
   height: 100px;
   display: flex;
-  /* align-items: center; */
+
   justify-content: space-between;
   justify-content: center;
   align-items: center;
@@ -35,7 +35,7 @@
 
 .nav-logo {
   padding: 5px 25px;
-  /* float: left; */
+
 }
 
 .nav-item {
@@ -82,7 +82,7 @@
 .nav-links {
   padding: 7px 13px;
   width: 100px;
-  /* border: solid 1px blue; */
+
   border: none;
   border-radius: 12px;
   background-color: #8fc2db;
