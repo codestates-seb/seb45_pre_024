@@ -5,7 +5,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Wepediter from './Wepediter';
-const Answer = ({ info, isLogin }) => {
+const Answer = ({ info, isLogin, renderCurrentPage }) => {
   const [isDelete, setIsDelete] = useState(false);
   const [isFix, setIsFix] = useState(false);
   const navi = useNavigate();
@@ -21,7 +21,7 @@ const Answer = ({ info, isLogin }) => {
       };
       axios
         .delete(`/answer/${info.answer_id}`, header)
-        .then(navi('/'))
+        .then(renderCurrentPage())
         .catch((res) => {
           expired_Access_token(
             res,
@@ -81,5 +81,6 @@ const Answer = ({ info, isLogin }) => {
 Answer.propTypes = {
   info: PropTypes.object,
   isLogin: PropTypes.bool,
+  renderCurrentPage: PropTypes.func,
 };
 export default Answer;

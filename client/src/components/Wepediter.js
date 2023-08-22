@@ -37,7 +37,7 @@ const Wepediter = ({
         Refresh: refresh,
       },
     };
-    const expired_Access_token = (res, Method, URL, params, Data) => {
+    const expired_Access_token = (res, Method, URL, params, Data, navi) => {
       if (res.response.data.message === 'Access token has expired') {
         sessionStorage.removeItem('authorization');
         sessionStorage.setItem(
@@ -50,7 +50,7 @@ const Wepediter = ({
             authorization: authorization,
             refresh: refresh,
           },
-        }).then(navi('/'));
+        }).then(navi ? navi('/') : renderCurrentPage);
       }
     };
     if (
@@ -74,7 +74,7 @@ const Wepediter = ({
         .post(`/question`, Data, header)
         .then(navi('/'))
         .catch((res) => {
-          expired_Access_token(res, 'post', '/question', '', Data);
+          expired_Access_token(res, 'post', '/question', '', Data, navi('/'));
         });
     } else if (type === 'Answer') {
       const Data = {
@@ -104,7 +104,7 @@ const Wepediter = ({
       };
       axios
         .patch(`/answer/${answer_id}`, Data, header)
-        .then(navi('/'))
+        .then(renderCurrentPage())
         .catch((res) => {
           expired_Access_token(res, 'patch', '/answer', `/${answer_id}`, Data);
         });
@@ -119,7 +119,7 @@ const Wepediter = ({
       };
       axios
         .patch(`/question/${question_id}`, Data, header)
-        .then(navi('/'))
+        .then(renderCurrentPage())
         .catch((res) => {
           expired_Access_token(
             res,

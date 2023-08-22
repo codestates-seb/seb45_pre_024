@@ -161,3 +161,7 @@
   color: #0a95ff;
 }
 
+.errText{
+  font-size: 0.8em;
+  color: red;
+}
