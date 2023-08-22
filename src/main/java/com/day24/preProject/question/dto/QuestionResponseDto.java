@@ -1,9 +1,11 @@
 package com.day24.preProject.question.dto;
 
+import com.day24.preProject.questionComment.dto.QuestionCommentResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
@@ -19,6 +21,8 @@ public class QuestionResponseDto {
     private String title;
 
     private String body;
+
+    private List<QuestionCommentResponseDto> question_comment;
 
     private int view_count;
 

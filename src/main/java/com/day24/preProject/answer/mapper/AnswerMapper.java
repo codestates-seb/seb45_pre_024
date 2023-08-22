@@ -6,6 +6,7 @@ import com.day24.preProject.answer.dto.AnswerResponseDto;
 import com.day24.preProject.answer.entity.Answer;
 import com.day24.preProject.answer.dto.AnswerResponseDto;
 import com.day24.preProject.answer.entity.Answer;
+import com.day24.preProject.answerComment.dto.AnswerCommentResponseDto;
 import com.day24.preProject.member.entity.Member;
 import com.day24.preProject.question.entity.Question;
 import org.mapstruct.Mapper;
@@ -43,6 +44,14 @@ public interface AnswerMapper {
                         .username(answer.getMember().getUsername())
                         .question_id(answer.getQuestion().getQuestionId())
                         .body(answer.getBody())
+                        .answer_comment(answer.getAnswerComments().stream()
+                                .map(comment -> AnswerCommentResponseDto.builder()
+                                        .username(comment.getMember().getUsername())
+                                        .body(comment.getBody())
+                                        .created_at(comment.getCreatedAt())
+                                        .modified_at(comment.getModifiedAt())
+                                        .build())
+                                .collect(Collectors.toList()))
                         .accepted(answer.isAccepted())
                         .created_at(answer.getCreatedAt())
                         .modified_at(answer.getModifiedAt())

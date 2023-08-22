@@ -11,15 +11,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class QuestionCommentResponseDto {
 
-    private long questionId;
-
-    private long memberId;
-
-    private long questionCommentId;
+    private String username;
 
     private String body;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
-    private LocalDateTime modifiedAt;
+    private LocalDateTime modified_at;
 }
