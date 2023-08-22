@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class AnswerPatchDto {
+    private long id;
     private String body;
 
 }

@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @AllArgsConstructor
 public class QuestionCommentPostDto {
+    private Long id;
     @NotBlank
     private String body;
 }
