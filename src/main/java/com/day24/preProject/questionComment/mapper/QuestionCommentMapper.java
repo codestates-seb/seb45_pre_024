@@ -32,12 +32,10 @@ public interface QuestionCommentMapper {
     default List<QuestionCommentResponseDto> questionCommentsToQuestionCommentResponseDtos(List<QuestionComment> questionComments){
         return questionComments.stream()
                 .map(questionComment -> QuestionCommentResponseDto.builder()
-                        .questionCommentId(questionComment.getQuestionCommentId())
+                        .username(questionComment.getMember().getUsername())
                         .body(questionComment.getBody())
-                        .questionId(questionComment.getQuestion().getQuestionId())
-                        .memberId(questionComment.getMember().getMemberId())
-                        .modifiedAt(questionComment.getModifiedAt())
-                        .createdAt(questionComment.getCreatedAt())
+                        .modified_at(questionComment.getModifiedAt())
+                        .created_at(questionComment.getCreatedAt())
                         .build())
                 .collect(Collectors.toList());
     }
