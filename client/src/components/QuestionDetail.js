@@ -181,8 +181,9 @@ const QuestionDetail = ({ isLogin }) => {
           </div>
           <div className="comment-section">
             {' '}
-            <h3>댓글 작성</h3>
+            <h3 className="comment">Add a Comment</h3>
             <CommentForm
+              className="comment_form"
               question_id={question_id}
               renderCurrentPage={renderCurrentPage}
             />
