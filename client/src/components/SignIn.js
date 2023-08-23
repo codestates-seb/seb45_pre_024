@@ -34,7 +34,11 @@ const SignIn = ({ loginHandle }) => {
       },
     };
     axios
-      .post('/member/signin', formData, header)
+      .post(
+        'http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/member/signin',
+        formData,
+        header,
+      )
       .then((res) => {
         loginHandle(res.data);
         sessionStorage.setItem('username', res.data.username);

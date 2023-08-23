@@ -55,5 +55,6 @@
     "eslint-plugin-react": "^7.33.1",
     "eslint-plugin-react-hooks": "^4.6.0"
   },
-  "proxy": "http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/"
+  "proxy": "http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/",
+  "homepage": "https://ysm990926.github.io/"
 }

@@ -41,19 +41,24 @@ const SignUp = () => {
 
   const idCheck = () => {
     if (4 < id.length && id.length < 21) {
-      axios.post('/member/check/username', { username: id }).then((res) => {
-        if (res.data.is_duplicated) {
-          setIdErr(true); // 응답이 ture면 idErr true 나머지 성공 false
-          setSuccecsId(false);
-          setPossibleId(false);
-          setIdMessage('This ID is already in use.');
-        } else {
-          setIdErr(false); // 응답이 false면 idErr false 나머지 성공 true
-          setSuccecsId(true);
-          setPossibleId(true);
-          setIdMessage('This ID is available.');
-        }
-      });
+      axios
+        .post(
+          'http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/member/check/username',
+          { username: id },
+        )
+        .then((res) => {
+          if (res.data.is_duplicated) {
+            setIdErr(true); // 응답이 ture면 idErr true 나머지 성공 false
+            setSuccecsId(false);
+            setPossibleId(false);
+            setIdMessage('This ID is already in use.');
+          } else {
+            setIdErr(false); // 응답이 false면 idErr false 나머지 성공 true
+            setSuccecsId(true);
+            setPossibleId(true);
+            setIdMessage('This ID is available.');
+          }
+        });
     } else {
       setIdErr(true); //글자수 조건 안맞으니 idErr true 나머지 성공 false
       setSuccecsId(false);
@@ -109,12 +114,17 @@ const SignUp = () => {
         email: email,
         password: pw,
       };
-      axios.post('/member/signup', data).then((res) => {
-        console.log(res);
-        if (res.status === 201) {
-          navi('/signin');
-        }
-      });
+      axios
+        .post(
+          'http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/member/signup',
+          data,
+        )
+        .then((res) => {
+          console.log(res);
+          if (res.status === 201) {
+            navi('/signin');
+          }
+        });
     }
   };
   const samePw = () => {

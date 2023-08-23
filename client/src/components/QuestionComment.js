@@ -28,7 +28,11 @@ const QuestionComment = ({ question_id, renderCurrentPage }) => {
     {
       // Adding a new comment
       axios
-        .post(`/question/comment/${question_id}`, { body: comment }, header)
+        .post(
+          `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/question/comment/${question_id}`,
+          { body: comment },
+          header,
+        )
         .then(() => {
           setComment('');
           renderCurrentPage();
@@ -50,7 +54,10 @@ const QuestionComment = ({ question_id, renderCurrentPage }) => {
     };
 
     axios
-      .delete(`/question/comment/${commentId}`, header)
+      .delete(
+        `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/question/comment/${commentId}`,
+        header,
+      )
       .then(() => {
         renderCurrentPage();
       })

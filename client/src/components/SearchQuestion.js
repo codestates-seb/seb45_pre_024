@@ -13,20 +13,26 @@ const SearchQuestion = ({ isLogin }) => {
   const [isLoading, setIsLoading] = useState(true);
   const bottom = useRef(null);
   useEffect(() => {
-    axios.get(`/question/find?page=1&size=10&query=${text}`).then((res) => {
-      setSearchList(res.data.data);
-      console.log(res.data);
-      setMaxPage(res.data.pageInfo.totalPages);
-      setTotalSearch(res.data.pageInfo.totalElements);
-      setPage(page + 1);
-      setIsLoading(false);
-    });
+    axios
+      .get(
+        `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/question/find?page=1&size=10&query=${text}`,
+      )
+      .then((res) => {
+        setSearchList(res.data.data);
+        console.log(res.data);
+        setMaxPage(res.data.pageInfo.totalPages);
+        setTotalSearch(res.data.pageInfo.totalElements);
+        setPage(page + 1);
+        setIsLoading(false);
+      });
   }, [text]);
   const renderNextPage = useCallback(() => {
     if (page <= maxPage) {
       setIsLoading(true);
       axios
-        .get(`/question/find?page=${page}&size=10&query=${text}`)
+        .get(
+          `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/question/find?page=${page}&size=10&query=${text}`,
+        )
         .then((res) => {
           setSearchList(searchList.concat(res.data.data));
           setPage(page + 1);

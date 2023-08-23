@@ -25,7 +25,7 @@ const Avatar = ({
 };
 
 Avatar.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.object,
   backgroundColor: PropTypes.string,
   px: PropTypes.string,
   py: PropTypes.string,
