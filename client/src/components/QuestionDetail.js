@@ -23,29 +23,41 @@ const QuestionDetail = ({ isLogin }) => {
   const [errText, setErrText] = useState('');
   const navi = useNavigate();
   useEffect(() => {
-    axios.get(`/question/${question_id}`).then((res) => {
-      setData(res.data);
-      setTextContent(res.data.title);
-    });
+    axios
+      .get(
+        `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/question/${question_id}`,
+      )
+      .then((res) => {
+        setData(res.data);
+        setTextContent(res.data.title);
+      });
     fetchAnswerData(page);
   }, []);
   const fetchAnswerData = (page) => {
-    axios.get(`/answer/${question_id}?page=${page}&size=10`).then((res) => {
-      setAnswer(res.data.data);
-      setPage(page + 1);
-      setIsLoading(false);
-      setMaxPage(res.data.pageInfo.totalPages);
-    });
+    axios
+      .get(
+        `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/answer/${question_id}?page=${page}&size=10`,
+      )
+      .then((res) => {
+        setAnswer(res.data.data);
+        setPage(page + 1);
+        setIsLoading(false);
+        setMaxPage(res.data.pageInfo.totalPages);
+      });
   };
 
   const renderNextPage = useCallback(() => {
     if (page <= maxPage) {
       setIsLoading(true);
-      axios.get(`/answer/${question_id}?page=${page}&size=10`).then((res) => {
-        setAnswer(answer.concat(res.data.data));
-        setPage(page + 1);
-        setIsLoading(false);
-      });
+      axios
+        .get(
+          `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/answer/${question_id}?page=${page}&size=10`,
+        )
+        .then((res) => {
+          setAnswer(answer.concat(res.data.data));
+          setPage(page + 1);
+          setIsLoading(false);
+        });
     }
   }, [page, answer]);
 
@@ -62,7 +74,11 @@ const QuestionDetail = ({ isLogin }) => {
       },
     };
     axios
-      .patch(`/answer/accept/${answer_id}`, null, header)
+      .patch(
+        `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/answer/accept/${answer_id}`,
+        null,
+        header,
+      )
       .then(renderCurrentPage())
       .catch((res) =>
         expired_Access_token(
@@ -86,7 +102,10 @@ const QuestionDetail = ({ isLogin }) => {
         },
       };
       axios
-        .delete(`/question/${question_id}`, header)
+        .delete(
+          `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/question/${question_id}`,
+          header,
+        )
         .then((res) => {
           console.log(res);
           if (res.status === 204) navi('/');
@@ -118,12 +137,16 @@ const QuestionDetail = ({ isLogin }) => {
         res.response.headers.authorization,
       );
       const authorization = sessionStorage.getItem('authorization');
-      axios[Method](`${URL}${params}`, Data, {
-        headers: {
-          authorization: authorization,
-          refresh: refresh,
+      axios[Method](
+        `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080${URL}${params}`,
+        Data,
+        {
+          headers: {
+            authorization: authorization,
+            refresh: refresh,
+          },
         },
-      }).then(navi('/'));
+      ).then(navi('/'));
     }
   };
   useEffect(() => {

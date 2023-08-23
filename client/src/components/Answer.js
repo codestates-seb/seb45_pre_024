@@ -20,7 +20,10 @@ const Answer = ({ info, isLogin, renderCurrentPage }) => {
         },
       };
       axios
-        .delete(`/answer/${info.answer_id}`, header)
+        .delete(
+          `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/answer/${info.answer_id}`,
+          header,
+        )
         .then(renderCurrentPage())
         .catch((res) => {
           expired_Access_token(
@@ -42,12 +45,16 @@ const Answer = ({ info, isLogin, renderCurrentPage }) => {
         res.response.headers.authorization,
       );
       const authorization = sessionStorage.getItem('authorization');
-      axios[Method](`${URL}${params}`, Data, {
-        headers: {
-          authorization: authorization,
-          refresh: refresh,
+      axios[Method](
+        `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080${URL}${params}`,
+        Data,
+        {
+          headers: {
+            authorization: authorization,
+            refresh: refresh,
+          },
         },
-      }).then(navi('/'));
+      ).then(navi('/'));
     }
   };
   return (

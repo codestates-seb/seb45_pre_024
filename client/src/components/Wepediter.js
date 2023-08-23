@@ -45,12 +45,16 @@ const Wepediter = ({
           res.response.headers.authorization,
         );
         const authorization = sessionStorage.getItem('authorization');
-        axios[Method](`${URL}${params}`, Data, {
-          headers: {
-            authorization: authorization,
-            refresh: refresh,
+        axios[Method](
+          `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080${URL}${params}`,
+          Data,
+          {
+            headers: {
+              authorization: authorization,
+              refresh: refresh,
+            },
           },
-        }).then(navi ? navi('/') : renderCurrentPage);
+        ).then(navi ? navi('/') : renderCurrentPage);
       }
     };
     if (
@@ -71,7 +75,11 @@ const Wepediter = ({
         body: content,
       };
       axios
-        .post(`/question`, Data, header)
+        .post(
+          `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/question`,
+          Data,
+          header,
+        )
         .then(navi('/'))
         .catch((res) => {
           expired_Access_token(res, 'post', '/question', '', Data, navi('/'));
@@ -81,7 +89,11 @@ const Wepediter = ({
         body: content,
       };
       axios
-        .post(`/answer/${question_id}`, Data, header)
+        .post(
+          `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/answer/${question_id}`,
+          Data,
+          header,
+        )
         .then(renderCurrentPage())
         .then(clearEditor)
         .catch((res) => {
@@ -103,7 +115,11 @@ const Wepediter = ({
         body: content,
       };
       axios
-        .patch(`/answer/${answer_id}`, Data, header)
+        .patch(
+          `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/answer/${answer_id}`,
+          Data,
+          header,
+        )
         .then(renderCurrentPage())
         .catch((res) => {
           expired_Access_token(res, 'patch', '/answer', `/${answer_id}`, Data);
@@ -118,7 +134,11 @@ const Wepediter = ({
         body: content,
       };
       axios
-        .patch(`/question/${question_id}`, Data, header)
+        .patch(
+          `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/question/${question_id}`,
+          Data,
+          header,
+        )
         .then(renderCurrentPage())
         .catch((res) => {
           expired_Access_token(

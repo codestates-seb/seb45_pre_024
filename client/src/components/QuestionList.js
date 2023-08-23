@@ -4,7 +4,6 @@ import Question from './Question';
 import './QuestionList.css';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import LeftSidebar from './LeftSideBar';
 const QuestionList = ({ isLogin }) => {
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(1);
@@ -14,23 +13,30 @@ const QuestionList = ({ isLogin }) => {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const bottom = useRef(null);
   useEffect(() => {
-    axios.get('/question?page=1&size=10').then((res) => {
-      setQuestions(res.data.data);
-      setPage(page + 1);
-      setIsLoading(false);
-      setMaxPage(res.data.pageInfo.totalPages);
-      setTotalQuestions(res.data.pageInfo.totalElements);
-    });
+    axios
+      .get(
+        'http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/question?page=1&size=10',
+      )
+      .then((res) => {
+        setQuestions(res.data.data);
+        setPage(page + 1);
+        setIsLoading(false);
+        setMaxPage(res.data.pageInfo.totalPages);
+        setTotalQuestions(res.data.pageInfo.totalElements);
+      });
   }, []);
-
   const renderNextPage = useCallback(() => {
     if (page <= maxPage) {
       setIsLoading(true);
-      axios.get(`/question?page=${page}&size=10`).then((res) => {
-        setQuestions(questions.concat(res.data.data));
-        setPage(page + 1);
-        setIsLoading(false);
-      });
+      axios
+        .get(
+          `http://ec2-3-39-152-190.ap-northeast-2.compute.amazonaws.com:8080/question?page=${page}&size=10`,
+        )
+        .then((res) => {
+          setQuestions(questions.concat(res.data.data));
+          setPage(page + 1);
+          setIsLoading(false);
+        });
     }
   }, [page, questions]);
 
@@ -57,7 +63,6 @@ const QuestionList = ({ isLogin }) => {
   };
   return (
     <section className="mainContiner">
-      <LeftSidebar />
       <div className="mainContent">
         <div className="line1">
           <h1 className="allQuestions">All questions</h1>
