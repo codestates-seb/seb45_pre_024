@@ -101,8 +101,8 @@ public class Oauth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private URI createURI(String path, MultiValueMap<String, String> queryParams){
         return UriComponentsBuilder.newInstance()
                 .scheme("http")
-                .host("localhost")
-                .port(3000)
+                .host("pre-project.s3-website.ap-northeast-2.amazonaws.com")
+                .port(80)
                 .path(path)
                 .queryParams(queryParams)
                 .build().toUri();
